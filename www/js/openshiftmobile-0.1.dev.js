@@ -14,7 +14,6 @@ function OpenShiftMobile(auth,settings) {
 	var deviceReadyDeferred = $.Deferred();
 	var jqmReadyDeferred = $.Deferred();
 	var logged_in = false;
-	var oo_URL = "https://openshift.redhat.com/broker/rest/";
 	var creds = CredentialManager();
 	var config = $.extend({
 		version: '1.6',
@@ -22,8 +21,6 @@ function OpenShiftMobile(auth,settings) {
 			'Authorization' : '',
 			'Accept' : 'application/json'			
 		},
-		openshiftOnline: true,
-		base_url: ''
 	},settings);
 
 

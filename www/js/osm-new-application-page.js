@@ -4,7 +4,7 @@ $('#new-application-page').bind('pagebeforeshow',function(event,data) {
 	var prevPage = data.prevPage.attr('id');
 	
 	if(prevPage != null && prevPage != 'new-application-cartridge-dialog') {
-		
+				
 		var list = app.rest_get('https://openshift.redhat.com/broker/rest/cartridges',function(d) {
 			build_new_application_cartridge_list(d.data);		
 		});
@@ -39,14 +39,14 @@ function build_new_application_cartridge_list(cartridges) {
 		var aL = a[1].toLowerCase();
 		var bL = b[1].toLowerCase();
 		
-		if(a[1] < b[1]) return -1;
-		if(a[1] > b[1]) return 1;	
+		if(aL[1] < bL[1]) return -1;
+		if(aL[1] > bL[1]) return 1;	
 		return 0;
 	});
 	
 	for(var i=0,l=openShiftCartridges.length;i<l;++i) {
 		var openShiftCartridge = openShiftCartridges[i];
-		newAppCartridgeList.append('<option value="' + openShiftCartridge[0] + '">' + openShiftCartridge[1] + '</option>')
+		newAppCartridgeList.append('<option value="' + openShiftCartridge[0] + '">' + openShiftCartridge[1] + '</option>');
 
 	}
 	

@@ -6,6 +6,19 @@ $('#login-submit').click(function() {
 	app.login(user,pass,auto);
 });
 
+$("input[name='login-openshift-type-radio-group']").change(function(e){
+	
+	var enterprise_url_textbox_div = $("#login-enterprise-url-div");
+	
+    if($(this).val() == 'enterprise') {
+    	enterprise_url_textbox_div.show();
+    } else {
+    	enterprise_url_textbox_div.hide();
+    }
+
+});
+
+
 $(document).bind('osm-login',function() {
 	$.mobile.changePage('#domain-page',{transition:'slide'});
 });
