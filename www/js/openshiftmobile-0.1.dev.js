@@ -46,7 +46,7 @@ function OpenShiftMobile(auth,settings) {
 		} else {
 			config.headers['Accept'] = h[0];
 		}
-	}
+	};
 
 
 	this.get_domain = function() {
@@ -91,7 +91,7 @@ function OpenShiftMobile(auth,settings) {
 
 		//return cached data or null
 		return JSON.parse(localStorage[url] || null);
-	}
+	};
 
 	this.login = function(username,password,auto) {
 
@@ -124,7 +124,7 @@ function OpenShiftMobile(auth,settings) {
 				$.mobile.loading('hide');
 			}
 		);
-	}
+	};
 
 	this.logout = function() {
 		$.mobile.loading('show', {
@@ -136,15 +136,15 @@ function OpenShiftMobile(auth,settings) {
 		creds.setAutolog('false');
 		creds.store();
 		$(document).trigger('osm-logout');
-	}
+	};
 
 	this.isAutolog = function() {
 		return creds.getAutolog();
-	}
+	};
 
 	this.getUsername = function() {
 		return creds.getUsername();
-	}
+	};
 
 	//
 	//Private methods
@@ -153,7 +153,7 @@ function OpenShiftMobile(auth,settings) {
 	//Set auth header
 	var config_auth_header = function(username,password) {
 		config.headers['Authorization'] = 'Basic: ' + btoa(username + ":" + password);
-	}
+	};
 
 	// Phonegap is ready
 	var onDeviceReady = function() {
@@ -206,7 +206,7 @@ function OpenShiftMobile(auth,settings) {
 					username:user,
 					password:pass,
 					autolog:auto
-				}
+				};
 			},
 			set : function(username,password,autolog) {
 				user = username;
@@ -224,7 +224,7 @@ function OpenShiftMobile(auth,settings) {
 				localStorage.removeItem('auth.password');
 				localStorage.removeItem('auth.autolog');
 			}
-		}
+		};
 	}
 }
 

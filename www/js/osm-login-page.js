@@ -6,6 +6,19 @@ $('#login-submit').click(function() {
 	app.login(user,pass,auto);
 });
 
+$("input[name='login-openshift-type-radio-group']").change(function(e){
+	
+	var enterprise_url_textbox_div = $("#login-enterprise-url-div");
+	
+    if($(this).val() == 'enterprise') {
+    	enterprise_url_textbox_div.show();
+    } else {
+    	enterprise_url_textbox_div.hide();
+    }
+
+});
+
+
 $(document).bind('osm-login',function() {
 	$.mobile.changePage('#domain-page',{transition:'slide'});
 });
@@ -21,6 +34,8 @@ $(document).bind('osm-login-failed',function() {
 $(document).bind('osm-logout',function() {
 	$('#login-username').val(app.getUsername()||'');
 	$('#login-password').val('');
+	$("#login-enterprise-url-div").hide();
+	$("input[name='login-openshift-type-radio-group'][value=online]").prop('checked', true);	
 	$('#login-password').attr('checked','false');
 	
 	$('#login-instruct').text('Login to OpenShift').css('color','');

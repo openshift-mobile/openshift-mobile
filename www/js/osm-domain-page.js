@@ -39,4 +39,5 @@ function build_domain_list(domains) {
 		ul.append(li);
 	}
 	ul.listview('refresh');
+
 }
