@@ -20,6 +20,7 @@ $(document).bind('osm-login-failed',function() {
 
 $(document).bind('osm-logout',function() {
 	$('#login-username').val(app.getUsername()||'');
+	$('#login-password').val('');
 	$('#login-password').attr('checked','false');
 	
 	$('#login-instruct').text('Login to OpenShift').css('color','');
