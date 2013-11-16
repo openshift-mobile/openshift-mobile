@@ -145,8 +145,6 @@
 					app.login();
 				} else {
 					$('#login-username').val(app.getUsername()||'');
-					$("#login-enterprise-url-div").hide();
-					$("input[name='login-openshift-type-radio-group'][value=online]").prop('checked', true);
 					$.mobile.changePage('#login-page',{transition:'slide'});
 				}
 			});
