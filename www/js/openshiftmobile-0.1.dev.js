@@ -92,7 +92,7 @@ function OpenShiftMobile(auth,settings) {
 		$.mobile.loading('show', {
 			text : 'Logging In...',
 			textVisible : true,
-			theme : 'a',
+			theme : 'b',
 		});
 		
 		//Verification REST call
@@ -112,7 +112,7 @@ function OpenShiftMobile(auth,settings) {
 		$.mobile.loading('show', {
 			text : 'Logging Out...',
 			textVisible : true,
-			theme : 'a',
+			theme : 'b',
 		});
 		creds.setPassword('');
 		creds.setAutolog('false');
