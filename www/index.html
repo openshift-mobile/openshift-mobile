@@ -31,6 +31,7 @@
 		<div id="splash-page" data-role="page">
 		</div>
 
+		<!-- Login Page -->
 		<div id="login-page" data-role="page">
 			<div data-role="header">
 				<h1>Login</h1>
@@ -55,8 +56,10 @@
 				</div>
 			</div>
 		</div>
+		<!-- END Login Page -->
 
 		
+		<!-- Domains Page -->
 		<div id="domain-page" data-role="page">
 			<div id="domain-nav-panel" data-role="panel" data-theme="b" class="navpanel">
 				<ul data-role="listview" data-theme="b">
@@ -74,12 +77,49 @@
 				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
 			</div>
 		</div>
+		<!-- END Domains Page -->
+
+
+		<!-- Applications Page -->
+		<div id="applications-page" data-role="page">
+			<div id="applications-nav-panel" data-role="panel" data-theme="b" class="navpanel">
+				<ul data-role="listview" data-theme="b">
+					<li data-role="list-divider" role="heading">Navigation</li>
+					<li><a class="toDomains">Domains</a></li>
+					<li data-role="list-divider" role="heading">Account</li>
+					<li><a>Settings</a></li>
+					<li><a class="toLogout">Logout</a></li>
+				</ul>
+			</div>
+
+			<div data-role="header">
+				<a href="#applications-nav-panel" data-icon="bars" data-iconpos="notext"></a>
+				<h1>Applications</h1>
+				<a href="" data-icon="plus" data-iconpos="notext"></a>
+			</div>
+
+			<div data-role="popup" data-theme="b" id="application-popupMenu">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
+					<li data-role="divider" data-theme="b">Actions</li>
+					<li><a id="application-start">Start Application</a></li>
+					<li><a id="application-stop">Stop Application</a></li>
+					<li><a id="application-delete">Delete Application</a></li>
+				</ul>
+			</div>
+
+			<div data-role="content">
+				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+			</div>
+		</div>
+		<!-- END Applications Page -->
+
 
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/openshiftmobile-0.1.dev.js"></script>
 		<script type="text/javascript" src="js/osm-login-page.js"></script>
 		<script type="text/javascript" src="js/osm-domain-page.js"></script>
+		<script type="text/javascript" src="js/osm-applications-page.js"></script>
 		<script type="text/javascript">
 
 			//Create a new object and initialize all frameworks
@@ -88,8 +128,15 @@
 			app.initialize();
 
 			//CSS Class based binds for whole app
-			$('.logout').click(function() {
+			$('.toLogout').click(function() {
 				app.logout();
+			});
+
+			$('.toDomains').click(function() {
+				$.mobile.changePage('#domain-page', {
+					transition: 'slide',
+					reverse: true
+				});
 			});
 
 
@@ -106,8 +153,7 @@
 
         </script>
 
-		<!-- IMPORTANT: Load this last to make sure all event bindings are set before the events fire -->
-		
+		<!-- IMPORTANT: Load this last to make sure all event bindings are set before the events fire -->		
 		<script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
     </body>
 </html>

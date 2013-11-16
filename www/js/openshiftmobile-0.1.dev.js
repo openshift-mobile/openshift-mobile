@@ -21,6 +21,7 @@ function OpenShiftMobile(auth,settings) {
 			'Authorization' : '',
 			'Accept' : 'application/json'			
 		},
+		base_url : 'https://openshift.redhat.com/broker/rest/'
 	},settings);
 
 
@@ -47,10 +48,27 @@ function OpenShiftMobile(auth,settings) {
 		}
 	}
 
+
+	this.get_domain = function() {
+		return config.domain;
+	}
+
+	this.set_domain = function(domain) {
+		config.domain = domain;
+	}
+
+	this.get_application = function() {
+		return config.application;
+	}
+
+	this.set_application = function(application) {
+		config.application = application;
+	}
+
 	//Send a GET request over REST (auto caches)
 	this.rest_get = function(url,callback,errback,precall) {
 		$.ajax({
-			url : url,
+			url : config.base_url + url,
 			type : 'GET',
 			dataType : 'json',
 			crossDomain : true,
@@ -96,7 +114,7 @@ function OpenShiftMobile(auth,settings) {
 		});
 		
 		//Verification REST call
-		this.rest_get('https://openshift.redhat.com/broker/rest/user',
+		this.rest_get('user',
 			function() {
 				$(document).trigger('osm-login');
 				$.mobile.loading('hide');
