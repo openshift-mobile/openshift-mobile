@@ -1,0 +1,27 @@
+.osm-icon-container {
+    background: url(images/osm-icons.png) no-repeat top left;
+	width:48px;
+	height:48px;
+	margin-left: 20px;
+	margin-top: 15px;
+}
+
+.osm-openshift-10gen-logo{ background-position: 0 0; width: 48px; height: 48px; } 
+.osm-openshift-haproxy-logo{ background-position: -98px 0; width: 48px; height: 48px; } 
+.osm-openshift-jbossas-logo{ background-position: -196px 0; width: 48px; height: 48px; } 
+.osm-openshift-jbosseap-logo{ background-position: -294px 0; width: 48px; height: 48px; } 
+.osm-openshift-jbossews-logo{ background-position: -392px 0; width: 48px; height: 48px; } 
+.osm-openshift-jenkins-logo{ background-position: -490px 0; width: 48px; height: 48px; } 
+.osm-openshift-logo{ background-position: -588px 0; width: 48px; height: 48px; } 
+.osm-openshift-mongodb-logo{ background-position: -686px 0; width: 48px; height: 48px; } 
+.osm-openshift-mysql-logo{ background-position: -784px 0; width: 48px; height: 48px; } 
+.osm-openshift-nodejs-logo{ background-position: -882px 0; width: 48px; height: 48px; } 
+.osm-openshift-perl-logo{ background-position: -980px 0; width: 48px; height: 48px; } 
+.osm-openshift-php-logo{ background-position: -1078px 0; width: 48px; height: 48px; } 
+.osm-openshift-phpmyadmin-logo{ background-position: -1176px 0; width: 48px; height: 48px; } 
+.osm-openshift-postgresql-logo{ background-position: -1274px 0; width: 48px; height: 48px; } 
+.osm-openshift-python-logo{ background-position: -1372px 0; width: 48px; height: 48px; } 
+.osm-openshift-ruby-logo{ background-position: -1470px 0; width: 48px; height: 48px; } 
+.osm-openshift-switchyard-logo{ background-position: -1568px 0; width: 48px; height: 48px; } 
+.osm-openshift-zend-logo{ background-position: -1666px 0; width: 48px; height: 48px; } 
+

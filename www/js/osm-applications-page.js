@@ -15,7 +15,7 @@ function build_application_list(apps) {
 		var a = apps[i];
 		var li = $('<li></li>');
 		var a1 = $('<a></a>')
-				.html('<img src="' + get_apps_img(a.framework) + 
+				.html('<img class="osm-icon-container ' + get_apps_img(a.framework.split('-')[0]) + 
 						'"/><h3>' + a.name + '</h3><p>' + a.app_url + '</p>');
 		var a2 = $('<a id="application-' + a.name + '" href="#application-popupMenu" data-rel="popup"></a>');
 
@@ -38,8 +38,23 @@ function build_application_list(apps) {
 
 function get_apps_img(framework) {
 	var img = {
-
+		'10gen': 'osm-openshift-10gen-logo',
+		haproxy: 'osm-openshift-haproxy-logo',
+		jbossas: 'osm-openshift-jbossas-logo',
+		jbossews: 'osm-openshift-jbossews-logo',
+		jenkins: 'osm-openshift-jenkins-logo',
+		mongodb: 'osm-openshift-mongodb-logo',
+		mysql: 'osm-openshift-mysql-logo',
+		nodejs: 'osm-openshift-nodejs-logo',
+		perl: 'osm-openshift-perl-logo',
+		php: 'osm-openshift-php-logo',
+		phpmyadmin: 'osm-openshift-phpmyadmin-logo',
+		postgresql: 'osm-openshift-postgresql-logo',
+		python: 'osm-openshift-python-logo',
+		ruby: 'osm-openshift-ruby-logo',
+		switchyard: 'osm-openshift-switchyard-logo',
+		zend: 'osm-openshift-zend-logo',
 	}
 	
-	return 'img/frameworks/' + (img[framework] || 'icon-72.png')
+	return (img[framework] || 'osm-openshift-logo')
 }
