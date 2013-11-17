@@ -139,7 +139,7 @@ function OpenShiftMobile(auth,settings) {
 		this.rest_get('user',
 			function(d) {
 			
-				if(!app.isOpenShiftOnline) {
+				if(!app.isOpenShiftOnline()) {
 					var api = d.version;
 					creds.setApi(api);
 					creds.store();

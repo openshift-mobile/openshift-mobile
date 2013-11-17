@@ -30,7 +30,12 @@ function build_domain_list(domains) {
 		var a = $('<a id="domain-' + name + '"></a>');
 		
 		a.click(function() {
-			app.set_domain($(this).attr('id').split('-')[1]);
+			if(app.isOpenShiftOnline()) {
+				app.set_domain($(this).attr('id').split('-')[1]);
+			}
+			else {
+				app.set_domain(domain.id);
+			}
 			$.mobile.changePage('#applications-page',{transition:'slide'});
 		});
 
