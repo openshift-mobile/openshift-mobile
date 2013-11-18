@@ -41,6 +41,7 @@ function get_apps_img(framework) {
 		'10gen': 'osm-openshift-10gen-logo',
 		haproxy: 'osm-openshift-haproxy-logo',
 		jbossas: 'osm-openshift-jbossas-logo',
+		jbosseap: 'osm-openshift-jbosseap-logo',
 		jbossews: 'osm-openshift-jbossews-logo',
 		jenkins: 'osm-openshift-jenkins-logo',
 		mongodb: 'osm-openshift-mongodb-logo',
