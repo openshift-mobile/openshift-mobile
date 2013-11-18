@@ -63,8 +63,8 @@
 			<div id="domain-nav-panel" data-role="panel" data-theme="b" class="navpanel" data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Account</li>
-					<li><a>Settings</a></li>
-					<li><a class="toLogout">Logout</a></li>
+					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
 				</ul>
 			</div>
 			<div data-role="header">
@@ -84,11 +84,11 @@
 			<div id="applications-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Navigation</li>
-					<li><a class="toDomains">Domains</a></li>
-					<li><a class="createapp">Create Application</a></li>
+					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
+					<li data-icon="plus"><a class="createapp">Create Application</a></li>
 					<li data-role="list-divider" role="heading">Account</li>
-					<li><a>Settings</a></li>
-					<li><a class="toLogout">Logout</a></li>
+					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
 				</ul>
 			</div>
 
@@ -113,6 +113,7 @@
 		</div>
 		<!-- END Applications Page -->
 
+		<!-- Create Application Page -->
 		<div id="new-application-page" data-role="page">
 			<div data-role="header">
 				<h1>Create New Application</h1>
@@ -135,6 +136,7 @@
 				</div>
 			</div>
 		</div>		
+		<!-- END Create Application Page -->
 
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
