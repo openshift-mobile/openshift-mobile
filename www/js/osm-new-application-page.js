@@ -56,32 +56,45 @@ function build_new_application_cartridge_list(cartridges) {
 $('#create-application-submit').click(function() {
 	var formdata = $('#new-application-form').serialize();
 	$('#create-application-container').children().addClass('ui-disabled');
-	//Show a loading spinner
+
 	$.mobile.loading('show', {
 		text : 'Creating ' + $('#new-application-name').val(),
 		textVisible : true,
 		theme : 'b',
 	});
 	
-	//Verification REST call
 	app.rest_post('domains/' + app.get_domain() + '/applications', formdata,
 		function(d) {
 			$.mobile.loading('hide');
-			alert("Application Created Successfully");
-			$.mobile.changePage('#applications-page',{});
+			$('#create-application-container').children().removeClass('ui-disabled');
+			app.show_alert_dialog("Application Creation","Application Created Successfully", function(event,ui){
+				history.back();
+			});
 		},
-		function(d) {
-			alert("Application Creation Failed");
+		function(jqxhr,errType,exception) {
+			
+			// Check to see if messages are returned from OpenShift
+			if(jqxhr.status = "422") {
+				
+				var json = jQuery.parseJSON(jqxhr.responseText);
+				var messages = "";
+				
+				$.each(json.messages, function(index,value) {
+					if(messages != "") messages += "\n";
+					messages += value.text;
+				});
+				
+				app.show_alert_dialog("Application Creation Failed",messages);
+			}
+			else {
+				app.show_alert_dialog("Application Creation Failed","The Application Failed to be Created");
+			}
+			
 			$.mobile.loading('hide');
 			$('#create-application-container').children().removeClass('ui-disabled');
 		}
 	);
 	
 	return false;
-//	var auto = String($('#login-auto').is(':checked'));
-//	$('#login-container').children().addClass('ui-disabled');
-//	app.login(user,pass,auto);
 });
-
-
 

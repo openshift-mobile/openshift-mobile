@@ -111,6 +111,7 @@
 			<div data-role="content">
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
+						
 		</div>
 		<!-- END Applications Page -->
 
@@ -140,6 +141,22 @@
 			</div>
 		</div>		
 		<!-- END Create Application Page -->
+		
+		
+		<!-- Begin Popup Dialog -->
+		<div data-role="popup" id="popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px;" class="ui-corner-all ui-dialog ui-content">
+			<div data-role="header" data-theme="a" class="ui-header ui-title">
+				<div>
+					<h3 id="popup-alert-dialog-header" style="text-align:center"></h3>
+				</div>
+			</div>
+			<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+				<div id="popup-alert-dialog-content"></div>
+				<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+			</div>
+		</div>
+		<!-- End Popup Dialog -->
+		
 
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>

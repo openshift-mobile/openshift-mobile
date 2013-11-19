@@ -71,12 +71,20 @@ function OpenShiftMobile(auth,settings) {
 		config.domain = domain;
 	};
 
-	this.get_application = function() {
-		return config.application;
+	this.get_application_id = function() {
+		return config.application_id;
 	};
 
-	this.set_application = function(application) {
-		config.application = application;
+	this.set_application_id = function(id) {
+		config.application_id = id;
+	};
+	
+	this.get_application_name = function() {
+		return config.application_name;
+	};
+
+	this.set_application_name = function(name) {
+		config.application_name = name;
 	};
 
 	this.parse_application_identifier = function(application) {
@@ -85,16 +93,32 @@ function OpenShiftMobile(auth,settings) {
 			default:
 				return application.id;
 		}
-	}
+	};
+	
+	this.show_alert_dialog = function(header,content,callback) {
+		$('#popup-alert-dialog-header').html(header);
+		$('#popup-alert-dialog-content').html(content);
+		$('#popup-alert-dialog').popup();
+		$('#popup-alert-dialog').popup( "open" );
+		$( '#popup-alert-dialog' ).unbind();
+		
+		if(callback) {
+			$( '#popup-alert-dialog' ).bind({
+				   popupafterclose: function(event, ui) {
+					   callback(event,ui);
+				   }
+			});
+		};
+	};
 
 	//Send a GET request over REST (auto caches)
 	this.rest_get = function(url,callback,errback,precall) {
 		$.ajax({
 			url : config.base_url + url,
-			type : 'GET',
+			type : rest_method.GET,
 			dataType : 'json',
 			crossDomain : true,
-			timeout : 5000,
+			timeout : 10000,
 			headers : config.headers,
 			beforeSend : function(jqxhr,s) {
 				//TODO: Add framework handling
@@ -114,12 +138,47 @@ function OpenShiftMobile(auth,settings) {
 		//return cached data or null
 		return JSON.parse(localStorage[url] || null);
 	};
-	//Send a POST request over REST
-	this.rest_post = function(url,data,callback,errback,precall) {
+	
+
+	
+	// Perform a REST Operation
+	this.rest_operation = function(operation,url,data,callback,errback,precall) {
 		$.ajax({
 			url : config.base_url + url,
-			type : 'POST',
+			type : operation,
 			data : data,
+			async : true,
+			crossDomain : true,
+			headers : config.headers,
+			beforeSend : function(jqxhr,s) {
+				//TODO: Add framework handling
+				if(precall) precall(jqxhr,s);
+			},
+			success : function(data,text,xhr) {
+				//Cache data and call user callback
+				if(callback) callback(data,text,xhr);
+			},
+			error : function(jqxhr,errType,exception) {
+				//TODO: Add framework handling
+				if(errback) errback(jqxhr,errType,exception);
+			}
+		});	
+	};
+	
+	
+	// Common Rest Operations
+	this.rest_post  = function(url,data,callback,errback,precall) {
+		this.rest_operation(rest_method.POST,url,data,callback,errback,precall);
+	};
+	
+	this.rest_put  = function(url,data,callback,errback,precall) {
+		this.rest_operation(rest_method.PUT,url,data,callback,errback,precall);
+	};	
+	
+	this.rest_delete  = function(url,data,callback,errback,precall) {
+		$.ajax({
+			url : config.base_url + url,
+			type : rest_method.DELETE,
 			async : true,
 			crossDomain : true,
 			headers : config.headers,
@@ -269,6 +328,13 @@ function OpenShiftMobile(auth,settings) {
 	//All Initializations are done, triger the ready event
 	var ready = function() {
 		$(document).trigger('openshiftready');
+	};
+	
+	var rest_method = {
+		GET : 'GET',
+		POST : 'POST',
+		PUT : 'PUT',
+		DELETE : 'DELETE'
 	};
 
 

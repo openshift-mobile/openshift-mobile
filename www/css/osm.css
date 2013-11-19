@@ -10,6 +10,14 @@
     background: #eeeeee !important;
 }
 
+body .ui-footer .ui-title {
+ white-space: normal;
+}
+
+body .ui-li .ui-li-desc {
+ white-space: normal;
+}
+
 .osm-openshift-10gen-logo{ background-position: 0 0; width: 48px; height: 48px; } 
 .osm-openshift-haproxy-logo{ background-position: -98px 0; width: 48px; height: 48px; } 
 .osm-openshift-jbossas-logo{ background-position: -196px 0; width: 48px; height: 48px; } 
