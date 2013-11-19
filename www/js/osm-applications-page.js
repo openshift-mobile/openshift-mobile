@@ -2,7 +2,7 @@ $('#applications-page').bind('pagebeforeshow',function() {
 	var list = app.rest_get('domains/' + app.get_domain() + '/applications', function(d) {
 		build_application_list(d.data);
 	});
-	build_application_list(list);
+	build_application_list(list.data);
 });
 
 function build_application_list(apps) {
