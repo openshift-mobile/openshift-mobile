@@ -122,18 +122,20 @@
 
 			<div data-role="content">
 				<div id="create-application-container" data-theme="a">
-					<div data-role="fieldcontain">
-						 <input type="text" name="new-application-name" id="new-application-name" value="" placeholder="Application Name"  data-theme="a"  />
-					</div>				
-					<div data-role="fieldcontain">
-						<select name="new-application-cartridge" id="new-application-cartridge" data-native-menu="false" data-theme="a">
-						<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
-						</select>
-					</div>
-					<div data-role="fieldcontain">
-						<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
-						<button id="create-application-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
-					</div>
+					<form id="new-application-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="name" id="new-application-name" value="" placeholder="Application Name"  data-theme="a"  />
+						</div>				
+						<div data-role="fieldcontain">
+							<select name="cartridge" id="new-application-cartridge" data-native-menu="false" data-theme="a">
+							<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-application-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>		

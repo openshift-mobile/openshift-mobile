@@ -30,6 +30,8 @@ function build_domain_list(domains) {
 		var a = $('<a id="domain-' + name + '"></a>');
 		
 		a.click(function() {
+			
+			// Temporary fix until versioned API's are implemented
 			if(app.isOpenShiftOnline()) {
 				app.set_domain($(this).attr('id').split('-')[1]);
 			}

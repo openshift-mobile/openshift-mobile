@@ -54,9 +54,30 @@ function build_new_application_cartridge_list(cartridges) {
 }
 
 $('#create-application-submit').click(function() {
-	var applicationName = $('#new-application-name').val();
-	var cartridgeType = $('#new-application-cartridge').val();
-	alert("Application Name: "+applicationName+"\nCartridge Type: "+cartridgeType);
+	var formdata = $('#new-application-form').serialize();
+	$('#create-application-container').children().addClass('ui-disabled');
+	//Show a loading spinner
+	$.mobile.loading('show', {
+		text : 'Creating ' + $('#new-application-name').val(),
+		textVisible : true,
+		theme : 'b',
+	});
+	
+	//Verification REST call
+	app.rest_post('domains/' + app.get_domain() + '/applications', formdata,
+		function(d) {
+			$.mobile.loading('hide');
+			alert("Application Created Successfully");
+			$.mobile.changePage('#applications-page',{});
+		},
+		function(d) {
+			alert("Application Creation Failed");
+			$.mobile.loading('hide');
+			$('#create-application-container').children().removeClass('ui-disabled');
+		}
+	);
+	
+	return false;
 //	var auto = String($('#login-auto').is(':checked'));
 //	$('#login-container').children().addClass('ui-disabled');
 //	app.login(user,pass,auto);

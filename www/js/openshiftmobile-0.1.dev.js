@@ -106,6 +106,29 @@ function OpenShiftMobile(auth,settings) {
 		//return cached data or null
 		return JSON.parse(localStorage[url] || null);
 	};
+	//Send a POST request over REST
+	this.rest_post = function(url,data,callback,errback,precall) {
+		$.ajax({
+			url : config.base_url + url,
+			type : 'POST',
+			data : data,
+			async : true,
+			crossDomain : true,
+			headers : config.headers,
+			beforeSend : function(jqxhr,s) {
+				//TODO: Add framework handling
+				if(precall) precall(jqxhr,s);
+			},
+			success : function(data,text,xhr) {
+				//Cache data and call user callback
+				if(callback) callback(data,text,xhr);
+			},
+			error : function(jqxhr,errType,exception) {
+				//TODO: Add framework handling
+				if(errback) errback(jqxhr,errType,exception);
+			}
+		});	
+	};
 
 	this.login = function(username,password,auto,os_type,url) {
 
