@@ -13,19 +13,19 @@ function build_application_list(apps) {
 	ul.empty();
 	for(var i=0,l=apps.length;i<l;++i) {
 		var a = apps[i];
-		var li = $('<li></li>');
+		var li = $('<li id="aid-' + app.parse_application_identifier(a) + '"></li>');
 		var a1 = $('<a></a>')
 				.html('<img class="osm-icon-container ' + get_apps_img(a.framework.split('-')[0]) + 
 						'"/><h3>' + a.name + '</h3><p>' + a.app_url + '</p>');
-		var a2 = $('<a id="application-' + a.name + '" href="#application-popupMenu" data-rel="popup"></a>');
+		var a2 = $('<a href="#application-popupMenu" data-rel="popup"></a>');
 
 		a1.click(function() {
-			app.set_application(a.name);
-			//TODO: Transition to app's page	
+			app.set_application(extract_identifier($(this).parent().parent().parent()));
+			//TODO: Transition to app's page
 		});
 
 		a2.click(function() {
-			app.set_application($(this).attr('id').split('-')[1]);
+			app.set_application(extract_identifier($(this).parent()));
 		});
 
 		li.append(a1);
@@ -58,4 +58,8 @@ function get_apps_img(framework) {
 	}
 	
 	return (img[framework] || 'osm-openshift-logo')
+}
+
+function extract_identifier(node) {
+	return node.attr('id').split('-').slice(1).join('-');
 }

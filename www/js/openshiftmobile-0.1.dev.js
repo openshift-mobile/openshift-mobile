@@ -79,6 +79,14 @@ function OpenShiftMobile(auth,settings) {
 		config.application = application;
 	};
 
+	this.parse_application_identifier = function(application) {
+		switch(config.version) {
+			case '1.6':
+			default:
+				return application.id;
+		}
+	}
+
 	//Send a GET request over REST (auto caches)
 	this.rest_get = function(url,callback,errback,precall) {
 		$.ajax({
