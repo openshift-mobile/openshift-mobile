@@ -10,12 +10,9 @@
     background: #eeeeee !important;
 }
 
-body .ui-footer .ui-title {
- white-space: normal;
-}
 
-body .ui-li .ui-li-desc {
- white-space: normal;
+.ui-title {
+  margin: 0.6em 10% 0.8em !important;
 }
 
 .osm-openshift-10gen-logo{ background-position: 0 0; width: 48px; height: 48px; } 
