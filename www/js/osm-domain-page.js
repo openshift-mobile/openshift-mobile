@@ -2,7 +2,10 @@ $('#domain-page').bind('pagebeforeshow',function() {
 	var list = app.rest_get('domains',function(d) {
 		build_domain_list(d.data);		
 	});
-	build_domain_list(list);
+
+	if(typeof list === 'object' && 'data' in list.object) {
+		build_domain_list(list.data);
+	}
 });
 
 function extract_domain_name(href) {

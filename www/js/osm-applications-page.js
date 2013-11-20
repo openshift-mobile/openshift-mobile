@@ -2,7 +2,10 @@ $('#applications-page').bind('pagebeforeshow',function() {
 	var list = app.rest_get('domains/' + app.get_domain() + '/applications', function(d) {
 		build_application_list(d.data);
 	});
-	build_application_list(list.data);
+
+	if(typeof list === 'object' && 'data' in list.object) {
+		build_application_list(list.data||undefined);
+	}
 });
 
 function build_application_list(apps) {
