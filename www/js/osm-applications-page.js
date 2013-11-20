@@ -3,7 +3,7 @@ $('#applications-page').bind('pagebeforeshow',function() {
 		build_application_list(d.data);
 	});
 
-	if(typeof list === 'object' && 'data' in list.object) {
+	if(list !== null && typeof list.data !== 'undefined') {
 		build_application_list(list.data||undefined);
 	}
 });

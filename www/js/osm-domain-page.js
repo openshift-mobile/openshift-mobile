@@ -3,8 +3,8 @@ $('#domain-page').bind('pagebeforeshow',function() {
 		build_domain_list(d.data);		
 	});
 
-	if(typeof list === 'object' && 'data' in list.object) {
-		build_domain_list(list.data);
+	if(list !== null && typeof list.data !== 'undefined') {
+			build_domain_list(list.data);
 	}
 });
 
