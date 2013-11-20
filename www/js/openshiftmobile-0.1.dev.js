@@ -248,11 +248,7 @@ function OpenShiftMobile(auth,settings) {
 	};
 
 	this.logout = function() {
-		$.mobile.loading('show', {
-			text : 'Logging Out...',
-			textVisible : true,
-			theme : 'b',
-		});
+
 		creds.setPassword('');
 		creds.setAutolog('false');
 		
