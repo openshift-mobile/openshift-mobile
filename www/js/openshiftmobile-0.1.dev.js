@@ -312,6 +312,8 @@ function OpenShiftMobile(auth,settings) {
 			if($.mobile.activePage.attr('id') === 'login-page' ||
 			   $.mobile.activePage.attr('id') === 'domain-page' ) {
 	            e.preventDefault();
+			} else {
+				history.back();
 			}
         }, false );
 		deviceReadyDeferred.resolve();
