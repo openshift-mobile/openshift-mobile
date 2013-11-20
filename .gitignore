@@ -8,3 +8,6 @@ www/phonegap.js
 .settings
 *~
 .*.sw*
+
+# Binaries
+*.apk
