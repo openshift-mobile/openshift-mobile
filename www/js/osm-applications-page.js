@@ -6,7 +6,10 @@ function get_applications_list() {
 	var list = app.rest_get('domains/' + app.get_domain() + '/applications', function(d) {
 		build_application_list(d.data);
 	});
-	build_application_list(list.data);
+
+	if(list !== null && typeof list.data !== 'undefined') {
+		build_application_list(list.data||undefined);
+	}
 }
 
 function build_application_list(apps) {
