@@ -160,10 +160,11 @@
 			<div data-role="header">
 				<a href="#app-content-nav-panel" data-icon="bars" data-iconpos="notext"></a>
 				<h1 id="app-content-title">Application Content</h1>
+					<a href="#" data-icon="plus" data-iconpos="notext"></a>
 
 				<div data-role="navbar">
 					<ul>
-						<li><a data-theme="e" href="#" data-tab="app-content-info" class="ui-btn-active ui-state-persist">Info</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-info">Info</a></li>
 						<li><a data-theme="e" href="#" data-tab="app-content-cartridges">Cartridges</a></li>
 						<li><a data-theme="e" href="#" data-tab="app-content-aliases">Aliases</a></li>
 					</ul>
@@ -173,13 +174,25 @@
 			<div data-role="content" data-theme="a">
 				<div class="tabs-content">
 					<div id="app-content-info">
-						info
+						<table style="text-align:left">
+							<tbody>
+								<tr><th>ID:</th><td></td></tr>
+								<tr><th>URL:</th><td></td></tr>
+								<tr><th>Framework:</th><td></td></tr>
+								<tr><th>Gears:</th><td></td></tr>
+								<tr><th>Gear Profile:</th><td></td></tr>
+								<tr><th>Scalable:</th><td></td></tr>
+								<tr><th>Auto Deploy:</th><td></td></tr>
+								<tr><th>Deployment Type:</th><td></td></tr>
+								<tr><th>Deployment Branch:&nbsp;&nbsp;</th><td></td></tr>
+							</tbody>
+						</table>
 					</div>
 					<div id="app-content-cartridges">
-						cartridge
+						<ul id="app-cartridge-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 					</div>
 					<div id="app-content-aliases">
-						alias
+						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 					</div>
 				</div>
 			</div>
@@ -208,6 +221,7 @@
 		<script type="text/javascript" src="js/osm-domain-page.js"></script>
 		<script type="text/javascript" src="js/osm-applications-page.js"></script>
 		<script type="text/javascript" src="js/osm-new-application-page.js"></script>
+		<script type="text/javascript" src="js/osm-app-content-page.js"></script>
 		<script type="text/javascript">
 
 			//Create a new object and initialize all frameworks
@@ -240,11 +254,11 @@
 
 
 			$(document).delegate('[data-role="navbar"] a', 'click', function() {
-				$('[data-role="navbar"] a').removeClass('ui-btn-active');
+				$('[data-role="navbar"] a').removeClass('ui-btn-active ui-state-persist');
 				$('.tabs-content').children().hide();
 				$('#' + $(this).attr('data-tab')).show();
 				$('html,body').animate({scrollTop:0},500);
-				$(this).addClass('ui-btn-active');
+				$(this).addClass('ui-btn-active ui-state-persist');
 			});
 
 			//Ready Event Binding

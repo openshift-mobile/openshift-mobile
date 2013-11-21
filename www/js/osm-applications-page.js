@@ -23,6 +23,7 @@ function build_application_list(apps) {
 		var li = $('<li id="aid-' + app.parse_application_identifier(a) + '"></li>');
 		li.data("os-name", a.name);
 		li.data("os-url", a.app_url);
+		li.data('osm-app-data',a);
 		
 		var a1 = $('<a></a>')
 				.html('<img class="osm-icon-container ' + get_apps_img(a.framework.split('-')[0]) + 
@@ -31,8 +32,8 @@ function build_application_list(apps) {
 
 		a1.click(function() {
 			app.set_application_id(extract_identifier($(this).parent().parent().parent()));
-			//TODO: Transition to app's page
-			
+			$.mobile.changePage('#app-content-page',{transition:'slide'});
+			build_app_content($(this).closest('li').data('osm-app-data'));
 		});
 
 		a2.click(function() {
