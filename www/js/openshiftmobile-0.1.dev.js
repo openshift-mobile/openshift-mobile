@@ -86,6 +86,14 @@ function OpenShiftMobile(auth,settings) {
 	this.set_application_name = function(name) {
 		config.application_name = name;
 	};
+	
+	this.get_application_url = function() {
+		return config.application_url;
+	};
+
+	this.set_application_url = function(url) {
+		config.application_url = url;
+	};
 
 	this.parse_application_identifier = function(application) {
 		switch(config.version) {

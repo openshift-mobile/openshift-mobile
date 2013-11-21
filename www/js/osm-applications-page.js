@@ -21,6 +21,9 @@ function build_application_list(apps) {
 	for(var i=0,l=apps.length;i<l;++i) {
 		var a = apps[i];
 		var li = $('<li id="aid-' + app.parse_application_identifier(a) + '"></li>');
+		li.data("os-name", a.name);
+		li.data("os-url", a.app_url);
+		
 		var a1 = $('<a></a>')
 				.html('<img class="osm-icon-container ' + get_apps_img(a.framework.split('-')[0]) + 
 						'"/><h3 class="appid">' + a.name + '</h3><p>' + a.app_url + '</p>');
@@ -29,11 +32,13 @@ function build_application_list(apps) {
 		a1.click(function() {
 			app.set_application_id(extract_identifier($(this).parent().parent().parent()));
 			//TODO: Transition to app's page
+			
 		});
 
 		a2.click(function() {
 			app.set_application_name($(this).parent().find('.appid').html());
 			app.set_application_id(extract_identifier($(this).parent()));
+			app.set_application_url($(this).parent().data("os-url"));
 		});
 
 		li.append(a1);
@@ -84,6 +89,11 @@ $('#application-stop').click(function() {
 
 $('#application-restart').click(function() {
 	process_application_action('restart', 'Restarting', 'Restarted');
+});
+
+$('#application-view').click(function() {
+	$("#application-popupMenu" ).popup( "close" );	
+	window.open(app.get_application_url(), '_blank', 'location=no');
 });
 
 $('#application-delete').click(function() {
