@@ -1,0 +1,109 @@
+
+function build_app_content(data) {
+
+	//Title
+	$('#app-content-title').text(data.name);
+
+	//Info page
+	var param = $('#app-content-info').find('td');
+	$(param[0]).text(data.id);
+	$(param[1]).text(data.app_url);
+	$(param[2]).text(data.framework);
+	$(param[3]).text(data.gear_count);
+	$(param[4]).text(data.gear_profile);
+	$(param[5]).text(data.scalable);
+	$(param[6]).text(data.auto_deploy);
+	$(param[7]).text(data.deployment_type);
+	$(param[8]).text(data.deployment_branch);
+	
+	var c = app.rest_get('application/' + data.id + '/cartridges', function(d) {
+		build_cartridge_list(d);		
+	});
+	var a = app.rest_get('application/' + data.id + '/aliases', function(d){
+		build_alias_list(d);		
+	});
+
+
+	if(c !== null && typeof c !== 'undefined') {
+		build_cartridge_list(c);
+	}
+
+	if(a !== null && typeof a !== 'undefined') {
+		build_alias_list(a);
+	}
+}
+
+function build_cartridge_list(rdata) {
+	
+	var data = rdata.data;
+	var ul = $('#app-cartridge-list');
+
+	ul.empty();
+	for(var i=0,l=data.length;i<l;++i) {
+		var li = $('<li></li>');
+		li.data('osm-cartridge-data',data[i]);
+
+		var a1 = $('<a></a>')
+				 .html('<img class="osm-icon-container ' + get_apps_img(data[i].name.split('-')[0]) +
+					   '"/><h3>' + data[i].display_name + '</h3><p><b>Status:</b> <span id="' + $('#app-content-title').text() + '-' + data[i].name.replace('.','-') +'-status">Pending...</span><br><b>Gears:</b> ' + data[i].current_scale + ' (min: ' + data[i].scales_from + ', max: ' + data[i].scales_to + ')</p>');
+
+		var a2 = $('<a href="#cartridge-popupMenu" data-rel="popup"></a>');
+
+		a1.click(function() {
+
+		});
+
+		a2.click(function() {
+
+		});
+
+		li.append(a1);
+		li.append(a2);
+		ul.append(li);
+
+		update_status(data[i]);
+	}
+	ul.listview('refresh');
+}
+
+function update_status(cartridge) {
+	var cached = app.rest_get('application' + cartridge.links.GET.href.split('application')[1] + '?include=status_messages',function(d) {
+		update_status_helper(d);
+	});
+
+	update_status_helper(cached)
+}
+
+function update_status_helper(d) {
+
+	if(d === null || typeof d.data === 'undefined') {
+		return;
+	}
+
+	var message = d.data.status_messages[0].message;
+	var node = $('#' + $('#app-content-title').text() + '-' + d.data.name.replace('.','-') + '-status');
+
+	if(message.indexOf('stopped') >= 0 ) {
+		node.text('Down').css('color','#CC0000');
+	} else {
+		node.text('Up').css('color','#007700');
+	}
+
+}
+
+function build_alias_list(rdata) {
+
+	var data = rdata.data;
+	var ul = $('#app-alias-list');
+	ul.empty();
+	for(var i=0,l=data.length;i<l;++i) {
+		var li = $('<li></li>');
+		li.data('osm-cartridge-data',data[i]);
+
+		var a1 = $('<a></a>').html('<h3>' + data[i].id + '</h3>');
+
+		li.append(a1);
+		ul.append(li);
+	}
+	ul.listview('refresh');
+}
