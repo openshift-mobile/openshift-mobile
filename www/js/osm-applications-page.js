@@ -32,8 +32,11 @@ function build_application_list(apps) {
 
 		a1.click(function() {
 			app.set_application_id(extract_identifier($(this).parent().parent().parent()));
+			var current_app = $(this).closest('li').data('osm-app-data');
+			
+			app.set_application(current_app);
 			$.mobile.changePage('#app-content-page',{transition:'slide'});
-			build_app_content($(this).closest('li').data('osm-app-data'));
+			build_app_content(current_app);
 		});
 
 		a2.click(function() {
@@ -111,10 +114,9 @@ $('#application-delete').click(function() {
 	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application_name(), event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation",app.get_application_name() + " Deleted Successfully", function() {
-					get_applications_list();
-				});
+				app.show_alert_dialog("Application Operation",app.get_application_name() + " Deleted Successfully");
 				$('#application-list').children().removeClass('ui-disabled');
+				get_applications_list();
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');

@@ -16,17 +16,26 @@ function build_app_content(data) {
 	$(param[7]).text(data.deployment_type);
 	$(param[8]).text(data.deployment_branch);
 	
+
+	get_cartridge_list(data);
+	
+	get_alias_list(data);
+}
+
+function get_cartridge_list(data) {
 	var c = app.rest_get('application/' + data.id + '/cartridges', function(d) {
 		build_cartridge_list(d);		
 	});
-	var a = app.rest_get('application/' + data.id + '/aliases', function(d){
-		build_alias_list(d);		
-	});
-
-
+	
 	if(c !== null && typeof c !== 'undefined') {
 		build_cartridge_list(c);
 	}
+}
+
+function get_alias_list(data) {
+	var a = app.rest_get('application/' + data.id + '/aliases', function(d){
+		build_alias_list(d);		
+	});
 
 	if(a !== null && typeof a !== 'undefined') {
 		build_alias_list(a);
@@ -50,11 +59,11 @@ function build_cartridge_list(rdata) {
 		var a2 = $('<a href="#cartridge-popupMenu" data-rel="popup"></a>');
 
 		a1.click(function() {
-
+			
 		});
 
 		a2.click(function() {
-
+			app.set_cartridge($(this).parent().data("osm-cartridge-data"));
 		});
 
 		li.append(a1);
@@ -71,7 +80,7 @@ function update_status(cartridge) {
 		update_status_helper(d);
 	});
 
-	update_status_helper(cached)
+	update_status_helper(cached);
 }
 
 function update_status_helper(d) {
@@ -107,3 +116,97 @@ function build_alias_list(rdata) {
 	}
 	ul.listview('refresh');
 }
+
+
+//Cartridge Operation Functions
+$('#cartridge-start').click(function() {
+	process_cartridge_action('start', 'Starting', 'Started');
+});
+
+$('#cartridge-stop').click(function() {
+	process_cartridge_action('stop', 'Stopping', 'Stopped');
+});
+
+$('#cartridge-reload').click(function() {
+	process_cartridge_action('reload', 'Reloading', 'Reloaded');
+});
+
+$('#cartridge-restart').click(function() {
+	process_cartridge_action('restart', 'Restarting', 'Restarted');
+});
+
+$('#cartridge-delete').click(function() {
+	
+	$("#cartridge-popupMenu" ).popup( "close" );	
+	$('#app-cartridge-list').children().addClass('ui-disabled');
+	
+	$.mobile.loading('show', {
+		text : 'Deleting ' + app.get_cartridge().name,
+		textVisible : true,
+		theme : 'b',
+	});	
+	
+	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name, event,
+			function(data,text,xhr) {
+				$.mobile.loading('hide');
+				app.show_alert_dialog("Cartridge Operation",app.get_cartridge().name + " Deleted Successfully");
+				$('#app-cartridge-list').children().removeClass('ui-disabled');
+				get_cartridge_list(app.get_application());
+			},
+			function(jqxhr,errType,exception) {
+
+				$.mobile.loading('hide');
+				// Check to see if messages are returned from OpenShift
+				if(jqxhr.status = "422") {
+					var json = jQuery.parseJSON(jqxhr.responseText);
+					var messages = "";
+					
+					$.each(json.messages, function(index,value) {
+						if(messages != "") messages += "\n";
+						messages += value.text;
+					});
+					
+					app.show_alert_dialog("Cartridge Operation Failed",messages);
+				}
+				else {
+					app.show_alert_dialog("Cartridge Operation Failure",app.get_cartridge().name + " Failed to be Deleted");
+				}
+
+				$('#app-cartridge-list').children().removeClass('ui-disabled');				
+			}
+		);
+});
+
+
+
+function process_cartridge_action(action,before_message,after_message) {
+	
+	$("#cartridge-popupMenu" ).popup( "close" );	
+	$('#app-cartridge-list').children().addClass('ui-disabled');
+
+	$.mobile.loading('show', {
+		text : before_message + ' ' + app.get_cartridge().name,
+		textVisible : true,
+		theme : 'b',
+	});	
+
+	var event = 'event='+action;
+	
+	app.rest_post('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name + '/events', event,
+			function(data,text,xhr) {
+				$.mobile.loading('hide');
+				app.show_alert_dialog("Cartridge Operation",app.get_cartridge().name + " " + after_message + " Successfully");
+				$('#app-cartridge-list').children().removeClass('ui-disabled');
+				get_cartridge_list(app.get_application());
+			},
+			function(jqxhr,errType,exception) {
+				$.mobile.loading('hide');
+				app.show_alert_dialog("Cartridge Operation Failure",app.get_cartridge().name + " Failed to be "+ after_message);
+				$('#app-cartridge-list').children().removeClass('ui-disabled');
+				
+				// TODO: Should we do a refresh anyways just in case? 
+			}
+		);
+
+};
+

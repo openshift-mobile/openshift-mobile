@@ -94,6 +94,22 @@ function OpenShiftMobile(auth,settings) {
 	this.set_application_url = function(url) {
 		config.application_url = url;
 	};
+	
+	this.get_cartridge = function() {
+		return config.cartridge;
+	};
+
+	this.set_cartridge = function(cartridge) {
+		config.cartridge = cartridge;
+	};
+	
+	this.get_application = function() {
+		return config.application;
+	};
+
+	this.set_application = function(application) {
+		config.application = application;
+	};
 
 	this.parse_application_identifier = function(application) {
 		switch(config.version) {
