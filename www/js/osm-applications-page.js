@@ -31,18 +31,14 @@ function build_application_list(apps) {
 		var a2 = $('<a href="#application-popupMenu" data-rel="popup"></a>');
 
 		a1.click(function() {
-			app.set_application_id(extract_identifier($(this).parent().parent().parent()));
-			var current_app = $(this).closest('li').data('osm-app-data');
-			
+			var current_app = $(this).closest('li').data('osm-app-data');			
 			app.set_application(current_app);
 			$.mobile.changePage('#app-content-page',{transition:'slide'});
 			build_app_content(current_app);
 		});
 
 		a2.click(function() {
-			app.set_application_name($(this).parent().find('.appid').html());
-			app.set_application_id(extract_identifier($(this).parent()));
-			app.set_application_url($(this).parent().data("os-url"));
+			app.set_application($(this).parent().data("osm-app-data"));
 		});
 
 		li.append(a1);
@@ -97,7 +93,7 @@ $('#application-restart').click(function() {
 
 $('#application-view').click(function() {
 	$("#application-popupMenu" ).popup( "close" );	
-	window.open(app.get_application_url(), '_blank', 'location=no');
+	window.open(app.get_application().app_url, '_blank', 'location=no');
 });
 
 $('#application-delete').click(function() {
@@ -106,21 +102,21 @@ $('#application-delete').click(function() {
 	$('#application-list').children().addClass('ui-disabled');
 	
 	$.mobile.loading('show', {
-		text : 'Deleting ' + app.get_application_name(),
+		text : 'Deleting ' + app.get_application().name,
 		textVisible : true,
 		theme : 'b',
 	});	
 	
-	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application_name(), event,
+	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name, event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation",app.get_application_name() + " Deleted Successfully");
+				app.show_alert_dialog("Application Operation", app.get_application().name + " Deleted Successfully");
 				$('#application-list').children().removeClass('ui-disabled');
 				get_applications_list();
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation Failure",app.get_application_name() + " Failed to be Deleted");
+				app.show_alert_dialog("Application Operation Failure", app.get_application().name + " Failed to be Deleted");
 				$('#application-list').children().removeClass('ui-disabled');				
 			}
 		);
@@ -133,22 +129,22 @@ function process_application_action(action,before_message,after_message) {
 	$('#application-list').children().addClass('ui-disabled');
 
 	$.mobile.loading('show', {
-		text : before_message + ' ' + app.get_application_name(),
+		text : before_message + ' ' + app.get_application().name,
 		textVisible : true,
 		theme : 'b',
 	});	
 
 	var event = 'event='+action;
 	
-	app.rest_post('domains/' + app.get_domain() + '/applications/' + app.get_application_name() + '/events', event,
+	app.rest_post('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/events', event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation",app.get_application_name() + " " + after_message + " Successfully");
+				app.show_alert_dialog("Application Operation", app.get_application().name + " " + after_message + " Successfully");
 				$('#application-list').children().removeClass('ui-disabled');
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation Failure",app.get_application_name() + " Failed to be "+ after_message);
+				app.show_alert_dialog("Application Operation Failure", app.get_application().name + " Failed to be "+ after_message);
 				$('#application-list').children().removeClass('ui-disabled');				
 			}
 		);

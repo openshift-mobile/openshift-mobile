@@ -70,30 +70,6 @@ function OpenShiftMobile(auth,settings) {
 	this.set_domain = function(domain) {
 		config.domain = domain;
 	};
-
-	this.get_application_id = function() {
-		return config.application_id;
-	};
-
-	this.set_application_id = function(id) {
-		config.application_id = id;
-	};
-	
-	this.get_application_name = function() {
-		return config.application_name;
-	};
-
-	this.set_application_name = function(name) {
-		config.application_name = name;
-	};
-	
-	this.get_application_url = function() {
-		return config.application_url;
-	};
-
-	this.set_application_url = function(url) {
-		config.application_url = url;
-	};
 	
 	this.get_cartridge = function() {
 		return config.cartridge;
