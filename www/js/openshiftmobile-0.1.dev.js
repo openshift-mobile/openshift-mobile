@@ -95,15 +95,20 @@ function OpenShiftMobile(auth,settings) {
 		}
 	};
 	
-	this.show_alert_dialog = function(header,content,callback) {
-		$('#popup-alert-dialog-header').html(header);
-		$('#popup-alert-dialog-content').html(content);
-		$('#popup-alert-dialog').popup();
-		$('#popup-alert-dialog').popup( "open" );
-		$( '#popup-alert-dialog' ).unbind();
+	this.show_alert_dialog = function(popup_object,header,content,callback) {
+		popup_object.find("[id$='popup-alert-dialog-header']").html(header);
+		popup_object.find("[id$='popup-alert-dialog-content']").html(content);
+//		$('#popup-alert-dialog-header').html(header);
+//		$('#popup-alert-dialog-content').html(content);
+		popup_object.popup();
+		popup_object.popup( "open" );
+		popup_object.unbind();
+//		$('#popup-alert-dialog').popup();
+//		$('#popup-alert-dialog').popup( "open" );
+//		$( '#popup-alert-dialog' ).unbind();
 		
 		if(callback) {
-			$( '#popup-alert-dialog' ).bind({
+			popup_object.bind({
 				   popupafterclose: function(event, ui) {
 					   callback(event,ui);
 				   }

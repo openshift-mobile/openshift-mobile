@@ -110,13 +110,13 @@ $('#application-delete').click(function() {
 	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name, event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation", app.get_application().name + " Deleted Successfully");
+				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " Deleted Successfully");
 				$('#application-list').children().removeClass('ui-disabled');
 				get_applications_list();
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation Failure", app.get_application().name + " Failed to be Deleted");
+				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app.get_application().name + " Failed to be Deleted");
 				$('#application-list').children().removeClass('ui-disabled');				
 			}
 		);
@@ -139,12 +139,12 @@ function process_application_action(action,before_message,after_message) {
 	app.rest_post('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/events', event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation", app.get_application().name + " " + after_message + " Successfully");
+				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " " + after_message + " Successfully");
 				$('#application-list').children().removeClass('ui-disabled');
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Application Operation Failure", app.get_application().name + " Failed to be "+ after_message);
+				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app.get_application().name + " Failed to be "+ after_message);
 				$('#application-list').children().removeClass('ui-disabled');				
 			}
 		);

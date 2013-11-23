@@ -67,7 +67,7 @@ $('#create-application-submit').click(function() {
 		function(d) {
 			$.mobile.loading('hide');
 			$('#create-application-container').children().removeClass('ui-disabled');
-			app.show_alert_dialog("Application Creation","Application Created Successfully", function(event,ui){
+			app.show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation","Application Created Successfully", function(event,ui){
 				history.back();
 			});
 		},
@@ -84,10 +84,10 @@ $('#create-application-submit').click(function() {
 					messages += value.text;
 				});
 				
-				app.show_alert_dialog("Application Creation Failed",messages);
+				app.show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed",messages);
 			}
 			else {
-				app.show_alert_dialog("Application Creation Failed","The Application Failed to be Created");
+				app.show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed","The Application Failed to be Created");
 			}
 			
 			$.mobile.loading('hide');

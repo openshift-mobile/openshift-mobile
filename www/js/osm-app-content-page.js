@@ -149,7 +149,7 @@ $('#cartridge-delete').click(function() {
 	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name, event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Cartridge Operation",app.get_cartridge().name + " Deleted Successfully");
+				app.show_alert_dialog($("#new-application-popup-alert-dialog"),"Cartridge Operation",app.get_cartridge().name + " Deleted Successfully");
 				$('#app-cartridge-list').children().removeClass('ui-disabled');
 				get_cartridge_list(app.get_application());
 			},
@@ -166,10 +166,10 @@ $('#cartridge-delete').click(function() {
 						messages += value.text;
 					});
 					
-					app.show_alert_dialog("Cartridge Operation Failed",messages);
+					app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failed",messages);
 				}
 				else {
-					app.show_alert_dialog("Cartridge Operation Failure",app.get_cartridge().name + " Failed to be Deleted");
+					app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failure",app.get_cartridge().name + " Failed to be Deleted");
 				}
 
 				$('#app-cartridge-list').children().removeClass('ui-disabled');				
@@ -195,13 +195,13 @@ function process_cartridge_action(action,before_message,after_message) {
 	app.rest_post('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name + '/events', event,
 			function(data,text,xhr) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Cartridge Operation",app.get_cartridge().name + " " + after_message + " Successfully");
+				app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation",app.get_cartridge().name + " " + after_message + " Successfully");
 				$('#app-cartridge-list').children().removeClass('ui-disabled');
 				get_cartridge_list(app.get_application());
 			},
 			function(jqxhr,errType,exception) {
 				$.mobile.loading('hide');
-				app.show_alert_dialog("Cartridge Operation Failure",app.get_cartridge().name + " Failed to be "+ after_message);
+				app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failure",app.get_cartridge().name + " Failed to be "+ after_message);
 				$('#app-cartridge-list').children().removeClass('ui-disabled');
 				
 				// TODO: Should we do a refresh anyways just in case? 
