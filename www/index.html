@@ -114,15 +114,31 @@
 				<div data-role="popup" id="applications-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
 					<div data-role="header" data-theme="a" class="ui-corner-top">
 						<div>
-							<h3 id="applications-popup-alert-dialog-header" style="text-align:center">testing</h3>
+							<h3 id="applications-popup-alert-dialog-header" style="text-align:center"></h3>
 						</div>
 					</div>
 					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
-						<div id="applications-popup-alert-dialog-content"></div>
+						<h3 id="applications-popup-alert-dialog-content" class="ui-title"></h3>
 						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
 					</div>
 				</div>
 				<!-- End Popup Dialog -->			
+
+				<!-- Begin Confirmation Dialog -->
+				<div data-role="popup" id="applications-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="applications-popup-confirm-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="applications-popup-confirm-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" id="applications-popup-confirm-dialog-no-button">No</a>
+						<a href="#" data-role="button" data-inline="true" id="applications-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+					</div>
+				</div>
+				<!-- End Confirmation Dialog -->
+				
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
 						
@@ -140,15 +156,15 @@
 				<div data-role="popup" id="new-application-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
 					<div data-role="header" data-theme="a" class="ui-corner-top">
 						<div>
-							<h3 id="new-application-popup-alert-dialog-header" style="text-align:center">testing</h3>
+							<h3 id="new-application-popup-alert-dialog-header" style="text-align:center"></h3>
 						</div>
 					</div>
 					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
-						<div id="new-application-popup-alert-dialog-content"></div>
+						<h3 id="new-application-popup-alert-dialog-content" class="ui-title"></h3>
 						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
 					</div>
 				</div>
-			<!-- End Popup Dialog -->
+				<!-- End Popup Dialog -->			
 				<div id="create-application-container" data-theme="a">
 					<form id="new-application-form" data-ajax="false">
 						<div data-role="fieldcontain">
@@ -198,19 +214,35 @@
 			</div>
 
 			<div data-role="content" data-theme="a">
-					<!-- Begin Popup Dialog -->
-					<div data-role="popup" id="application-content-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
-						<div data-role="header" data-theme="a" class="ui-corner-top">
-							<div>
-								<h3 id="application-content-popup-alert-dialog-header" style="text-align:center">testing</h3>
-							</div>
-						</div>
-						<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
-							<div id="application-content-popup-alert-dialog-content"></div>
-							<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="application-content-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="application-content-popup-alert-dialog-header" style="text-align:center"></h3>
 						</div>
 					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="application-content-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
 				<!-- End Popup Dialog -->
+				
+				<!-- Begin Confirmation Dialog -->
+				<div data-role="popup" id="application-content-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="application-content-popup-confirm-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="application-content-popup-confirm-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" id="application-content-popup-confirm-dialog-no-button">No</a>
+						<a href="#" data-role="button" data-inline="true" id="application-content-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+					</div>
+				</div>
+				<!-- End Confirmation Dialog -->
+			
 			
 				<div class="tabs-content">
 					<div id="app-content-info">
@@ -272,7 +304,7 @@
 			$('.createapp').click(function() {
 				$(document).trigger('osm-new-application-page');
 			});
-
+			
 			$('.toDomains').click(function() {
 				$.mobile.changePage('#domain-page', {
 					transition: 'slide',

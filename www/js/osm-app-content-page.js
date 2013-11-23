@@ -137,44 +137,53 @@ $('#cartridge-restart').click(function() {
 
 $('#cartridge-delete').click(function() {
 	
-	$("#cartridge-popupMenu" ).popup( "close" );	
-	$('#app-cartridge-list').children().addClass('ui-disabled');
+	$("#cartridge-popupMenu" ).popup( "close" );
 	
-	$.mobile.loading('show', {
-		text : 'Deleting ' + app.get_cartridge().name,
-		textVisible : true,
-		theme : 'b',
-	});	
-	
-	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name, event,
-			function(data,text,xhr) {
-				$.mobile.loading('hide');
-				app.show_alert_dialog($("#new-application-popup-alert-dialog"),"Cartridge Operation",app.get_cartridge().name + " Deleted Successfully");
-				$('#app-cartridge-list').children().removeClass('ui-disabled');
-				get_cartridge_list(app.get_application());
-			},
-			function(jqxhr,errType,exception) {
+	// Timeout needed to handle chaining of popups
+	setTimeout( function(){
 
-				$.mobile.loading('hide');
-				// Check to see if messages are returned from OpenShift
-				if(jqxhr.status = "422") {
-					var json = jQuery.parseJSON(jqxhr.responseText);
-					var messages = "";
-					
-					$.each(json.messages, function(index,value) {
-						if(messages != "") messages += "\n";
-						messages += value.text;
-					});
-					
-					app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failed",messages);
-				}
-				else {
-					app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failure",app.get_cartridge().name + " Failed to be Deleted");
-				}
+			app.show_confirm_dialog($( '#application-content-popup-confirm-dialog' ), "Cartridge Action", "Are you sure you want to delete " + app.get_cartridge().name + "?", function(){
+				
+				$('#app-cartridge-list').children().addClass('ui-disabled');
+				
+				$.mobile.loading('show', {
+					text : 'Deleting ' + app.get_cartridge().name,
+					textVisible : true,
+					theme : 'b',
+				});	
+				
+				app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/cartridges/' + app.get_cartridge().name, event,
+						function(data,text,xhr) {
+							$.mobile.loading('hide');
+							app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation",app.get_cartridge().name + " Deleted Successfully");
+							$('#app-cartridge-list').children().removeClass('ui-disabled');
+							get_cartridge_list(app.get_application());
+						},
+						function(jqxhr,errType,exception) {
 
-				$('#app-cartridge-list').children().removeClass('ui-disabled');				
-			}
-		);
+							$.mobile.loading('hide');
+							// Check to see if messages are returned from OpenShift
+							if(jqxhr.status = "422") {
+								var json = jQuery.parseJSON(jqxhr.responseText);
+								var messages = "";
+								
+								$.each(json.messages, function(index,value) {
+									if(messages != "") messages += "\n";
+									messages += value.text;
+								});
+								
+								app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failed",messages);
+							}
+							else {
+								app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Cartridge Operation Failure",app.get_cartridge().name + " Failed to be Deleted");
+							}
+
+							$('#app-cartridge-list').children().removeClass('ui-disabled');				
+						}
+					);
+				
+			});
+		}, 100 );
 });
 
 

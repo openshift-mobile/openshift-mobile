@@ -98,14 +98,10 @@ function OpenShiftMobile(auth,settings) {
 	this.show_alert_dialog = function(popup_object,header,content,callback) {
 		popup_object.find("[id$='popup-alert-dialog-header']").html(header);
 		popup_object.find("[id$='popup-alert-dialog-content']").html(content);
-//		$('#popup-alert-dialog-header').html(header);
-//		$('#popup-alert-dialog-content').html(content);
+
 		popup_object.popup();
 		popup_object.popup( "open" );
 		popup_object.unbind();
-//		$('#popup-alert-dialog').popup();
-//		$('#popup-alert-dialog').popup( "open" );
-//		$( '#popup-alert-dialog' ).unbind();
 		
 		if(callback) {
 			popup_object.bind({
@@ -116,6 +112,55 @@ function OpenShiftMobile(auth,settings) {
 		};
 	};
 
+	this.show_confirm_dialog = function(popup_object,header,content,yes_callback, no_callback) {
+		popup_object.find("[id$='popup-confirm-dialog-header']").html(header);
+		popup_object.find("[id$='popup-confirm-dialog-content']").html(content);
+
+		popup_object.popup();
+		popup_object.popup( "open" );
+		popup_object.unbind();
+		
+		// Yes Callback
+		var yes_button = popup_object.find("[id$='popup-confirm-dialog-yes-button']");
+		var yes_button_callback;
+
+		if(yes_callback) {
+			yes_button_callback = function() {
+				popup_object.popup("close");
+				yes_callback();
+			};
+		}
+		else {
+			yes_button_callback =  function() {
+				popup_object.popup("close");
+			};
+		}
+		
+		yes_button.unbind();
+		yes_button.bind("click",yes_button_callback);
+		
+		// Optional No Callback
+		var no_button = popup_object.find("[id$='popup-confirm-dialog-no-button']");
+		var no_button_callback;
+	
+		if(no_callback) {
+			no_button_callback = function() {
+				popup_object.popup("close");
+				no_callback();
+			};
+		}
+		else {
+			no_button_callback =  function() {
+				popup_object.popup("close");
+			};
+		}
+
+		// Bind No Button
+		no_button.unbind();
+		no_button.bind("click", no_button_callback);
+		
+	};
+	
 	//Send a GET request over REST (auto caches)
 	this.rest_get = function(url,callback,errback,precall) {
 		$.ajax({

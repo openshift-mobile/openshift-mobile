@@ -98,28 +98,37 @@ $('#application-view').click(function() {
 
 $('#application-delete').click(function() {
 	
-	$("#application-popupMenu" ).popup( "close" );	
-	$('#application-list').children().addClass('ui-disabled');
+	$("#application-popupMenu" ).popup( "close" );
 	
-	$.mobile.loading('show', {
-		text : 'Deleting ' + app.get_application().name,
-		textVisible : true,
-		theme : 'b',
-	});	
+	setTimeout( function(){
+		app.show_confirm_dialog($( '#applications-popup-confirm-dialog' ), "Application Action", "Are you sure you want to delete " + app.get_application().name + "?", function(){
+		
+			$("#application-popupMenu" ).popup( "close" );	
+			$('#application-list').children().addClass('ui-disabled');
+			
+			$.mobile.loading('show', {
+				text : 'Deleting ' + app.get_application().name,
+				textVisible : true,
+				theme : 'b',
+			});	
+			
+			app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name, event,
+					function(data,text,xhr) {
+						$.mobile.loading('hide');
+						app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " Deleted Successfully");
+						$('#application-list').children().removeClass('ui-disabled');
+						get_applications_list();
+					},
+					function(jqxhr,errType,exception) {
+						$.mobile.loading('hide');
+						app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app.get_application().name + " Failed to be Deleted");
+						$('#application-list').children().removeClass('ui-disabled');				
+					}
+				);
+
+		});
+	}, 100);
 	
-	app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name, event,
-			function(data,text,xhr) {
-				$.mobile.loading('hide');
-				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " Deleted Successfully");
-				$('#application-list').children().removeClass('ui-disabled');
-				get_applications_list();
-			},
-			function(jqxhr,errType,exception) {
-				$.mobile.loading('hide');
-				app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app.get_application().name + " Failed to be Deleted");
-				$('#application-list').children().removeClass('ui-disabled');				
-			}
-		);
 });
 
 
