@@ -274,12 +274,47 @@
 						</div>
 					</div>
 					<div id="app-content-aliases">
-						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- END Application Content Page -->		
+		<!-- END Application Content Page -->	
+		
+		<!-- Create Aliases Page -->
+		<div id="new-application-page" data-role="page">
+			<div data-role="header">
+				<h1>Create New Alias</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-alias-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-alias-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-alias-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-alias-container" data-theme="a">
+					<form id="new-alias-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="name" id="new-alias-name" value="" placeholder="Alias Name"  data-theme="a"  />
+						</div>				
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-alias-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Aliases Page -->			
 
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>

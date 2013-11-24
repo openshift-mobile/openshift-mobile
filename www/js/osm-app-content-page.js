@@ -107,11 +107,60 @@ function build_alias_list(rdata) {
 	ul.empty();
 	for(var i=0,l=data.length;i<l;++i) {
 		var li = $('<li></li>');
-		li.data('osm-cartridge-data',data[i]);
+		li.data('osm-alias-data',data[i]);
 
 		var a1 = $('<a></a>').html('<h3>' + data[i].id + '</h3>');
+		var a2 = $('<a href="#" id="#alias-delete"></a>');
 
+		a2.click(function() {
+		
+			app.set_alias($(this).parent().data("osm-alias-data"));
+			
+			app.show_confirm_dialog($( '#application-content-popup-confirm-dialog' ), "Alias Action", "Are you sure you want to delete " + app.get_alias().id + "?", function(){
+				
+				$('#app-content-aliases').children().addClass('ui-disabled');
+				
+				$.mobile.loading('show', {
+					text : 'Deleting ' + app.get_alias().id,
+					textVisible : true,
+					theme : 'b',
+				});
+				
+				app.rest_delete('domains/' + app.get_domain() + '/applications/' + app.get_application().name + '/aliases/' + app.get_alias().id, event,
+						function(data,text,xhr) {
+							$.mobile.loading('hide');
+							app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation",app.get_alias().id + " Deleted Successfully");
+							$('#app-content-aliases').children().removeClass('ui-disabled');
+							get_alias_list(app.get_application());
+						},
+						function(jqxhr,errType,exception) {
+
+							$.mobile.loading('hide');
+							// Check to see if messages are returned from OpenShift
+							if(jqxhr.status = "422") {
+								var json = jQuery.parseJSON(jqxhr.responseText);
+								var messages = "";
+								
+								$.each(json.messages, function(index,value) {
+									if(messages != "") messages += "\n";
+									messages += value.text;
+								});
+								
+								app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation Failed",messages);
+							}
+							else {
+								app.show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation Failure",app.get_alias().id + " Failed to be Deleted");
+							}
+
+							$('#app-content-aliases').children().removeClass('ui-disabled');				
+						}
+					);
+			
+			});
+		});
+		
 		li.append(a1);
+		li.append(a2);
 		ul.append(li);
 	}
 	ul.listview('refresh');
