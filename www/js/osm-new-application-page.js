@@ -74,7 +74,7 @@ $('#create-application-submit').click(function() {
 		function(jqxhr,errType,exception) {
 			
 			// Check to see if messages are returned from OpenShift
-			if(jqxhr.status = "422") {
+			if(jqxhr.status == "422") {
 				
 				var json = jQuery.parseJSON(jqxhr.responseText);
 				var messages = "";

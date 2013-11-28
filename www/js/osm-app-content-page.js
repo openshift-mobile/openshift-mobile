@@ -137,7 +137,7 @@ function build_alias_list(rdata) {
 
 							$.mobile.loading('hide');
 							// Check to see if messages are returned from OpenShift
-							if(jqxhr.status = "422") {
+							if(jqxhr.status == "422") {
 								var json = jQuery.parseJSON(jqxhr.responseText);
 								var messages = "";
 								
@@ -165,6 +165,27 @@ function build_alias_list(rdata) {
 	}
 	ul.listview('refresh');
 }
+
+$(document).bind('osm-new-app-content-aliases',function() {
+	$.mobile.changePage('#new-alias-page',{transition:'pop'});
+});
+
+$(document).bind('osm-new-app-content-cartridges',function() {
+	$.mobile.changePage('#new-embedded-cartridge-page',{transition:'pop'});
+});
+
+
+$('#app-content-add').click(function() {
+	$(document).trigger("osm-new-" + $(this).data('app-content-trigger'));
+});
+
+$(document).bind('osm-rebuild-application-aliases',function() {
+	get_alias_list(app.get_application());
+});
+
+$(document).bind('osm-rebuild-application-cartridges',function() {
+	get_cartridge_list(app.get_application());
+});
 
 
 //Cartridge Operation Functions
@@ -212,7 +233,7 @@ $('#cartridge-delete').click(function() {
 
 							$.mobile.loading('hide');
 							// Check to see if messages are returned from OpenShift
-							if(jqxhr.status = "422") {
+							if(jqxhr.status == "422") {
 								var json = jQuery.parseJSON(jqxhr.responseText);
 								var messages = "";
 								

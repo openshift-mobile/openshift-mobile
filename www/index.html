@@ -202,13 +202,12 @@
 			<div data-role="header">
 				<a href="#app-content-nav-panel" data-icon="bars" data-iconpos="notext"></a>
 				<h1 id="app-content-title">Application Content</h1>
-					<a href="#" data-icon="plus" data-iconpos="notext"></a>
-
+				<a href="#" id="app-content-add" data-icon="plus" data-iconpos="notext"></a>
 				<div data-role="navbar">
 					<ul>
 						<li><a data-theme="e" href="#" data-tab="app-content-info">Info</a></li>
-						<li><a data-theme="e" href="#" data-tab="app-content-cartridges">Cartridges</a></li>
-						<li><a data-theme="e" href="#" data-tab="app-content-aliases">Aliases</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-cartridges" data-display-add="true">Cartridges</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-aliases" data-display-add="true">Aliases</a></li>
 					</ul>
 				</div>
 			</div>
@@ -304,7 +303,7 @@
 				<div id="create-alias-container" data-theme="a">
 					<form id="new-alias-form" data-ajax="false">
 						<div data-role="fieldcontain">
-							 <input type="text" name="name" id="new-alias-name" value="" placeholder="Alias Name"  data-theme="a"  />
+							 <input type="text" name="id" id="new-alias-id" value="" placeholder="Alias Name"  data-theme="a"  />
 						</div>				
 						<div data-role="fieldcontain">
 							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
@@ -316,6 +315,44 @@
 		</div>		
 		<!-- END Create Aliases Page -->			
 
+		<!-- Create Embedded Cartridge Page -->
+		<div id="new-embedded-cartridge-page" data-role="page">
+			<div data-role="header">
+				<h1>Create Embedded Cartridge</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-embedded-cartridge-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-embedded-cartridge-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-application-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-embedded-cartridge-container" data-theme="a">
+					<form id="new-embedded-cartridge-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							<select name="cartridge" id="new-embedded-cartridge-cartridge" data-native-menu="false" data-theme="a">
+							<option value="new-embedded-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-embedded-cartridge-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Embedded Cartridge Page -->
+
+
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/openshiftmobile-0.1.dev.js"></script>
@@ -324,6 +361,8 @@
 		<script type="text/javascript" src="js/osm-applications-page.js"></script>
 		<script type="text/javascript" src="js/osm-new-application-page.js"></script>
 		<script type="text/javascript" src="js/osm-app-content-page.js"></script>
+		<script type="text/javascript" src="js/osm-new-alias-page.js"></script>
+		<script type="text/javascript" src="js/osm-new-embedded-cartridge-page.js"></script>
 		<script type="text/javascript">
 
 			//Create a new object and initialize all frameworks
@@ -361,6 +400,13 @@
 				$('#' + $(this).attr('data-tab')).show();
 				$('html,body').animate({scrollTop:0},500);
 				$(this).addClass('ui-btn-active ui-state-persist');
+				var app_content_add_button = $("#app-content-add");
+				app_content_add_button.hide();				
+				var new_content_add_data = $(this).attr('data-display-add');
+				if(new_content_add_data !== null && typeof new_content_add_data !== 'undefined' && new_content_add_data === 'true') {
+					app_content_add_button.show();
+					app_content_add_button.data("app-content-trigger",$(this).attr("data-tab"));
+				}				
 			});
 
 			//Ready Event Binding
