@@ -11,3 +11,6 @@ www/phonegap.js
 
 # Binaries
 *.apk
+
+# Platform Specific
+.DS_Store
