@@ -253,7 +253,7 @@ $('#cartridge-delete').click(function() {
 					);
 				
 			});
-		}, 100 );
+		}, 200 );
 });
 
 
