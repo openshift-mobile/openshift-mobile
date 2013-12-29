@@ -19,7 +19,7 @@ $("input[name='login-openshift-type-radio-group']").change(function(e){
 
 
 $(document).bind('osm-login',function() {
-	$.mobile.changePage('#domain-page',{transition:'slide'});
+	$.mobile.changePage('#domain-page',{transition:'none'});
 });
 
 
@@ -27,7 +27,7 @@ $(document).bind('osm-login-failed',function() {
 	$('#login-instruct').text('Login Failed').css('color','#CC0000');
 	$('#login-container').children().removeClass('ui-disabled');
 	if($.mobile.activePage.attr('id') !== 'login-page') {
-		$.mobile.changePage('#login-page',{transition:'slide'});
+		$.mobile.changePage('#login-page',{transition:'none'});
 	}
 });
 
@@ -41,6 +41,6 @@ $(document).bind('osm-logout',function() {
 	$('#login-password').attr('checked','false');
 	$('#login-instruct').text('Login to OpenShift').css('color','');
 	$('#login-container').children().removeClass('ui-disabled');
-	$.mobile.changePage('#login-page',{transition:'slide'});
+	$.mobile.changePage('#login-page',{transition:'none'});
 	$.mobile.loading('hide');
 });

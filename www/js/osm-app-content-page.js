@@ -20,6 +20,9 @@ function build_app_content(data) {
 	get_cartridge_list(data);
 	
 	get_alias_list(data);
+	
+	// Position App on Application page
+	$('[data-role="navbar"] a:first').click();
 }
 
 function get_cartridge_list(data) {
@@ -48,6 +51,14 @@ function build_cartridge_list(rdata) {
 	var ul = $('#app-cartridge-list');
 
 	ul.empty();
+	
+	if(data.length == 0) {
+		$("#app-cartridge-emtpy-list").css("display","block");
+	}
+	else {
+		$("#app-cartridge-emtpy-list").css("display","none");
+	}
+	
 	for(var i=0,l=data.length;i<l;++i) {
 		var li = $('<li></li>');
 		li.data('osm-cartridge-data',data[i]);
@@ -105,6 +116,14 @@ function build_alias_list(rdata) {
 	var data = rdata.data;
 	var ul = $('#app-alias-list');
 	ul.empty();
+	
+	if(data.length == 0) {
+		$("#app-alias-emtpy-list").css("display","block");
+	}
+	else {
+		$("#app-alias-emtpy-list").css("display","none");
+	}
+	
 	for(var i=0,l=data.length;i<l;++i) {
 		var li = $('<li></li>');
 		li.data('osm-alias-data',data[i]);
@@ -167,11 +186,11 @@ function build_alias_list(rdata) {
 }
 
 $(document).bind('osm-new-app-content-aliases',function() {
-	$.mobile.changePage('#new-alias-page',{transition:'pop'});
+	$.mobile.changePage('#new-alias-page',{transition:'none'});
 });
 
 $(document).bind('osm-new-app-content-cartridges',function() {
-	$.mobile.changePage('#new-embedded-cartridge-page',{transition:'pop'});
+	$.mobile.changePage('#new-embedded-cartridge-page',{transition:'none'});
 });
 
 

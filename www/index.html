@@ -73,6 +73,7 @@
 			</div>
 
 			<div data-role="content">
+				<div id="domain-emtpy-list" style="display:none;text-align:center">No Domains Exist</div>
 				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
 			</div>
 		</div>
@@ -138,7 +139,7 @@
 					</div>
 				</div>
 				<!-- End Confirmation Dialog -->
-				
+				<div id="application-emtpy-list" style="display:none;text-align:center">No Applications Exist</div>
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
 						
@@ -260,6 +261,7 @@
 						</table>
 					</div>
 					<div id="app-content-cartridges">
+						<div id="app-cartridge-emtpy-list" style="display:none;text-align:center">No Cartridges Exist</div>
 						<ul id="app-cartridge-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 						<div data-role="popup" data-theme="b" id="cartridge-popupMenu">
 							<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
@@ -273,6 +275,7 @@
 						</div>
 					</div>
 					<div id="app-content-aliases">
+						<div id="app-alias-emtpy-list" style="display:none;text-align:center">No Aliases Exist</div>
 						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
 					</div>
 				</div>
@@ -381,14 +384,14 @@
 			
 			$('.toDomains').click(function() {
 				$.mobile.changePage('#domain-page', {
-					transition: 'slide',
+					transition: 'none',
 					reverse: true
 				});
 			});
 
 			$('.toApplications').click(function() {
 				$.mobile.changePage('#applications-page', {
-					transition: 'slide',
+					transition: 'none',
 					reverse: true
 				});
 			});
@@ -416,7 +419,7 @@
 					app.login();
 				} else {
 					$('#login-username').val(app.getUsername()||'');
-					$.mobile.changePage('#login-page',{transition:'slide'});
+					$.mobile.changePage('#login-page',{transition:'none'});
 				}
 				$('[data-role="navbar"] a:first').click();
 			});

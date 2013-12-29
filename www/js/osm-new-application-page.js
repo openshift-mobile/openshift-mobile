@@ -13,7 +13,7 @@ $('#new-application-page').bind('pagebeforeshow',function(event,data) {
 });
 
 $(document).bind('osm-new-application-page',function() {
-	$.mobile.changePage('#new-application-page',{transition:'pop'});
+	$.mobile.changePage('#new-application-page',{transition:'none'});
 });
 
 function build_new_application_cartridge_list(cartridges) {

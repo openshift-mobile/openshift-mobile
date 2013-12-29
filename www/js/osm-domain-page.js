@@ -21,6 +21,14 @@ function build_domain_list(domains) {
 
 	var ul = $('#domain-list');
 	ul.empty();
+	
+	if(domains.length == 0) {
+		$("#domain-emtpy-list").css("display","block");
+	}
+	else {
+		$("#domain-emtpy-list").css("display","none");
+	}
+	
 	for(var i=0,l=domains.length;i<l;++i) {
 		var domain = domains[i];
 		var name = extract_domain_name(domain.links.GET.href);
@@ -41,7 +49,7 @@ function build_domain_list(domains) {
 			else {
 				app.set_domain(domain.id);
 			}
-			$.mobile.changePage('#applications-page',{transition:'slide'});
+			$.mobile.changePage('#applications-page',{transition:'none'});
 		});
 
 		a.append(div);

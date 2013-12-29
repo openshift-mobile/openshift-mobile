@@ -13,7 +13,7 @@ $('#new-embedded-cartridge-page').bind('pagebeforeshow',function(event,data) {
 });
 
 $(document).bind('osm-new-embedded-cartridge-page',function() {
-	$.mobile.changePage('#new-embedded-cartridge-page',{transition:'pop'});
+	$.mobile.changePage('#new-embedded-cartridge-page',{transition:'none'});
 });
 
 function build_embedded_cartridge_list(cartridges) {

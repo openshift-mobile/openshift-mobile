@@ -18,6 +18,14 @@ function build_application_list(apps) {
 	}
 	var ul = $('#application-list');
 	ul.empty();
+	
+	if(apps.length == 0) {
+		$("#application-emtpy-list").css("display","block");
+	}
+	else {
+		$("#application-emtpy-list").css("display","none");
+	}
+	
 	for(var i=0,l=apps.length;i<l;++i) {
 		var a = apps[i];
 		var li = $('<li id="aid-' + app.parse_application_identifier(a) + '"></li>');
@@ -33,7 +41,7 @@ function build_application_list(apps) {
 		a1.click(function() {
 			var current_app = $(this).closest('li').data('osm-app-data');			
 			app.set_application(current_app);
-			$.mobile.changePage('#app-content-page',{transition:'slide'});
+			$.mobile.changePage('#app-content-page',{transition:'none'});
 			build_app_content(current_app);
 		});
 
