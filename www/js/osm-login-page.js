@@ -36,7 +36,8 @@ $(document).bind('osm-logout',function() {
 	$('#login-password').val('');
 	$("#login-enterprise-url-div").hide();
 	$("#login-enterprise-url").val('');
-	$('#login-auto').attr("checked",false).checkboxradio("refresh");
+	$('#login-auto').checkboxradio();
+	$('#login-auto').prop("checked",false).checkboxradio("refresh");
 	$("input[name='login-openshift-type-radio-group'][value=online]").prop('checked', true);	
 	$('#login-password').attr('checked','false');
 	$('#login-instruct').text('Login to OpenShift').css('color','');
