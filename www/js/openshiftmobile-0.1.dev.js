@@ -263,6 +263,10 @@ function OpenShiftMobile(auth,settings) {
 			auto = creds.getAutolog();
 			url = creds.getUrl();
 		}
+		
+		
+		// Clear Cache
+		localStorage.clear();
 
 		//set the auth headers
 		config_auth_header(username,password);

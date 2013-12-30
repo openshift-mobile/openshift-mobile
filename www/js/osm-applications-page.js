@@ -1,4 +1,7 @@
 $('#applications-page').bind('pagebeforeshow',function() {
+	
+	$('#application-list').empty();
+	
 	get_applications_list();
 });
 

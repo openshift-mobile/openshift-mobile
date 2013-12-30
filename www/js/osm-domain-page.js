@@ -1,4 +1,7 @@
 $('#domain-page').bind('pagebeforeshow',function() {
+	
+	$('#domain-list').empty();
+	
 	var list = app.rest_get('domains',function(d) {
 		build_domain_list(d.data);		
 	});

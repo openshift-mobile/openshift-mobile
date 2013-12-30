@@ -16,7 +16,11 @@ function build_app_content(data) {
 	$(param[7]).text(data.deployment_type);
 	$(param[8]).text(data.deployment_branch);
 	
-
+	// Reset Lists
+	$('#app-cartridge-list').empty();	
+	$('#app-alias-list').empty();
+	
+	
 	get_cartridge_list(data);
 	
 	get_alias_list(data);
