@@ -5,6 +5,10 @@ $('#login-submit').click(function() {
 	var os_type = $("input[name='login-openshift-type-radio-group']:checked").val();
 	var enterprise_url = $('#login-enterprise-url').val(); 
 	$('#login-container').children().addClass('ui-disabled');
+	
+	// Clear Cache
+	localStorage.clear();
+
 	app.login(user,pass,auto,os_type, enterprise_url);
 });
 
