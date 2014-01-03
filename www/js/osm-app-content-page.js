@@ -108,9 +108,9 @@ function update_status_helper(d) {
 	var node = $('#' + $('#app-content-title').text() + '-' + d.data.name.replace('.','-') + '-status');
 
 	if(message.indexOf('stopped') >= 0 ) {
-		node.text('Down').css('color','#CC0000');
+		node.text('Stopped').css('color','#CC0000');
 	} else {
-		node.text('Up').css('color','#007700');
+		node.text('Started').css('color','#007700');
 	}
 
 }
