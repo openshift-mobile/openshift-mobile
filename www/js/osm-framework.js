@@ -84,10 +84,9 @@ function OSM_Initializer() {
 		var count = pages.length;
 		
 		function prerender() {
-			var page = pages[i];
-			var $page = $(page);
+			var page = $(pages[i]);
 
-			$page.page();
+			page.page();
 
 			if(++i < count) {
 				setTimeout(prerender,PRERENDER_DELAY);
