@@ -11,7 +11,11 @@ MIN_SUPPORTED_VERSION = 1.4;
 /** Maximum API Version supported by OSM */
 MAX_SUPPORTED_VERSION = 1.6;
 
+/** Default page transition animation */
 DEFAULT_TRANSITION = 'none';
+
+/** Time in ms to wait between prerendering next page */
+PRERENDER_DELAY = 250;
 
 /** Default Settings Object */
 DEFAULT_SETTINGS = {
@@ -58,10 +62,11 @@ function OSM_Initializer() {
 
 	var deviceReadyDeferred = $.Deferred();
 	var jqmReadyDeferred = $.Deferred();
+	var prerenderDeferred = $.Deferred();
 	
 	document.addEventListener('deviceready',onDeviceReady,false);
 	$(document).bind('mobileinit',onJqmReady);
-	$.when(deviceReadyDeferred,jqmReadyDeferred).then(ready);
+	$.when(deviceReadyDeferred,jqmReadyDeferred,prerenderDeferred).then(ready);
 
 	function onDeviceReady() {
 		deviceReadyDeferred.resolve();
@@ -72,6 +77,29 @@ function OSM_Initializer() {
 		$.mobile.allowCrossDomainPages = true;
 		jqmReadyDeferred.resolve();
 	}
+
+	function prerenderPages() {
+		var pages = $("[data-role='page'] .prerender:not(.ui-page)");
+		var i = 0;
+		var count = pages.length;
+		
+		function prerender() {
+			var page = pages[i];
+			var $page = $(page);
+
+			$page.page();
+
+			if(++i < count) {
+				setTimeout(prerender,PRERENDER_DELAY);
+			} else {
+				prerenderDeferred.resolve();
+			}
+
+		}
+		prerender();
+	}
+
+	prerenderPages();
 
 	function ready() {
 		$(document).trigger('osm-ready');
