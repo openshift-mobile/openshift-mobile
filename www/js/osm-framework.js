@@ -84,16 +84,13 @@ function OSM_Initializer() {
 		var count = pages.length;
 		
 		function prerender() {
-			var page = $(pages[i]);
-
-			page.page();
-
 			if(++i < count) {
+				var page = $(pages[i]);
+				page.page();
 				setTimeout(prerender,PRERENDER_DELAY);
 			} else {
 				prerenderDeferred.resolve();
 			}
-
 		}
 		prerender();
 	}
@@ -257,27 +254,17 @@ function OSM_REST() {
  */
 function OSM_Settings_Manager() {
 
-	var _settings = $.extend(DEFAULT_SETTINGS,load_from_cache());
-	save_to_cache(_settings);
-		
-
-	//NOTE:
-	//These functions are defined here in order to allow for the parent 
-	//function to use them for the initialization call of loading from 
-	//the cache or the predefined defaults
+	// NOTE:
+	// This object maintains a variable in order to track
+	// if there has been new data stored to the local storage
+	// cache. 
+	//
+	// This allows for the JSON parsing function to be called
+	// only when necessary. Any other time the direct object
+	// can simply be returned
 	
 	
-	function save_to_cache(settings) {
-		localStorage['settings'] = JSON.stringify(settings);
-	}
-
-	function load_from_cache() {
-		return JSON.parse(localStorage['settings'] || "{}");
-	}
-
-	//END NOTE
-
-	return {
+	var ret = {
 		/**
 		 * Saves settings passed along in a settings object
 		 *
@@ -286,7 +273,9 @@ function OSM_Settings_Manager() {
 		 * @author Joey Yore
 		 */
 		save : function(settings) {
-			save_to_cache($.extend(_settings,settings));
+			_settings = $.extend(_settings,settings);
+			localStorage['settings'] = JSON.stringify(_settings);
+			ndata = true;
 		},
 
 		/**
@@ -297,9 +286,22 @@ function OSM_Settings_Manager() {
 		 * @author Joey Yore
 		 */
 		load : function() {
-			return load_from_cache();
+			if(ndata) {
+				_settings = JSON.parse(localStorage['settings'] || "{}");
+				ndata = false;
+			}
+			
+			//Return a deep copy of the _settings object as it prevents
+			//tampering with the internal _settings object as to not break
+			//other parts of the code that need the settings
+			return $.extend({},_settings); 
 		}
-	}	
+	};
+
+	var ndata = true;
+	var _settings = $.extend(DEFAULT_SETTINGS,ret.load());
+	ret.save(_settings);
+	return ret;
 }
 
 
