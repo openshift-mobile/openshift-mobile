@@ -44,7 +44,21 @@ function OSM_Application() {
 	return { 
 		settings : OSM_Settings_Manager(),
 		rest : OSM_REST(),
-		version : OSM_Version()
+		support : OSM_Support(),
+		
+		/**
+		 * Sets the api version for the entire framework to use
+		 *
+		 * @param version The version to set
+		 *
+		 * @author Joey Yore
+		 */
+		set_api_version : function(version) {
+			this.rest.set_api_version(version);
+			this.support.set_api_version(version);
+			this.settings.save({'version':version});
+		}
+
 	}
 
 }
@@ -314,21 +328,82 @@ function OSM_Settings_Manager() {
  * @author Joey Yore
  * @version 1.0
  */
-function OSM_Version(version) {
+function OSM_Support() {
 
-	//Allows input to be a string or a number
-	var ver = parseFloat(version);
+	var version = MAX_SUPPORTED_VERSION;
 
-	if(isNaN(ver)) {
-		return false;
+	var supported = {
+		domains : {
+			id_field: 'id',
+			list: {
+				supported: true,
+				url: 'domains'
+			},
+			delete : {
+				supported: false,
+				url: 'domain/<domain-name>'
+			},
+			update : {
+				supported: false,
+				url: 'domain/<domain-name>'
+			}
+		},
+		applications : {
+			list: {
+				supported: true,
+				url: 'domain/<domain-name>/applications'
+			}
+		}
 	}
 
-	if(ver < MIN_SUPPORTED || ver > MAX_SUPPORTED) {
-		return false
+	function format_response(object,index) {
+		if(!object.supported) {
+			return {supported:false};
+		}
+
+		object.url = object.url
+			.replace('<domain-name>',extract_domain_name(index))
+			.replace('<domain-id>',extract_domain_id(index))
+		;
+		return object;
+	}
+
+	function extract_domain_name(index) {
+		var domain = JSON.parse(localStorage['domains']);
+		var version = domain.api_version;
+		return (version < 1.6) ? domain.data[index].id : domain.data[index].name;
+	}
+
+	function extract_domain_id(index) {
+		var domain = JSON.parse(localStorage['domains']);
+		var version = domain.api_version;
+		return domain.data[index].id;
 	}
 
 	return {
 
+		/**
+		 * Determine if some operation is supported
+		 *
+		 * @param operation The operation to check (ex. applications.list)
+		 * @param index The Index to access for lists (ex. domains, applications, cartridges, etc)
+		 * @return false A support object 
+		 *
+		 */
+		is_supported : function(operation,index) {
+			var indexes = operation.split('.')
+			var current = supported;
+
+			for(var i=0,l=indexes.length;i<l;++i) {
+				current = current[indexes[i]];
+			}
+
+			if(current === undefined) {
+				return {supported:false};
+			}
+
+			return format_response(current,index);
+		}
 	}
 
 }
