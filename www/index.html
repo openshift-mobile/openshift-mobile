@@ -62,10 +62,30 @@
 
 		<!-- DOMAINS PAGE -->
 		<div id="domains-page" data-role="page" class="prerender">
-			<img src="img/openshift.png" style="display:block;margin-left:auto;margin-right:auto;"/>
+			<div id="domain-nav-panel" data-role="panel" data-theme="b" class="navpanel" data-display="overlay">
+				<ul data-role="listview" data-theme="b">
+					<li data-role="list-divider" role="heading">Account</li>
+					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
+				</ul>
+			</div>
+			<div data-role="header">
+				<a href="#domain-nav-panel" data-icon="bars" data-iconpos="notext"></a>
+				<h1>Domains</h1>
+			</div>
+
+			<div data-role="content">
+				<div id="domain-emtpy-list" style="display:none;text-align:center">No Domains Exist</div>
+				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
+			</div>
 		</div>
 		<!-- END PAGE -->
 
+		<!-- APPLICATIONS PAGE -->
+		<div id="applications-page" data-role="page" class="prerender">
+			<img src="img/openshift.png" style="display:block;margin-left:auto;margin-right:auto;"/>
+		</div>
+		<!-- END PAGE -->
 
         <!--script type="text/javascript" src="phonegap.js"></script-->
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
@@ -135,6 +155,8 @@
     				enterprise_url_textbox_div.hide();
 			    }
 			});
+
+			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
 	
         </script>
 

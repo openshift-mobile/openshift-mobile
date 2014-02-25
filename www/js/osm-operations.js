@@ -46,4 +46,75 @@ function logout(app,page) {
 }
 
 
+/**
+ * Build the list of domains on the domain page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Joey Yore
+ * @version 1.0
+ */
+function domain_list_build(event) {
+	var list_id = event.data.list_id;
+	var app = event.data.app;
+	var app_page_id = event.data.app_page_id;
 
+
+	if(list_id === undefined || app === undefined) {
+		return false;
+	}
+
+	var list = $(list_id);
+	var version = app.settings.load().version;
+
+	var rdata = app.rest.GET('domains',function(d) {
+		build_domain_list(d.data);
+	});
+
+	if(rdata !== null && typeof rdata.data !== 'undefined') {
+		build_domain_list(rdata.data);
+	}
+
+	function build_domain_list(data) {
+
+		if(!$.isArray(data)) {
+			return false;
+		}
+
+		list.empty();
+
+		for(var i=0,l=data.length;i<l;++i) {
+			inject(list,data[i]);
+		}
+		list.listview('refresh');
+
+		function inject(list,domain) {
+			var namesup = app.support.is_supported('domains.name',i);
+
+			var div = $('<div></div>')
+						.html(( namesup.supported ? ('<b>Name: </b>' + domain.name + '<br>') : '') +
+							  '<b>ID: </b>' + domain.id + '<br>' +
+							  '<b>Gear Sizes: </b>' + domain['allowed_gear_sizes'] + '<br>' +
+							  '<b>Creation time: </b>' + domain['creation_time']
+			);
+
+			var li = $('<li></li>');
+			var a = $('<a id="domain-' + (domain.name||domain.id) + '"></a>');
+			
+			a.click(function() {
+				localStorage['sel_domain'] = i;
+				$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
+			});
+
+			a.append(div);
+			li.append(a);
+			list.append(li);
+		}
+
+		function extract_domain_name(data) {
+			return (version < 1.6) ? data.id : data.name;
+		}
+	}
+
+	
+}

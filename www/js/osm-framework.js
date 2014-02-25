@@ -55,7 +55,6 @@ function OSM_Application() {
 		 */
 		set_api_version : function(version) {
 			this.rest.set_api_version(version);
-			this.support.set_api_version(version);
 			this.settings.save({'version':version});
 		}
 
@@ -330,54 +329,43 @@ function OSM_Settings_Manager() {
  */
 function OSM_Support() {
 
-	var version = MAX_SUPPORTED_VERSION;
-
+	var version = JSON.parse(localStorage['settings'] || '{}').version || MAX_SUPPORTED_VERSION;
+	
 	var supported = {
 		domains : {
-			id_field: 'id',
+			name : {
+				supported: (version < 1.6) ? false : true,
+			},
 			list: {
 				supported: true,
 				url: 'domains'
 			},
 			delete : {
 				supported: false,
-				url: 'domain/<domain-name>'
+				url: (version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
 			},
 			update : {
 				supported: false,
-				url: 'domain/<domain-name>'
+				url: (version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
 			}
 		},
 		applications : {
 			list: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: (version < 1.6) ? '/domain/<domain-id>/applications' : 'domain/<domain-name>/applications'
 			}
 		}
 	}
 
 	function format_response(object,index) {
-		if(!object.supported) {
-			return {supported:false};
+		var domain = JSON.parse(localStorage['domains']);
+		if('url' in object) {
+			object.url = object.url
+				.replace('<domain-name>',domain.data[index].name||'')
+				.replace('<domain-id>',domain.data[index].id||'')
+			;
 		}
-
-		object.url = object.url
-			.replace('<domain-name>',extract_domain_name(index))
-			.replace('<domain-id>',extract_domain_id(index))
-		;
 		return object;
-	}
-
-	function extract_domain_name(index) {
-		var domain = JSON.parse(localStorage['domains']);
-		var version = domain.api_version;
-		return (version < 1.6) ? domain.data[index].id : domain.data[index].name;
-	}
-
-	function extract_domain_id(index) {
-		var domain = JSON.parse(localStorage['domains']);
-		var version = domain.api_version;
-		return domain.data[index].id;
 	}
 
 	return {
