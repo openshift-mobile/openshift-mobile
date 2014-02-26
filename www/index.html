@@ -83,7 +83,66 @@
 
 		<!-- APPLICATIONS PAGE -->
 		<div id="applications-page" data-role="page" class="prerender">
-			<img src="img/openshift.png" style="display:block;margin-left:auto;margin-right:auto;"/>
+			<div id="applications-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
+				<ul data-role="listview" data-theme="b">
+					<li data-role="list-divider" role="heading">Navigation</li>
+					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
+					<li data-icon="plus"><a class="createapp">Create Application</a></li>
+					<li data-role="list-divider" role="heading">Account</li>
+					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
+				</ul>
+			</div>
+
+			<div data-role="header">
+				<a href="#applications-nav-panel" data-icon="bars" data-iconpos="notext"></a>
+				<h1>Applications</h1>
+				<a href="" class="createapp" data-icon="plus" data-iconpos="notext"></a>
+			</div>
+
+			<div data-role="popup" data-theme="b" id="application-popupMenu">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
+					<li data-role="divider" data-theme="b">Actions</li>
+					<li><a id="application-view">View Application</a></li>
+					<li data-icon="arrow-u"><a id="application-start">Start Application</a></li>
+					<li data-icon="arrow-d"><a id="application-stop">Stop Application</a></li>
+					<li data-icon="refresh"><a id="application-restart">Restart Application</a></li>
+					<li data-theme="c" data-icon="delete"><a id="application-delete">Delete Application</a></li>
+				</ul>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="applications-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="applications-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="applications-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+
+				<!-- Begin Confirmation Dialog -->
+				<div data-role="popup" id="applications-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="applications-popup-confirm-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="applications-popup-confirm-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" id="applications-popup-confirm-dialog-no-button">No</a>
+						<a href="#" data-role="button" data-inline="true" id="applications-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+					</div>
+				</div>
+				<!-- End Confirmation Dialog -->
+				<div id="application-emtpy-list" style="display:none;text-align:center">No Applications Exist</div>
+				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+			</div>
 		</div>
 		<!-- END PAGE -->
 
@@ -157,7 +216,29 @@
 			});
 
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
+			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list'},application_list_build);
+
+			$('#application-start').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','start','Starting','Started');
+			});
+
+			$('#application-stop').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','stop','Stopping','Stopped');
+			});
+
+			$('#application-restart').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','restart','Restarting','Restarted');
+			});
+
+			$('#application-view').click(function() {
+				$('#application-popupMenu').popup('close');
+				window.open(JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].app_url,'_blank','location=no');
+			});
 	
+			$('#application-delete').click(function() {
+				//TODO: Implement
+			});
+
         </script>
 
 		<!-- IMPORTANT: Load this last to make sure all event bindings are set before the events fire -->		

@@ -329,12 +329,12 @@ function OSM_Settings_Manager() {
  */
 function OSM_Support() {
 
-	var version = JSON.parse(localStorage['settings'] || '{}').version || MAX_SUPPORTED_VERSION;
+	var _version = JSON.parse(localStorage['settings'] || '{}').version || MAX_SUPPORTED_VERSION;
 	
 	var supported = {
 		domains : {
 			name : {
-				supported: (version < 1.6) ? false : true,
+				supported: (_version < 1.6) ? false : true,
 			},
 			list: {
 				supported: true,
@@ -342,27 +342,59 @@ function OSM_Support() {
 			},
 			delete : {
 				supported: false,
-				url: (version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
 			},
 			update : {
 				supported: false,
-				url: (version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
 			}
 		},
 		applications : {
+			id : {
+				supported: (_version < 1.6) ? false : true
+			},
+			uuid : {
+				supported: (_version < 1.6) ? true : false
+			},
 			list: {
 				supported: true,
-				url: (version < 1.6) ? '/domain/<domain-id>/applications' : 'domain/<domain-name>/applications'
+				url: 'domain/<domain-name>/applications'
+			},
+		},
+		application : {
+			get : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>' : 'application/<application-id>'
+			}, 
+			events : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/events' : 'application/<application-id>/events'
 			}
 		}
 	}
 
 	function format_response(object,index) {
 		var domain = JSON.parse(localStorage['domains']);
+		var di,ai;
+
+
+		if($.isArray(index)) {
+			di = index[0];
+			ai = index[1];
+		} else {
+			di = index;
+			ai = 0;
+		}
+
+		var application = JSON.parse(localStorage['domain/' + (domain.data[di].name||domain.data[di].id) + '/applications']);
+
 		if('url' in object) {
 			object.url = object.url
-				.replace('<domain-name>',domain.data[index].name||'')
-				.replace('<domain-id>',domain.data[index].id||'')
+				.replace('<domain-name>',domain.data[di].name||'')
+				.replace('<domain-id>',domain.data[di].id||'')
+				.replace('<application-name>',application.data[ai].name)
+				.replace('<application-id>',application.data[ai].id)
+				
 			;
 		}
 		return object;
@@ -390,7 +422,7 @@ function OSM_Support() {
 				return {supported:false};
 			}
 
-			return format_response(current,index);
+			return format_response($.extend({},current),index);
 		}
 	}
 
