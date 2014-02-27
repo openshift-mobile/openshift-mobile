@@ -167,9 +167,6 @@ function application_list_build(event) {
 		function inject(list,applications,index) {
 			var application = applications[index];
 			var li = $('<li id="aid-' + application.id + '"></li>');
-			li.data('os-name',application.name);
-			li.data('os-url',application.app_url);
-			li.data('osm-app-data',application);
 
 			var a1 = $('<a></a>').html('<img class="osm-icon-container ' +
 										get_img(application.framework.split('-')[0]) +
@@ -178,7 +175,7 @@ function application_list_build(event) {
 
 			a1.click(function() {
 				localStorage['sel_application'] = index;
-				//$.mobile.changePage(???,{transition:DEFAULT_TRANSITION});
+				$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
 			});
 
 			a2.click(function() {
@@ -190,28 +187,262 @@ function application_list_build(event) {
 			list.append(li);
 		}
 
-		function get_img(name) {
-			var img = {
-				'10gen': 'osm-openshift-10gen-logo',
-				haproxy: 'osm-openshift-haproxy-logo',
-				jbossas: 'osm-openshift-jbossas-logo',
-				jbosseap: 'osm-openshift-jbosseap-logo',
-				jbossews: 'osm-openshift-jbossews-logo',
-				jenkins: 'osm-openshift-jenkins-logo',
-				mongodb: 'osm-openshift-mongodb-logo',
-				mysql: 'osm-openshift-mysql-logo',
-				nodejs: 'osm-openshift-nodejs-logo',
-				perl: 'osm-openshift-perl-logo',
-				php: 'osm-openshift-php-logo',
-				phpmyadmin: 'osm-openshift-phpmyadmin-logo',
-				postgresql: 'osm-openshift-postgresql-logo',
-				python: 'osm-openshift-python-logo',
-				ruby: 'osm-openshift-ruby-logo',
-				switchyard: 'osm-openshift-switchyard-logo',
-				zend: 'osm-openshift-zend-logo',
-			};
+		
+	}
+}
+
+/**
+ * Gets the class name to apply a specific logo
+ *
+ * @param The name of the framework to get the logo for
+ * @return The classname for the logo
+ *
+ * @author Joey Yore
+ * @version 1.0
+ */
+function get_img(name) {
+	var img = {
+		'10gen': 'osm-openshift-10gen-logo',
+		haproxy: 'osm-openshift-haproxy-logo',
+		jbossas: 'osm-openshift-jbossas-logo',
+		jbosseap: 'osm-openshift-jbosseap-logo',
+		jbossews: 'osm-openshift-jbossews-logo',
+		jenkins: 'osm-openshift-jenkins-logo',
+		mongodb: 'osm-openshift-mongodb-logo',
+		mysql: 'osm-openshift-mysql-logo',
+		nodejs: 'osm-openshift-nodejs-logo',
+		perl: 'osm-openshift-perl-logo',
+		php: 'osm-openshift-php-logo',
+		phpmyadmin: 'osm-openshift-phpmyadmin-logo',
+		postgresql: 'osm-openshift-postgresql-logo',
+		python: 'osm-openshift-python-logo',
+		ruby: 'osm-openshift-ruby-logo',
+		switchyard: 'osm-openshift-switchyard-logo',
+		zend: 'osm-openshift-zend-logo',
+	};
+	return (img[name] || 'osm-openshift-logo');
+}
+
+/**
+ * Build the list of applications on the applications page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Joey Yore
+ * @version 1.0
+ */
+function application_content_build(event) {
+	var app = event.data.app;
+	var app_info_id = event.data.app_info_id;
+	var title_id = event.data.title_id;
+	var cartridge_list_id = event.data.cartridge_list_id;
+	var cartridge_empty_list_id = event.data.cartridge_empty_list_id;
+	var alias_list_id = event.data.alias_list_id;
+	var alias_empty_list_id = event.data.alias_empty_list_id;
+	var alias_delete_function = event.data.alias_delete_function;
+
+
+	var support = app.support.is_supported('application.get',[
+		localStorage['sel_domain'],
+		localStorage['sel_application']
+	]);
+
+	if(support.supported === false) {
+		return false;
+	}
+
+	var rdata = app.rest.GET(support.url,function(d) {
+		build_page(d.data);
+	});
+
+	if(rdata !== null && typeof rdata.data !== 'undefined') {
+		build_page(rdata.data);
+	}
+
+
+	function build_page(data) {
+
+
+		$(title_id).text(data.name);
+
+		build_info_tab();
+		build_cartridge_tab();
+		build_aliases_tab();
 	
-			return (img[name] || 'osm-openshift-logo');
+	
+		function build_info_tab() {
+
+			var param = $(app_info_id).find('td');
+
+			
+			var p1 = $(param[1]);
+			if(app.support.is_supported('applications.id').supported) {
+				p1.prev().show();
+				p1.show().text(data.id);
+			} else {
+				p1.prev().hide();
+				p1.hide();
+			}
+
+			$(param[0]).text(data.name);
+			$(param[2]).text(data.app_url);
+			$(param[3]).text(data.framework);
+			$(param[4]).text(data.gear_count);
+			$(param[5]).text(data.gear_profile);
+			$(param[6]).text(data.scalable);
+			$(param[7]).text(data.auto_deploy);
+			$(param[8]).text(data.deployment_type);
+			$(param[9]).text(data.deployment_branch);
+
+		}
+
+		function build_cartridge_tab() {
+
+			var support = app.support.is_supported('application.cartridges');
+			if(!support.supported) return false;
+
+			var rdata = app.rest.GET(support.url,function(d) {
+				build_cartridge_list(d.data);
+			});
+
+			if(rdata !== null && typeof rdata !== 'undefined') {
+				build_cartridge_list(rdata.data);
+			}
+
+			function build_cartridge_list(cdata) {
+				var ul = $(cartridge_list_id);
+				ul.empty();
+
+				var l = cdata.length;
+				if(l == 0) {
+					$(cartridge_empty_list_id).show();
+				} else {
+					$(cartridge_empty_list_id).hide();
+				}
+
+				for(var i=0;i<l;++i) {
+					inject(ul,cdata,i);
+				}
+				ul.listview('refresh');
+
+				function inject(list,cartridges,index) {
+					var c = cartridges[index];
+
+					var li = $('<li></li>');
+					var status_id = data.name + '-' + c.name.replace('.','-') + 
+						'-status
+					var a1 = $('<a></a>').html(
+						'<img class="osm-icon-container ' + get_img(c.name.split('-')[0]) + 
+						'"/><h3>' + c.display_name + '</h3><p><b>Status:</b> <span id="' + status_id + '">Pending...</span><br><b>Gears:</b> ' +
+						c.current_scale + ' (min: ' + c.scales_from + ', max: ' + 
+						c.scales_to + ')</p>'
+						
+					);
+					console.log(c.name.split('-')[0])
+
+					var a2 = $('<a href="#cartridge-popupMenu" data-rel="popup"></a>');
+
+					a1.click(function() {
+						localStorage['sel_cartridge'] = index;
+					});
+
+					a2.click(function() {
+						localStorage['sel_cartridge'] = index;
+					});
+
+
+					li.append(a1);
+					li.append(a2);
+					list.append(li);
+
+					update_cartridge_status();
+
+					function update_cartridge_status() {
+
+						var support = app.support.is_supported('cartridge.status',[
+							localStorage['sel_domain.'],
+							localStorage['sel_application'].
+							localStorage['sel_cartridge']
+						]);
+
+						if(!support.supported) {
+							return false;
+						}
+
+						var rdata = app.rest.GET(support.url,function(d) {
+							helper(d);
+						});
+
+						if(rdata !== null && typeof rdata !== 'undefined') {
+							helper(rdata);
+						}
+
+
+						function helper(data) {
+							var msg = data.data.status_messages[0].message;
+							var node = $(status_id);
+
+							if(message.indexOf('stopped') >= 0) {
+								node.text('Stopped').css('color','#CC0000');
+							} else {
+								node.text('Started').css('color','#007700');
+							}
+						}
+					}
+				}
+			}
+		}
+
+		function build_aliases_tab() {
+			var support = app.support.is_supported('application.aliases');
+			if(!support.supported) return false;
+
+			var rdata = app.rest.GET(support.url,function(d) {
+				build_alias_list(d.data);
+			});
+
+			if(rdata !== null && typeof rdata !== 'undefined') {
+				build_alias_list(rdata.data);
+			}
+
+			function build_alias_list(adata) {
+				var data = adata.data;
+				var ul = $(alias_list_id);
+				ul.empty();
+
+				var l = data.length;
+				if(l == 0) {
+					$(alias_empty_list_id).show();
+				} else {
+					$(alias_empty_list_id).hide();
+				}
+
+				for(var i=0;i<l;++i) {
+					inject(ul,data,i);
+				}
+				ul.listview('refresh');
+
+				function inject(list,aliases,index) {
+					var alias = aliases[index];
+
+					var li = $('<li></li>');
+					var a1 = $('<a></a>').html('<h3>' + alias.id + '</h3');
+					var a2 = $('<a href="#" id="#alias-delete"></a>');
+
+					a1.click(function() {
+						localStorage['sel_alias'] = index;
+					});
+
+					a2.click(function() {
+						localStorage['sel_alias'] = index;
+						alias_delete_function();
+					});
+
+					li.append(a1);
+					li.append(a2);
+					list.append(li);
+				}
+			}
 		}
 	}
 }
@@ -227,7 +458,8 @@ function application_list_build(event) {
  * @param before_message A message to display when starting the event
  * @param after_message A message to display after an event finishes
  *
- * @author Andrew Block, Joey Yore
+ * @author Andrew Block
+ * @author Joey Yore
  * @verison 1.0
  */
 function process_application_action(app,menu_id,list_id,action,before_message,after_message) {
@@ -258,17 +490,172 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 
 	app.rest.POST(support.url,event,function(data,text,xhr) {
 		$.mobile.loading('hide');
-		//TODO: show alert SUCCESS
+		show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app_name + " " + after_message + " Successfully");
+
 		list.children().removeClass('ui-disabled');
 	},
 	function(xhr,err,exception) {
 		$.mobile.loading('hide');
-		//TODO: show alert ERROR
+		show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app_name + " Failed to be "+ after_message);
 		list.children().removeClass('ui-disabled');
-
 	});
+}
+
+/**
+ * Build the list of application type for new creation
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @author Joey Yore
+ * @version 1.0
+ */
+function application_type_list_build(event) {
+	var list_id = event.data.list_id;
+	var app = event.data.app;
+	var name_id = event.data.name_id;
+
+	if(list_id === undefined || app === undefined || name_id === undefined) {
+		return false;
+	}
+
+	var list = $(list_id);
+	var version = app.settings.load().version;
+
+	var support = app.support.is_supported('cartridges.get');
+
+	if(support.supported === false) {
+		return false;
+	}
+
+	var rdata = app.rest.GET(support.url,function(d) {
+		build_application_type_list(d.data);
+	});
+
+	if(rdata !== null && typeof rdata.data !== 'undefined') {
+		build_application_type_list(rdata.data);
+	}
+
+	function build_application_type_list(data) {
+
+		if(!$.isArray(data)) {
+			return false;
+		}
+
+		$(name_id).val('');
+		list.empty();
+		list.trigger('change');
+
+		var osm_cartridges = [];
+
+		for(var i=0,l=data.length;i<l;++i) {
+			var cartridge = data[i];
+			if(cartridge.type === "standalone") {
+				osm_cartridges.push([cartridge.name,cartridge.display_name]);
+			}
+		}
+
+		osm_cartridges.sort(function(a,b) {
+			if(a[1] < b[1]) return -1;
+			if(a[1] > b[1]) return 1;
+			return 0;
+		});
+		
+		for(var i=0,l=osm_cartridges.length;i<l;++i) {
+			list.append('<option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '</option>');
+		}
+
+		list.trigger('change');
+	}
 }
 
 
 
+/**
+ * Triggers the page's alert popup with customizable content
+ *
+ * @param popup_object The jQuery node for the popup
+ * @param header HTML content for the popup header
+ * @param content HTML content for the popup body
+ * @param callback A callback function to be called when the alert is dismissed
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function show_alert_dialog(popup_object,header,content,callback) {
 
+	popup_object.find('[id$="popup-alert-dialog-header"]').html(header);
+	popup_object.find('[id$="popup-alert-dialog-content"]').html(content);
+
+	popup_object.popup();
+	popup_object.popup('open');
+	popup_object.unbind();
+
+	if(callback) {
+		popup_object.bind({
+			popupafterclose: function(event,ui) {
+				callback(event,ui);
+			}
+		});
+	}
+}
+
+/**
+ * Triggers the page's confirm popup with customizable content
+ *
+ * @param popup_object The jQuery node for the popup
+ * @param header HTML content for the popup header
+ * @param content HTML content for the popup body
+ * @param yes_callback A callback function to be called when the yes button is clicked
+ * @param no_callback A callback function to be called when the no button is clicked
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function show_confirm_dialog(popup_object,header,content,yes_callback, no_callback) {
+	popup_object.find("[id$='popup-confirm-dialog-header']").html(header);
+	popup_object.find("[id$='popup-confirm-dialog-content']").html(content);
+
+	popup_object.popup();
+	popup_object.popup( "open" );
+	popup_object.unbind();
+		
+	// Yes Callback
+	var yes_button = popup_object.find("[id$='popup-confirm-dialog-yes-button']");
+	var yes_button_callback;
+
+	if(yes_callback) {
+		yes_button_callback = function() {
+			popup_object.popup("close");
+			yes_callback();
+		};
+	}
+	else {
+		yes_button_callback =  function() {
+			popup_object.popup("close");
+		};
+	}
+		
+	yes_button.unbind();
+	yes_button.bind("click",yes_button_callback);
+		
+	// Optional No Callback
+	var no_button = popup_object.find("[id$='popup-confirm-dialog-no-button']");
+	var no_button_callback;
+
+	if(no_callback) {
+		no_button_callback = function() {
+			popup_object.popup("close");
+			no_callback();
+		};
+	}
+	else {
+		no_button_callback =  function() {
+			popup_object.popup("close");
+		};
+	}
+
+	// Bind No Button
+	no_button.unbind();
+	no_button.bind("click", no_button_callback);
+}

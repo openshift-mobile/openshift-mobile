@@ -360,6 +360,10 @@ function OSM_Support() {
 				supported: true,
 				url: 'domain/<domain-name>/applications'
 			},
+			add: {
+				supported: true,
+				url: 'domain/<domain-name>/applications'
+			},
 		},
 		application : {
 			get : {
@@ -369,24 +373,60 @@ function OSM_Support() {
 			events : {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/events' : 'application/<application-id>/events'
+			},
+			cartridges : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>remove/catridges' : 'application/<application-id>remove/cartridges'
+			},
+			aliases : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>remove/aliases' : 'application/<application-id>remove/aliases'
 			}
-		}
+		},
+		cartridges : {
+			get : {
+				supported : true,
+				url : 'cartridges'
+			},
+		},
+		cartridge : {
+			get : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>';
+			},
+			status : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages';
+			}
 	}
 
 	function format_response(object,index) {
 		var domain = JSON.parse(localStorage['domains']);
-		var di,ai;
+		var di,ai,ci;
 
 
 		if($.isArray(index)) {
 			di = index[0];
 			ai = index[1];
+			ci = index[2];
 		} else {
-			di = index;
+			di = index || 0;
 			ai = 0;
+			ci = 0;
 		}
 
 		var application = JSON.parse(localStorage['domain/' + (domain.data[di].name||domain.data[di].id) + '/applications']);
+		var cartridge;
+		if(_version < 1.6) {
+			cartridge = JSON.parse(localStorage['domain/' + 
+				(domain.data[di].id) +'application/' + 
+				(application.data[ai].name) + '/cartridges']
+			);
+		} else {
+			cartridge = JSON.parse(localStorage['application/' +
+				(application.data[ai].id) + '/cartridges']
+			);
+		}
 
 		if('url' in object) {
 			object.url = object.url
@@ -394,6 +434,7 @@ function OSM_Support() {
 				.replace('<domain-id>',domain.data[di].id||'')
 				.replace('<application-name>',application.data[ai].name)
 				.replace('<application-id>',application.data[ai].id)
+				.replace('<cartridge-name>',cartridge.data[ci].name|'')
 				
 			;
 		}

@@ -146,6 +146,144 @@
 		</div>
 		<!-- END PAGE -->
 
+		<!-- Create Application Page -->
+		<div id="new-application-page" data-role="page">
+			<div data-role="header">
+				<h1>Create New Application</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-application-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-application-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-application-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-application-container" data-theme="a">
+					<form id="new-application-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="name" id="new-application-name" value="" placeholder="Application Name"  data-theme="a"  />
+						</div>				
+						<div data-role="fieldcontain">
+							<select name="cartridge" id="new-application-cartridge" data-native-menu="true" data-theme="a">
+							<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-application-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Application Page -->
+
+		<!-- Application Content Page -->
+		<div id="app-content-page" data-role="page">
+			<div id="app-content-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
+				<ul data-role="listview" data-theme="b">
+					<li data-role="list-divider" role="heading">Navigation</li>
+					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
+					<li data-icon="arrow-l"><a class="toApplications">Applications</a></li>
+					<li data-role="list-divider" role="heading">Account</li>
+					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
+				</ul>
+			</div>
+			
+			<div data-role="header">
+				<a href="#app-content-nav-panel" data-icon="bars" data-iconpos="notext"></a>
+				<h1 id="app-content-title">Application Content</h1>
+				<a href="#" id="app-content-add" data-icon="plus" data-iconpos="notext"></a>
+				<div data-role="navbar">
+					<ul>
+						<li><a data-theme="e" href="#" data-tab="app-content-info">Info</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-cartridges" data-display-add="true">Cartridges</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-aliases" data-display-add="true">Aliases</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div data-role="content" data-theme="a">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="application-content-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="application-content-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="application-content-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->
+				
+				<!-- Begin Confirmation Dialog -->
+				<div data-role="popup" id="application-content-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="application-content-popup-confirm-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="application-content-popup-confirm-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" id="application-content-popup-confirm-dialog-no-button">No</a>
+						<a href="#" data-role="button" data-inline="true" id="application-content-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+					</div>
+				</div>
+				<!-- End Confirmation Dialog -->
+			
+			
+				<div class="tabs-content">
+					<div id="app-content-info">
+						<table style="text-align:left">
+							<tbody>
+								<tr><th>Name:</th><td></td></tr>
+								<tr><th>ID:</th><td></td></tr>
+								<tr><th>URL:</th><td></td></tr>
+								<tr><th>Framework:</th><td></td></tr>
+								<tr><th>Gears:</th><td></td></tr>
+								<tr><th>Gear Profile:</th><td></td></tr>
+								<tr><th>Scalable:</th><td></td></tr>
+								<tr><th>Auto Deploy:</th><td></td></tr>
+								<tr><th>Deployment Type:</th><td></td></tr>
+								<tr><th>Deployment Branch:&nbsp;&nbsp;</th><td></td></tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="app-content-cartridges">
+						<div id="app-cartridge-emtpy-list" style="display:none;text-align:center">No Cartridges Exist</div>
+						<ul id="app-cartridge-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+						<div data-role="popup" data-theme="b" id="cartridge-popupMenu">
+							<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
+								<li data-role="divider" data-theme="b">Actions</li>
+								<li data-icon="arrow-u"><a id="cartridge-start">Start Cartridge</a></li>
+								<li data-icon="arrow-d"><a id="cartridge-stop">Stop Cartridge</a></li>
+								<li data-icon="refresh"><a id="cartridge-restart">Restart Cartridge</a></li>
+								<li data-icon="refresh"><a id="cartridge-reload">Reload Cartridge</a></li>
+								<li data-theme="c" data-icon="delete"><a id="cartridge-delete">Delete Cartridge</a></li>
+							</ul>
+						</div>
+					</div>
+					<div id="app-content-aliases">
+						<div id="app-alias-emtpy-list" style="display:none;text-align:center">No Aliases Exist</div>
+						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END Application Content Page -->	
+
+
         <!--script type="text/javascript" src="phonegap.js"></script-->
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/osm-framework.js"></script>
@@ -163,6 +301,8 @@
 					loginToggleDisableFields();
 					login(app,loginSuccess,loginFail);
 				}
+				$('[data-role="navbar"] a:first').click();
+	
 			});
 
 			$('#login-submit').click(function() {
@@ -216,7 +356,17 @@
 			});
 
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
-			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list'},application_list_build);
+			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
+			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name'},application_type_list_build);
+			$('#app-content-page').bind('pagebeforeshow',{
+				app:app,
+				app_info_id:'#app-content-info',
+				title_id:'#app-content-title',
+				cartridge_list_id:'#app-cartridge-list',
+				cartridge_empty_list_id:'#app-cartridge-emtpy-list',
+				alias_list_id:'#app-alias-list'
+			},application_content_build);
+
 
 			$('#application-start').click(function() {
 				process_application_action(app,'#application-popupMenu','#application-list','start','Starting','Started');
@@ -236,9 +386,114 @@
 			});
 	
 			$('#application-delete').click(function() {
-				//TODO: Implement
+				$('#application-popupMenu').popup('close');
+
+				var app_name = JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].name;
+
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#applications-popup-confirm-dialog'), 
+						'Application Action',
+						'Are you sure you want to delete ' + app_name + '?',
+						function() {
+							$("#application-popupMenu" ).popup( "close" );	
+							$('#application-list').children().addClass('ui-disabled');
+			
+							$.mobile.loading('show', {
+								text : 'Deleting ' + app_name,
+								textVisible : true,
+								theme : 'b',
+							});	
+
+							var support = app.support.is_supported('application.events',[
+								localStorage['sel_domain'],
+								localStorage['sel_application']
+							]);
+
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " Deleted Successfully");
+								$('#application-list').children().removeClass('ui-disabled');
+								$.mobile.changePage('#applications-page', {
+									allowSamePageTransition: true,
+									transition: 'none',
+									showLoadMsg: false,
+									reloadPage: true
+								});
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app_name + " Failed to be Deleted");
+								$('#application-list').children().removeClass('ui-disabled');				
+							});
+						}
+					);
+				},200);
 			});
 
+			$('#create-application-submit').click(function() {
+				var formdata = $('#new-application-form').serialize();
+				$('#create-application-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text: 'Creating ' + $('#new-application-name').val(),
+					textVisible: true,
+					theme: 'b'
+				});
+
+				var supported = app.support.is_supported('applications.add',localStorage['sel_domain']);
+				if(!supported.support) return false;
+
+				app.rest.POST(supported.url,formdata, function(d) {
+					$.mobile.loading('hide');
+					$('#create-application-container').children().removeClass('ui-disabled');
+					show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation","Application Created Successfully", function(event,ui){
+						history.back();
+					});
+
+				},
+				function(xhr,err,exception) {
+					if(xhr.status == '422') {
+						var json = jQuery.parseJSON(xhr.responseText);
+						var messages = "";
+
+						$.each(json.messages,function(index,value) {
+							if(messages != "") messages += "\n";
+							messages += value.text;
+						});
+
+						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed",messages);
+					} else {
+						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed","The Application Failed to be Created");
+					}
+					$.mobile.loading('hide');
+					$('#create-application-container').children().removeClass('ui-disabled');
+
+				});
+
+				return false;
+			});
+
+			$('.createapp').click(function() {
+				$.mobile.changePage('#new-application-page',{transition:DEFAULT_TRANSITION});
+			});	
+
+			$(document).delegate('[data-role="navbar"] a', 'click', function() {
+				$('[data-role="navbar"] a').removeClass('ui-btn-active ui-state-persist');
+				$('.tabs-content').children().hide();
+				$('#' + $(this).attr('data-tab')).show();
+				$('html,body').animate({scrollTop:0},500);
+				$(this).addClass('ui-btn-active ui-state-persist');
+				var app_content_add_button = $("#app-content-add");
+				app_content_add_button.hide();				
+				var new_content_add_data = $(this).attr('data-display-add');
+				if(new_content_add_data !== null && typeof new_content_add_data !== 'undefined' && new_content_add_data === 'true') {
+					app_content_add_button.show();
+					app_content_add_button.data("app-content-trigger",$(this).attr("data-tab"));
+				}				
+			});
         </script>
 
 		<!-- IMPORTANT: Load this last to make sure all event bindings are set before the events fire -->		
