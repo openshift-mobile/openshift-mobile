@@ -416,25 +416,29 @@ function OSM_Support() {
 			ci = 0;
 		}
 
-		var application = JSON.parse(localStorage['domain/' + (domain.data[di].name||domain.data[di].id) + '/applications']);
-		var cartridge;
-		if(_version < 1.6) {
-			cartridge = JSON.parse(localStorage['domain/' + 
-				(domain.data[di].id) +'application/' + 
-				(application.data[ai].name) + '/cartridges']
-			);
+		var application = JSON.parse(localStorage['domain/' + (domain.data[di].name||domain.data[di].id) + '/applications']||'{}');
+		var cartridge = {};
+		if('data' in application) {
+			if(_version < 1.6) {
+				cartridge = JSON.parse(localStorage['domain/' + 
+					(domain.data[di].id) +'application/' + 
+					(application.data[ai].name) + '/cartridges'] || '{}'
+				);
+			} else {
+				cartridge = JSON.parse(
+					localStorage['application/' + (application.data[ai].id) + '/cartridges'] || '{}'
+				);
+			}
 		} else {
-			cartridge = JSON.parse(
-				localStorage['application/' + (application.data[ai].id) + '/cartridges'] || '{}'
-			);
+			application = {};
 		}
 
 		if('url' in object) {
 			object.url = object.url
-				.replace('<domain-name>',domain.data[di].name||'')
-				.replace('<domain-id>',domain.data[di].id||'')
-				.replace('<application-name>',application.data[ai].name)
-				.replace('<application-id>',application.data[ai].id)
+				.replace('<domain-name>',('data' in domain) ? domain.data[di].name : '')
+				.replace('<domain-id>',('data' in domain) ? domain.data[di].id : '')
+				.replace('<application-name>',('data' in application) ? application.data[ai].name : '')
+				.replace('<application-id>',('data' in application) ? application.data[ai].id : '')
 				.replace('<cartridge-name>',('data' in cartridge) ? cartridge.data[ci].name : '')
 				
 			;
