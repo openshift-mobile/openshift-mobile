@@ -376,7 +376,7 @@ function OSM_Support() {
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/catridges' : 'application/<application-id>/cartridges'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
 			},
 			aliases : {
 				supported : true,
