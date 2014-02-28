@@ -329,9 +329,8 @@ function application_content_build(event) {
 					var c = cartridges[index];
 
 					var li = $('<li></li>');
-					var status_id = data.name + '-' + c.name.replace('.','-') + 
-						'-status
-					var a1 = $('<a></a>').html(
+					var status_id = data.name + '-' + c.name.replace('.','-') + '-status';
+						var a1 = $('<a></a>').html(
 						'<img class="osm-icon-container ' + get_img(c.name.split('-')[0]) + 
 						'"/><h3>' + c.display_name + '</h3><p><b>Status:</b> <span id="' + status_id + '">Pending...</span><br><b>Gears:</b> ' +
 						c.current_scale + ' (min: ' + c.scales_from + ', max: ' + 

@@ -392,12 +392,13 @@ function OSM_Support() {
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>';
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages';
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
 			}
+		}
 	}
 
 	function format_response(object,index) {
@@ -423,8 +424,8 @@ function OSM_Support() {
 				(application.data[ai].name) + '/cartridges']
 			);
 		} else {
-			cartridge = JSON.parse(localStorage['application/' +
-				(application.data[ai].id) + '/cartridges']
+			cartridge = JSON.parse(
+				localStorage['application/' + (application.data[ai].id) + '/cartridges'] || '{}'
 			);
 		}
 
@@ -434,7 +435,7 @@ function OSM_Support() {
 				.replace('<domain-id>',domain.data[di].id||'')
 				.replace('<application-name>',application.data[ai].name)
 				.replace('<application-id>',application.data[ai].id)
-				.replace('<cartridge-name>',cartridge.data[ci].name|'')
+				.replace('<cartridge-name>',('data' in cartridge) ? cartridge.data[ci].name : '')
 				
 			;
 		}
