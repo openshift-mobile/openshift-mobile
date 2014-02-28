@@ -376,11 +376,11 @@ function OSM_Support() {
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>remove/catridges' : 'application/<application-id>remove/cartridges'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/catridges' : 'application/<application-id>/cartridges'
 			},
 			aliases : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>remove/aliases' : 'application/<application-id>remove/aliases'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
 			}
 		},
 		cartridges : {
