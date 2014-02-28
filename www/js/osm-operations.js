@@ -502,6 +502,25 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 }
 
 /**
+ * Processes application events (view,start,stop,etc)
+ *
+ * @param app The OSM Application object to use
+ * @param menu_id The ID selector for the popup menu
+ * @param list_id The ID selector for the list
+ * @param action The event action (start,stop,etc)
+ * @param before_message A message to display when starting the event
+ * @param after_message A message to display after an event finishes
+ *
+ * @author Andrew Block
+ * @author Joey Yore
+ * @verison 1.0
+ */
+function process_cartridge_action(app,menu_id,list_id,action,before_message,after_message) {
+
+
+}
+
+/**
  * Build the list of application type for new creation
  *
  * @param event Event data passed thru event bind
