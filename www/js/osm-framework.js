@@ -143,7 +143,7 @@ function OSM_REST() {
 			async: true,
 			crossDomain: true,
 			dataType: 'json',
-			timeout: 10000,
+			timeout: 30000,
 			headers: headers,
 			beforeSend: function(jqxhr,s) {
 				if(precall) precall(jqxhr,s);
@@ -397,7 +397,11 @@ function OSM_Support() {
 			status : {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
-			}
+			},
+			events : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
+			},
 		}
 	}
 

@@ -339,7 +339,8 @@ function application_content_build(event) {
 
 					a1.click(function() {
 						localStorage['sel_cartridge'] = index;
-						update_cartridge_status(index);
+						//update_cartridge_status(index);
+						refresh();
 					});
 
 					a2.click(function() {
@@ -469,7 +470,7 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 	menu.popup('close');
 	list.children().addClass('ui-disabled');
 
-	var app_name = JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].name;
+	var app_name = JSON.parse(localStorage[app.support.is_supported('applications.list').url]).data[localStorage['sel_application']].name;
 
 
 	var support = app.support.is_supported('application.events');
@@ -482,7 +483,7 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 		theme: 'b'
 	});
 
-	var event = 'events='+action;
+	var event = 'event='+action;
 
 	app.rest.POST(support.url,event,function(data,text,xhr) {
 		$.mobile.loading('hide');
@@ -498,7 +499,7 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 }
 
 /**
- * Processes application events (view,start,stop,etc)
+ * Processes cartridge events (start,stop,etc)
  *
  * @param app The OSM Application object to use
  * @param menu_id The ID selector for the popup menu
@@ -513,9 +514,49 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
  */
 function process_cartridge_action(app,menu_id,list_id,action,before_message,after_message) {
 
+	var menu = $(menu_id);
+	var list = $(list_id);
+
+	menu.popup('close');
+	list.children().addClass('ui-disabled');
+
+	var cartridge_name = JSON.parse(localStorage[app.support.is_supported('application.cartridges').url]).data[localStorage['sel_cartridge']].name;
+
+	var support = app.support.is_supported('cartridge.events');
+
+	if(!support.supported) return false;
+
+	$.mobile.loading('show', {
+		text : before_message + ' ' + cartridge_name,
+		textVisible : true,
+		theme : 'b'
+	});
+
+	var event = 'event=' + action;
+
+	console.log(support.url);
+
+	app.rest.POST(support.url,event,function(data,text,xhr) {
+		$.mobile.loading('hide');
+		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + after_message + 'successfully');
+		list.children().removeClass('ui-disabled');
+		refresh();
+	},
+	function(xhr,err,exception) {
+		$.mobile.loading('hide');
+		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + 'failed to be' + after_message);
+		list.children().removeClass('ui-disabled');
+	});
 
 }
 
+
+/**
+ *	Refreshes the current page
+ */
+function refresh() {
+	$('#' + $.mobile.activePage.attr('id')).trigger('pagebeforeshow');
+}
 
 /**
  * Build the list of application type for new creation

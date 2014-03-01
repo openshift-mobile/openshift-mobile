@@ -405,10 +405,7 @@
 								theme : 'b',
 							});	
 
-							var support = app.support.is_supported('application.events',[
-								localStorage['sel_domain'],
-								localStorage['sel_application']
-							]);
+							var support = app.support.is_supported('application.events');
 
 							if(!support.supported) return false;
 
@@ -479,6 +476,86 @@
 			$('.createapp').click(function() {
 				$.mobile.changePage('#new-application-page',{transition:DEFAULT_TRANSITION});
 			});	
+
+			$('#cartridge-start').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','start','Starting','Started');
+			});
+
+			$('#cartridge-stop').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','stop','Stopping','Stopped');
+			});
+
+			$('#cartridge-reload').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','reload','Reloading','Reloaded');
+			});
+
+			$('#cartridge-restart').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','restart','Restarting','Restarted');
+			});
+
+			$('#cartridge-delete').click(function() {
+
+				$('#cartridge-popupMenu').popup('close');
+
+				var cartridge_name = JSON.parse(localStorage[app.support.is_supported('application.cartridges').url]).data[localStorage['sel_cartridge']].name;
+
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#application-content-popup-confirm-dialog'),
+						'Cartridge Action',
+						'Are you sure you want to delete ' + catridge_name + '?', 
+						function() {
+
+							$('#app-cartridge-list').children().addClass('ui-disabled');
+
+							$.mobile.loading('show', {
+								text : 'Deleting ' + cartridge_name,
+								textVisible : true,
+								theme : 'b'
+							});
+
+							var support = app.support.is_supported('cartridge.events');
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								show_alert_dialog(
+									$('#application-content-popup-alert-dialog'),
+									'Cartridge Operation',
+									cartridge_name + 'Deleted Successfully'
+								);
+
+								$('#app-cartridge-list').children().removeClass('ui-disabled');
+								refresh();
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+
+								if(xhr.status === '422') {
+									var json = jQuery.parseJSON(xhr.responseText);
+									var messages = '';
+
+									$.each(json.messages,function(index,value) {
+										if(messages != '') {
+											messages += "\n";
+										}
+										messages += value.text;
+									});
+
+									show_alert_dialog($('#application-content-alert-dialog'),'Cartridge Operation Failed',messages);
+								} else {
+									show_alert_dialog($('#application-content-alert-dialog'),'Cartridge Operation Failed',cartridge_name + ' Failed to be Deleted');
+								}
+
+								$('#app-cartridge-list').children().removeClass('ui-disabled');
+
+							});
+						}
+					);
+				},200);
+
+			});
+
 
 			$(document).delegate('[data-role="navbar"] a', 'click', function() {
 				$('[data-role="navbar"] a').removeClass('ui-btn-active ui-state-persist');
