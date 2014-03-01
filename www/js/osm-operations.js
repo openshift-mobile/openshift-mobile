@@ -90,7 +90,7 @@ function domain_list_build(event) {
 
 		function inject(list,domains,index) {
 			var domain = domains[index];
-			var namesup = app.support.is_supported('domains.name',i);
+			var namesup = app.support.is_supported('domains.name');
 
 			var div = $('<div></div>')
 						.html(( namesup.supported ? ('<b>Name: </b>' + domain.name + '<br>') : '') +
@@ -137,7 +137,7 @@ function application_list_build(event) {
 	var list = $(list_id);
 	var version = app.settings.load().version;
 
-	var support = app.support.is_supported('applications.list',localStorage['sel_domain']);
+	var support = app.support.is_supported('applications.list');
 
 	if(support.supported === false) {
 		return false;
@@ -242,10 +242,7 @@ function application_content_build(event) {
 	var alias_delete_function = event.data.alias_delete_function;
 
 
-	var support = app.support.is_supported('application.get',[
-		localStorage['sel_domain'],
-		localStorage['sel_application']
-	]);
+	var support = app.support.is_supported('application.get');
 
 	if(support.supported === false) {
 		return false;
@@ -337,12 +334,12 @@ function application_content_build(event) {
 						c.scales_to + ')</p>'
 						
 					);
-					console.log(c.name.split('-')[0])
 
 					var a2 = $('<a href="#cartridge-popupMenu" data-rel="popup"></a>');
 
 					a1.click(function() {
 						localStorage['sel_cartridge'] = index;
+						update_cartridge_status(index);
 					});
 
 					a2.click(function() {
@@ -354,15 +351,12 @@ function application_content_build(event) {
 					li.append(a2);
 					list.append(li);
 
-					update_cartridge_status();
+					update_cartridge_status(index);
 
-					function update_cartridge_status() {
+					function update_cartridge_status(index) {
+						localStorage['sel_cartridge'] = index;
 
-						var support = app.support.is_supported('cartridge.status',[
-							localStorage['sel_domain.'],
-							localStorage['sel_application'].
-							localStorage['sel_cartridge']
-						]);
+						var support = app.support.is_supported('cartridge.status');
 
 						if(!support.supported) {
 							return false;
@@ -379,9 +373,9 @@ function application_content_build(event) {
 
 						function helper(data) {
 							var msg = data.data.status_messages[0].message;
-							var node = $(status_id);
+							var node = $('#' + status_id);
 
-							if(message.indexOf('stopped') >= 0) {
+							if(msg.indexOf('stopped') >= 0) {
 								node.text('Stopped').css('color','#CC0000');
 							} else {
 								node.text('Started').css('color','#007700');
@@ -397,11 +391,11 @@ function application_content_build(event) {
 			if(!support.supported) return false;
 
 			var rdata = app.rest.GET(support.url,function(d) {
-				build_alias_list(d.data);
+				//build_alias_list(d.data);
 			});
 
 			if(rdata !== null && typeof rdata !== 'undefined') {
-				build_alias_list(rdata.data);
+				//build_alias_list(rdata.data);
 			}
 
 			function build_alias_list(adata) {
@@ -472,10 +466,7 @@ function process_application_action(app,menu_id,list_id,action,before_message,af
 	var app_name = JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].name;
 
 
-	var support = app.support.is_supported('application.events',[
-		localStorage['sel_domain'],
-		localStorage['sel_application']
-	]);
+	var support = app.support.is_supported('application.events');
 
 	if(!support.supported) return false;
 

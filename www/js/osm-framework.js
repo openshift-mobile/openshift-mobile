@@ -402,48 +402,58 @@ function OSM_Support() {
 	}
 
 	function format_response(object,index) {
-		var domain = JSON.parse(localStorage['domains']);
-		var di,ai,ci;
-
-
-		if($.isArray(index)) {
-			di = index[0];
-			ai = index[1];
-			ci = index[2];
-		} else {
-			di = index || 0;
-			ai = 0;
-			ci = 0;
-		}
-
-		var application = JSON.parse(localStorage['domain/' + (domain.data[di].name||domain.data[di].id) + '/applications']||'{}');
-		var cartridge = {};
-		if('data' in application) {
-			if(_version < 1.6) {
-				cartridge = JSON.parse(localStorage['domain/' + 
-					(domain.data[di].id) +'application/' + 
-					(application.data[ai].name) + '/cartridges'] || '{}'
-				);
-			} else {
-				cartridge = JSON.parse(
-					localStorage['application/' + (application.data[ai].id) + '/cartridges'] || '{}'
-				);
-			}
-		} else {
-			application = {};
-		}
 
 		if('url' in object) {
-			object.url = object.url
-				.replace('<domain-name>',('data' in domain) ? domain.data[di].name : '')
-				.replace('<domain-id>',('data' in domain) ? domain.data[di].id : '')
-				.replace('<application-name>',('data' in application) ? application.data[ai].name : '')
-				.replace('<application-id>',('data' in application) ? application.data[ai].id : '')
-				.replace('<cartridge-name>',('data' in cartridge) ? cartridge.data[ci].name : '')
-				
-			;
+		
+			var domain = JSON.parse(localStorage['domains']).data[localStorage['sel_domain']];
+
+			if(domain !== undefined) {
+
+				object.url = inject_domain_info(object.url,domain);
+
+				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications']||'{}');
+
+				if('data' in application) {
+					application = application.data[localStorage['sel_application']];
+				} else {
+					application = undefined;
+				}
+
+				if(application !== undefined) {
+					object.url = inject_application_info(object.url,application);
+
+					var cartridge = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.cartridges.url,domain),application)]||'{}');
+					if('data' in cartridge) {
+						cartridge = cartridge.data[localStorage['sel_cartridge']]
+					} else {
+						cartridge = undefined;
+					}
+					if(cartridge !== undefined) {
+						object.url = inject_cartridge_info(object.url,cartridge);
+					}
+				}
+			}
 		}
 		return object;
+
+
+		function inject_domain_info(url,domain) {
+			return url.replace('<domain-name>',('name' in domain) ? domain.name : '')
+					  .replace('<domain-id>',('id' in domain) ? domain.id : '')
+			;
+		}
+
+		function inject_application_info(url,application) {
+			return url.replace('<application-name>',('name' in application) ? application.name : '')
+					  .replace('<application-id>',('id' in application) ? application.id : '')
+			;
+		}
+
+		function inject_cartridge_info(url,cartridge) {
+			return url.replace('<cartridge-name>',('name' in cartridge) ? cartridge.name : '')
+			;
+		}
+
 	}
 
 	return {
