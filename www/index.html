@@ -405,20 +405,15 @@
 								theme : 'b',
 							});	
 
-							var support = app.support.is_supported('application.events');
+							var support = app.support.is_supported('application.get');
 
 							if(!support.supported) return false;
 
 							app.rest.DELETE(support.url,function(data,text,xhr) {
 								$.mobile.loading('hide');
-								app.show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app.get_application().name + " Deleted Successfully");
+								show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app_name + " Deleted Successfully");
 								$('#application-list').children().removeClass('ui-disabled');
-								$.mobile.changePage('#applications-page', {
-									allowSamePageTransition: true,
-									transition: 'none',
-									showLoadMsg: false,
-									reloadPage: true
-								});
+								refresh();
 							},
 							function(xhr,err,exception) {
 								$.mobile.loading('hide');
@@ -440,10 +435,10 @@
 					theme: 'b'
 				});
 
-				var supported = app.support.is_supported('applications.add',localStorage['sel_domain']);
-				if(!supported.support) return false;
+				var support = app.support.is_supported('applications.add');
+				if(!support.supported) return false;
 
-				app.rest.POST(supported.url,formdata, function(d) {
+				app.rest.POST(support.url,formdata, function(d) {
 					$.mobile.loading('hide');
 					$('#create-application-container').children().removeClass('ui-disabled');
 					show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation","Application Created Successfully", function(event,ui){
@@ -514,7 +509,7 @@
 								theme : 'b'
 							});
 
-							var support = app.support.is_supported('cartridge.events');
+							var support = app.support.is_supported('cartridge.get');
 							if(!support.supported) return false;
 
 							app.rest.DELETE(support.url,function(data,text,xhr) {

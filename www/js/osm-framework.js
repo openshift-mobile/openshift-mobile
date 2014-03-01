@@ -143,7 +143,7 @@ function OSM_REST() {
 			async: true,
 			crossDomain: true,
 			dataType: 'json',
-			timeout: 30000,
+			timeout: 60000,
 			headers: headers,
 			beforeSend: function(jqxhr,s) {
 				if(precall) precall(jqxhr,s);

@@ -239,7 +239,6 @@ function application_content_build(event) {
 	var cartridge_empty_list_id = event.data.cartridge_empty_list_id;
 	var alias_list_id = event.data.alias_list_id;
 	var alias_empty_list_id = event.data.alias_empty_list_id;
-	var alias_delete_function = event.data.alias_delete_function;
 
 
 	var support = app.support.is_supported('application.get');
