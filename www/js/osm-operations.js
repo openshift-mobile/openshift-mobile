@@ -391,11 +391,11 @@ function application_content_build(event) {
 			if(!support.supported) return false;
 
 			var rdata = app.rest.GET(support.url,function(d) {
-				//build_alias_list(d.data);
+				build_alias_list(d);
 			});
 
 			if(rdata !== null && typeof rdata !== 'undefined') {
-				//build_alias_list(rdata.data);
+				build_alias_list(rdata);
 			}
 
 			function build_alias_list(adata) {
@@ -428,12 +428,18 @@ function application_content_build(event) {
 
 					a2.click(function() {
 						localStorage['sel_alias'] = index;
-						alias_delete_function();
+						alias_delete();
 					});
 
 					li.append(a1);
 					li.append(a2);
 					list.append(li);
+
+
+					function alias_delete() {
+						return false;
+					}
+
 				}
 			}
 		}
@@ -509,6 +515,7 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 
 
 }
+
 
 /**
  * Build the list of application type for new creation
