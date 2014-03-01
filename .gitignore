@@ -1,5 +1,6 @@
 #Build Folders
 www/phonegap.js
+merges/
 
 # Development Tools
 .project
