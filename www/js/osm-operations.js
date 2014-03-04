@@ -36,10 +36,13 @@ function login(app,callback,errback,precall) {
  */
 function logout(app,page) {
 
+	localStorage.clear();
+	
 	app.settings.save({
 		'password' : '',
 		'autolog' : false
 	});
+	
 	$.mobile.changePage(page || '#login-page',{
 		transition:DEFAULT_TRANSITION
 	});

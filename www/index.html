@@ -345,6 +345,10 @@
 				loginToggleDisableFields();
 				$.mobile.loading('hide');
 			}
+			
+			$('.toLogout').click(function() {
+				logout(app);
+			});
 
 			$("input[name='login-openshift-type-radio-group']").change(function(e){
 				var enterprise_url_textbox_div = $("#login-enterprise-url-div");
@@ -470,6 +474,14 @@
 
 			$('.createapp').click(function() {
 				$.mobile.changePage('#new-application-page',{transition:DEFAULT_TRANSITION});
+			});	
+			
+			$('.toDomains').click(function() {
+				$.mobile.changePage('#domains-page',{transition:DEFAULT_TRANSITION});
+			});	
+			
+			$('.toApplications').click(function() {
+				$.mobile.changePage('#applications-page',{transition:DEFAULT_TRANSITION});
 			});	
 
 			$('#cartridge-start').click(function() {
