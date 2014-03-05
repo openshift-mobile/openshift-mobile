@@ -32,14 +32,27 @@ function login(app,callback,errback,precall) {
  * @param page The page id to transition to (defaults to '#login-page')
  *
  * @author Joey Yore
+ * @author Andrew Block
  * @version 1.0
  */
 function logout(app,page) {
 
 	localStorage.clear();
 	
+	$('#login-username').val(app.settings.username ||'');
+	$('#login-password').val('');
+	$("#login-enterprise-url-div").hide();
+	$("#login-enterprise-url").val('');
+	$('#login-auto').checkboxradio();
+	$('#login-auto').prop("checked",false).checkboxradio("refresh");
+	$("input[name='login-openshift-type-radio-group'][value=online]").prop('checked', true);	
+	$('#login-password').attr('checked','false');
+	$('#login-instruct').text('Login to OpenShift').css('color','');
+	$('#login-container').children().removeClass('ui-disabled');
+
 	app.settings.save({
 		'password' : '',
+		'username' : '',
 		'autolog' : false
 	});
 	

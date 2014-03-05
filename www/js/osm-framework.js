@@ -88,6 +88,9 @@ function OSM_Initializer() {
 	function onJqmReady() {
 		$.support.cors = true;
 		$.mobile.allowCrossDomainPages = true;
+		
+		document.addEventListener("backbutton",backButtonControl);
+		
 		jqmReadyDeferred.resolve();
 	}
 
@@ -112,6 +115,22 @@ function OSM_Initializer() {
 
 	function ready() {
 		$(document).trigger('osm-ready');
+	}
+	
+	function backButtonControl(event) {
+		
+		var exitApplicationPages = ["login-page","domains-page"];
+		
+		var found = $.inArray($.mobile.activePage.attr('id'), exitApplicationPages);
+
+		if(found >= 0) {
+			event.preventDefault();
+            navigator.app.exitApp();
+		}
+		else {
+			history.back();
+		}
+		
 	}
 
 }

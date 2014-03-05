@@ -19,7 +19,7 @@
 		<!-- END PAGE -->
 
 		<!-- LOGIN PAGE -->
-		<div id="login-page" data-role="page" clas="prerender">
+		<div id="login-page" data-role="page" class="prerender">
 			<div data-role="header">
 				<h1>Login</h1>
 			</div>
@@ -395,7 +395,7 @@
 
 			function populateLoginForm(settings) {
 				$('#login-username').val(settings.username);
-				$('#login-password').val(settings.password);
+				settings.autolog ? $('#login-password').val(settings.password) : $('#login-password').val();
 				$('#login-enterprise-url').val(settings.baseurl);
 				$('#login-auto').prop('checked',settings.autolog).checkboxradio('refresh');
 				$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
