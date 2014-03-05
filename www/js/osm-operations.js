@@ -440,7 +440,56 @@ function application_content_build(event) {
 
 
 					function alias_delete() {
-						return false;
+						
+						var alias_name = JSON.parse(localStorage[app.support.is_supported('application.aliases').url]).data[localStorage['sel_alias']].id;
+
+						
+						var support = app.support.is_supported('aliases.delete');
+
+						show_confirm_dialog($( '#application-content-popup-confirm-dialog' ), "Alias Action", "Are you sure you want to delete " + alias_name + "?", function(){
+
+							$('#app-content-aliases').children().addClass('ui-disabled');
+
+							$.mobile.loading('show', {
+								text : 'Deleting ' + alias_name,
+								textVisible : true,
+								theme : 'b',
+							});
+							
+							app.rest.DELETE(support.url,
+									function(data,text,xhr) {
+										$.mobile.loading('hide');
+										show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation", alias_name + " Deleted Successfully");
+										$('#app-content-aliases').children().removeClass('ui-disabled');
+										refresh();
+									},
+									function(jqxhr,errType,exception) {
+
+										$.mobile.loading('hide');
+										// Check to see if messages are returned from OpenShift
+										if(jqxhr.status == "422") {
+											var json = jQuery.parseJSON(jqxhr.responseText);
+											var messages = "";
+
+											$.each(json.messages, function(index,value) {
+												if(messages != "") messages += "\n";
+												messages += value.text;
+											});
+
+											show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation Failed",messages);
+										}
+										else {
+											show_alert_dialog($("#application-content-popup-alert-dialog"),"Alias Operation Failure", alias_name + " Failed to be Deleted");
+										}
+
+										$('#app-content-aliases').children().removeClass('ui-disabled');				
+									}
+								);
+
+						});
+					
+
+					
 					}
 
 				}
@@ -536,8 +585,6 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 
 	var event = 'event=' + action;
 
-	console.log(support.url);
-
 	app.rest.POST(support.url,event,function(data,text,xhr) {
 		$.mobile.loading('hide');
 		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + after_message + 'successfully');
@@ -546,7 +593,7 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 	},
 	function(xhr,err,exception) {
 		$.mobile.loading('hide');
-		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + 'failed to be' + after_message);
+		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + 'failed to be ' + after_message);
 		list.children().removeClass('ui-disabled');
 	});
 
@@ -564,35 +611,44 @@ function refresh() {
  * Build the list of application type for new creation
  *
  * @param event Event data passed thru event bind
+ * @param data allows for access to previous page data
  *
  * @author Andrew Block
  * @author Joey Yore
  * @version 1.0
  */
-function application_type_list_build(event) {
-	var list_id = event.data.list_id;
-	var app = event.data.app;
-	var name_id = event.data.name_id;
+function application_type_list_build(event, data) {
+	
+	// Check to make sure entry is not from cartridge dialog
+	var prevPage = data.prevPage.attr('id');
 
-	if(list_id === undefined || app === undefined || name_id === undefined) {
-		return false;
-	}
+	if(prevPage != null && prevPage != 'new-application-cartridge-dialog') {
 
-	var list = $(list_id);
-	var version = app.settings.load().version;
-
-	var support = app.support.is_supported('cartridges.get');
-
-	if(support.supported === false) {
-		return false;
-	}
-
-	var rdata = app.rest.GET(support.url,function(d) {
-		build_application_type_list(d.data);
-	});
-
-	if(rdata !== null && typeof rdata.data !== 'undefined') {
-		build_application_type_list(rdata.data);
+	
+		var list_id = event.data.list_id;
+		var app = event.data.app;
+		var name_id = event.data.name_id;
+	
+		if(list_id === undefined || app === undefined || name_id === undefined) {
+			return false;
+		}
+	
+		var list = $(list_id);
+		var version = app.settings.load().version;
+	
+		var support = app.support.is_supported('cartridges.get');
+	
+		if(support.supported === false) {
+			return false;
+		}
+	
+		var rdata = app.rest.GET(support.url,function(d) {
+			build_application_type_list(d.data);
+		});
+	
+		if(rdata !== null && typeof rdata.data !== 'undefined') {
+			build_application_type_list(rdata.data);
+		}
 	}
 
 	function build_application_type_list(data) {
@@ -656,6 +712,80 @@ function show_alert_dialog(popup_object,header,content,callback) {
 				callback(event,ui);
 			}
 		});
+	}
+}
+
+/**
+ * Build the list of embedded cartridges
+ *
+ * @param event Event data passed thru event bind
+ * @param data allows for access to previous page data
+ *
+ * @author Andrew Block
+ * @author Joey Yore
+ * @version 1.0
+ */
+function embedded_cartridge_type_list_build(event, data) {
+	
+	// Check to make sure entry is not from cartridge dialog
+	var prevPage = data.prevPage.attr('id');
+
+	if(prevPage != null && prevPage != 'new-embedded-cartridge-cartridge-dialog') {
+	
+		var list_id = event.data.list_id;
+		var app = event.data.app;
+	
+		if(list_id === undefined || app === undefined) {
+			return false;
+		}
+	
+		var list = $(list_id);
+		var version = app.settings.load().version;
+	
+		var support = app.support.is_supported('cartridges.get');
+	
+		if(support.supported === false) {
+			return false;
+		}
+	
+		var rdata = app.rest.GET(support.url,function(d) {
+			build_embedded_cartridge_type_list(d.data);
+		});
+	
+		if(rdata !== null && typeof rdata.data !== 'undefined') {
+			build_embedded_cartridge_type_list(rdata.data);
+		}
+	}
+	
+	function build_embedded_cartridge_type_list(data) {
+
+		if(!$.isArray(data)) {
+			return false;
+		}
+
+		list.empty();
+		list.trigger('change');
+
+		var osm_cartridges = [];
+
+		for(var i=0,l=data.length;i<l;++i) {
+			var cartridge = data[i];
+			if(cartridge.type === "embedded") {
+				osm_cartridges.push([cartridge.name,cartridge.display_name]);
+			}
+		}
+
+		osm_cartridges.sort(function(a,b) {
+			if(a[1] < b[1]) return -1;
+			if(a[1] > b[1]) return 1;
+			return 0;
+		});
+		
+		for(var i=0,l=osm_cartridges.length;i<l;++i) {
+			list.append('<option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '</option>');
+		}
+
+		list.trigger('change');
 	}
 }
 

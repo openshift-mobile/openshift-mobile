@@ -172,7 +172,7 @@
 							 <input type="text" name="name" id="new-application-name" value="" placeholder="Application Name"  data-theme="a"  />
 						</div>				
 						<div data-role="fieldcontain">
-							<select name="cartridge" id="new-application-cartridge" data-native-menu="true" data-theme="a">
+							<select name="cartridge" id="new-application-cartridge" data-native-menu="false" data-theme="a">
 							<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
 							</select>
 						</div>
@@ -282,6 +282,79 @@
 			</div>
 		</div>
 		<!-- END Application Content Page -->	
+		
+		<!-- Create Aliases Page -->
+		<div id="new-alias-page" data-role="page">
+			<div data-role="header">
+				<h1>Create New Alias</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-alias-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-alias-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-alias-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-alias-container" data-theme="a">
+					<form id="new-alias-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="id" id="new-alias-id" value="" placeholder="Alias Name"  data-theme="a"  />
+						</div>				
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-alias-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Aliases Page -->	
+		
+		<!-- Create Embedded Cartridge Page -->
+		<div id="new-embedded-cartridge-page" data-role="page">
+			<div data-role="header">
+				<h1>Create Embedded Cartridge</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-embedded-cartridge-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-embedded-cartridge-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-embedded-cartridge-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-embedded-cartridge-container" data-theme="a">
+					<form id="new-embedded-cartridge-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							<select name="cartridge" id="new-embedded-cartridge-cartridge" data-native-menu="false" data-theme="a">
+							<option value="new-embedded-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
+							</select>
+						</div>
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-embedded-cartridge-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Embedded Cartridge Page -->
+
 
 
         <script type="text/javascript" src="phonegap.js"></script>
@@ -362,6 +435,7 @@
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
 			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
 			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name'},application_type_list_build);
+			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
 			$('#app-content-page').bind('pagebeforeshow',{
 				app:app,
 				app_info_id:'#app-content-info',
@@ -471,6 +545,104 @@
 
 				return false;
 			});
+			
+			$('#create-embedded-cartridge-submit').click(function() {
+				var formdata = $('#new-embedded-cartridge-form').serialize();
+				$('#create-embedded-cartridge-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Adding ' + $('#new-embedded-cartridge-cartridge option:selected').text(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('cartridges.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-embedded-cartridge-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Embedded Cartridge Creation","Embedded Cartridge Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "422") {
+
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = "";
+
+							$.each(json.messages, function(index,value) {
+								if(messages != "") messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Application Creation Failed",messages);
+						}
+						else {
+							show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Embedded Cartridge Creation Failed","The Embedded Cartridge Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-embedded-cartridge-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
+			});
+			
+			$('#create-alias-submit').click(function() {
+				var formdata = $('#new-alias-form').serialize();
+
+				$('#create-alias-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Creating ' + $('#new-alias-id').val(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('aliases.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-alias-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation","Alias Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+						$.mobile.loading('hide');			
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "422") {
+
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = '';
+
+							$.each(json.messages, function(index,value) {
+								if(messages != '') messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation Failed",messages);
+						}
+						else {
+
+							show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation Failed","The Alias Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-alias-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
+			});
 
 			$('.createapp').click(function() {
 				$.mobile.changePage('#new-application-page',{transition:DEFAULT_TRANSITION});
@@ -482,7 +654,11 @@
 			
 			$('.toApplications').click(function() {
 				$.mobile.changePage('#applications-page',{transition:DEFAULT_TRANSITION});
-			});	
+			});
+			
+			$('#app-content-add').click(function() {
+				$(document).trigger("osm-new-" + $(this).data('app-content-trigger'));
+			});
 
 			$('#cartridge-start').click(function() {
 				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','start','Starting','Started');
@@ -510,7 +686,7 @@
 					show_confirm_dialog(
 						$('#application-content-popup-confirm-dialog'),
 						'Cartridge Action',
-						'Are you sure you want to delete ' + catridge_name + '?', 
+						'Are you sure you want to delete ' + cartridge_name + '?', 
 						function() {
 
 							$('#app-cartridge-list').children().addClass('ui-disabled');
@@ -562,6 +738,16 @@
 				},200);
 
 			});
+			
+			
+			$(document).bind('osm-new-app-content-aliases',function() {
+				$.mobile.changePage('#new-alias-page',{transition:DEFAULT_TRANSITION});
+			});
+
+			$(document).bind('osm-new-app-content-cartridges',function() {
+				$.mobile.changePage('#new-embedded-cartridge-page',{transition:DEFAULT_TRANSITION});
+			});
+
 
 
 			$(document).delegate('[data-role="navbar"] a', 'click', function() {

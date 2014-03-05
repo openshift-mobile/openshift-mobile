@@ -179,7 +179,7 @@ function OSM_REST() {
 		},
 
 		/**
-		 * Sets the accept header info to use the appropraite api version
+		 * Sets the accept header info to use the appropriate api version
 		 *
 		 * @param version The version to set
 		 *
@@ -383,11 +383,25 @@ function OSM_Support() {
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
 			}
 		},
+		aliases : {
+			add : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+			},
+			delete : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/applications/<application-name>/aliases/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
+			}
+		},
 		cartridges : {
 			get : {
 				supported : true,
 				url : 'cartridges'
 			},
+			add : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+			}
 		},
 		cartridge : {
 			get : {
@@ -435,6 +449,20 @@ function OSM_Support() {
 					if(cartridge !== undefined) {
 						object.url = inject_cartridge_info(object.url,cartridge);
 					}
+
+					var alias = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.aliases.url,domain),application)]||'{}');
+					
+					if('data' in alias) {
+						alias = alias.data[localStorage['sel_alias']]
+					} else {
+						alias = undefined;
+					}
+					
+					if(alias !== undefined) {
+						object.url = inject_alias_info(object.url,alias);
+					}
+					
+					
 				}
 			}
 		}
@@ -455,6 +483,11 @@ function OSM_Support() {
 
 		function inject_cartridge_info(url,cartridge) {
 			return url.replace('<cartridge-name>',('name' in cartridge) ? cartridge.name : '')
+			;
+		}
+		
+		function inject_alias_info(url,alias) {
+			return url.replace('<alias-name>',('id' in alias) ? alias.id : '')
 			;
 		}
 
