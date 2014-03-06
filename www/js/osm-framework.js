@@ -409,7 +409,7 @@ function OSM_Support() {
 			},
 			delete : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/applications/<application-name>/aliases/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/alias/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
 			}
 		},
 		cartridges : {
@@ -425,15 +425,15 @@ function OSM_Support() {
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
 			},
 			events : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartrigde/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
 			},
 		}
 	}
