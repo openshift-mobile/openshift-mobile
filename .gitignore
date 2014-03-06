@@ -1,12 +1,14 @@
 #Build Folders
 www/phonegap.js
 merges/
+www/rest/*
 
 # Development Tools
 .project
 .settings
 *~
 .*.sw*
+ripple_testing
 
 # Binaries
 *.apk

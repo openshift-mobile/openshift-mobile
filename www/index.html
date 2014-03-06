@@ -11,11 +11,15 @@
         <title>OpenShift Mobile</title>
     </head>
     <body>
-		<div id="splash-page" data-role="page">
-		</div>
 
-		<!-- Login Page -->
-		<div id="login-page" data-role="page">
+		<!-- SPLASH PAGE -->
+		<div id="splash-page" data-role="page">
+			<img src="img/openshift.png" style="display:block;margin-left:auto;margin-right:auto;"/>
+		</div>
+		<!-- END PAGE -->
+
+		<!-- LOGIN PAGE -->
+		<div id="login-page" data-role="page" class="prerender">
 			<div data-role="header">
 				<h1>Login</h1>
 			</div>
@@ -29,17 +33,15 @@
 					<div data-role="fieldcontain">
 						<input id="login-password" type="password" value="" placeholder="Password"/>
 					</div>
-					
 					<div data-role="fieldcontain">
 						<fieldset data-role="controlgroup">
-						     	<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-online" value="online" checked="checked" />
+							<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-online" value="online" checked="checked" />
 						     	<label for="login-openshift-type-radio-group-online">OpenShift Online</label>
 						
 						     	<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
 						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label>
 						</fieldset>
 					</div>
-					
 					<div data-role="fieldcontain" id="login-enterprise-url-div">
 						<input id="login-enterprise-url" type="text" value="" placeholder="OpenShift Enterprise Rest Url"/>
 					</div>
@@ -52,14 +54,14 @@
 					<div data-role="fieldcontain">
 						<button id="login-submit">Login</button>
 					</div>
+
 				</div>
 			</div>
 		</div>
-		<!-- END Login Page -->
+		<!-- END LOGIN PAGE -->
 
-		
-		<!-- Domains Page -->
-		<div id="domain-page" data-role="page">
+		<!-- DOMAINS PAGE -->
+		<div id="domains-page" data-role="page" class="prerender">
 			<div id="domain-nav-panel" data-role="panel" data-theme="b" class="navpanel" data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Account</li>
@@ -77,11 +79,10 @@
 				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
 			</div>
 		</div>
-		<!-- END Domains Page -->
+		<!-- END PAGE -->
 
-
-		<!-- Applications Page -->
-		<div id="applications-page" data-role="page">
+		<!-- APPLICATIONS PAGE -->
+		<div id="applications-page" data-role="page" class="prerender">
 			<div id="applications-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Navigation</li>
@@ -142,12 +143,11 @@
 				<div id="application-emtpy-list" style="display:none;text-align:center">No Applications Exist</div>
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
-						
 		</div>
-		<!-- END Applications Page -->
+		<!-- END PAGE -->
 
 		<!-- Create Application Page -->
-		<div id="new-application-page" data-role="page">
+		<div id="new-application-page" data-role="page" class="prerender">
 			<div data-role="header">
 				<h1>Create New Application</h1>
 			</div>
@@ -185,10 +185,9 @@
 			</div>
 		</div>		
 		<!-- END Create Application Page -->
-				
 
 		<!-- Application Content Page -->
-		<div id="app-content-page" data-role="page">
+		<div id="app-content-page" data-role="page" class="prerender">
 			<div id="app-content-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Navigation</li>
@@ -248,6 +247,7 @@
 					<div id="app-content-info">
 						<table style="text-align:left">
 							<tbody>
+								<tr><th>Name:</th><td></td></tr>
 								<tr><th>ID:</th><td></td></tr>
 								<tr><th>URL:</th><td></td></tr>
 								<tr><th>Framework:</th><td></td></tr>
@@ -284,7 +284,7 @@
 		<!-- END Application Content Page -->	
 		
 		<!-- Create Aliases Page -->
-		<div id="new-alias-page" data-role="page">
+		<div id="new-alias-page" data-role="page" class="prerender">
 			<div data-role="header">
 				<h1>Create New Alias</h1>
 			</div>
@@ -316,10 +316,10 @@
 				</div>
 			</div>
 		</div>		
-		<!-- END Create Aliases Page -->			
-
+		<!-- END Create Aliases Page -->	
+		
 		<!-- Create Embedded Cartridge Page -->
-		<div id="new-embedded-cartridge-page" data-role="page">
+		<div id="new-embedded-cartridge-page" data-role="page" class="prerender">
 			<div data-role="header">
 				<h1>Create Embedded Cartridge</h1>
 			</div>
@@ -356,45 +356,398 @@
 		<!-- END Create Embedded Cartridge Page -->
 
 
+
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
-		<script type="text/javascript" src="js/openshiftmobile-0.1.dev.js"></script>
-		<script type="text/javascript" src="js/osm-login-page.js"></script>
-		<script type="text/javascript" src="js/osm-domain-page.js"></script>
-		<script type="text/javascript" src="js/osm-applications-page.js"></script>
-		<script type="text/javascript" src="js/osm-new-application-page.js"></script>
-		<script type="text/javascript" src="js/osm-app-content-page.js"></script>
-		<script type="text/javascript" src="js/osm-new-alias-page.js"></script>
-		<script type="text/javascript" src="js/osm-new-embedded-cartridge-page.js"></script>
+		<script type="text/javascript" src="js/osm-framework.js"></script>
+		<script type="text/javascript" src="js/osm-operations.js"></script>
 		<script type="text/javascript">
+			var app = OSM_Application();
 
-			//Create a new object and initialize all frameworks
-			//Everything gets added to the GLOBAL space
-			var app = new OpenShiftMobile();
-			app.initialize();
+			$(document).bind('osm-ready',function() {
+				var settings = app.settings.load();
 
-			//CSS Class based binds for whole app
+				$.mobile.changePage('#login-page',{transition:DEFAULT_TRANSITION});
+				populateLoginForm(settings);
+
+				if(settings.autolog) {
+					loginToggleDisableFields();
+					login(app,loginSuccess,loginFail);
+				}
+				$('[data-role="navbar"] a:first').click();
+	
+			});
+
+			$('#login-submit').click(function() {
+				var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
+
+				app.settings.save({
+					username: $('#login-username').val(),
+					password: $('#login-password').val(),
+					autolog: $('#login-auto').prop('checked'),
+					enterprise: ent,
+					baseurl: ent ? $('#login-enterprise-url').val() : OPENSHIFT_ONLINE_URL
+				});
+
+				loginToggleDisableFields();
+				login(app,loginSuccess,loginFail);
+			});
+
+			function populateLoginForm(settings) {
+				$('#login-username').val(settings.username);
+				settings.autolog ? $('#login-password').val(settings.password) : $('#login-password').val();
+				$('#login-enterprise-url').val(settings.baseurl);
+				$('#login-auto').prop('checked',settings.autolog).checkboxradio('refresh');
+				$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
+				$('#login-openshift-type-radio-group-online').prop('checked',!settings.enterprise).checkboxradio('refresh');
+				$("input[name='login-openshift-type-radio-group']").change();
+			}
+
+			function loginToggleDisableFields() {
+				$('#login-container').children().toggleClass('ui-disabled');
+			}
+
+			function loginSuccess(d) {
+				$.mobile.changePage('#domains-page',{transition:DEFAULT_TRANSITION});
+				loginToggleDisableFields();
+				$.mobile.loading('hide');
+			}
+
+			function loginFail() {
+				$('#login-instruct').text('Login Failed').css({'color':'#cc0000'});
+				loginToggleDisableFields();
+				$.mobile.loading('hide');
+			}
+			
 			$('.toLogout').click(function() {
-				app.logout();
+				logout(app);
+			});
+
+			$("input[name='login-openshift-type-radio-group']").change(function(e){
+				var enterprise_url_textbox_div = $("#login-enterprise-url-div");
+			    if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
+    				enterprise_url_textbox_div.show();
+			    } else {
+    				enterprise_url_textbox_div.hide();
+			    }
+			});
+
+			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
+			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
+			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name'},application_type_list_build);
+			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
+			$('#app-content-page').bind('pagebeforeshow',{
+				app:app,
+				app_info_id:'#app-content-info',
+				title_id:'#app-content-title',
+				cartridge_list_id:'#app-cartridge-list',
+				cartridge_empty_list_id:'#app-cartridge-emtpy-list',
+				alias_list_id:'#app-alias-list'
+			},application_content_build);
+
+
+			$('#application-start').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','start','Starting','Started');
+			});
+
+			$('#application-stop').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','stop','Stopping','Stopped');
+			});
+
+			$('#application-restart').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','restart','Restarting','Restarted');
+			});
+
+			$('#application-view').click(function() {
+				$('#application-popupMenu').popup('close');
+				window.open(JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].app_url,'_blank','location=no');
+			});
+	
+			$('#application-delete').click(function() {
+				$('#application-popupMenu').popup('close');
+
+				var app_name = JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].name;
+
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#applications-popup-confirm-dialog'), 
+						'Application Action',
+						'Are you sure you want to delete ' + app_name + '?',
+						function() {
+							$("#application-popupMenu" ).popup( "close" );	
+							$('#application-list').children().addClass('ui-disabled');
+			
+							$.mobile.loading('show', {
+								text : 'Deleting ' + app_name,
+								textVisible : true,
+								theme : 'b',
+							});	
+
+							var support = app.support.is_supported('application.get');
+
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation", app_name + " Deleted Successfully");
+								$('#application-list').children().removeClass('ui-disabled');
+								refresh();
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app_name + " Failed to be Deleted");
+								$('#application-list').children().removeClass('ui-disabled');				
+							});
+						}
+					);
+				},200);
+			});
+
+			$('#create-application-submit').click(function() {
+				var formdata = $('#new-application-form').serialize();
+				$('#create-application-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text: 'Creating ' + $('#new-application-name').val(),
+					textVisible: true,
+					theme: 'b'
+				});
+
+				var support = app.support.is_supported('applications.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url,formdata, function(d) {
+					$.mobile.loading('hide');
+					$('#create-application-container').children().removeClass('ui-disabled');
+					show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation","Application Created Successfully", function(event,ui){
+						history.back();
+					});
+
+				},
+				function(xhr,err,exception) {
+					if(xhr.status == '422') {
+						var json = jQuery.parseJSON(xhr.responseText);
+						var messages = "";
+
+						$.each(json.messages,function(index,value) {
+							if(messages != "") messages += "\n";
+							messages += value.text;
+						});
+
+						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed",messages);
+					} else {
+						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed","The Application Failed to be Created");
+					}
+					$.mobile.loading('hide');
+					$('#create-application-container').children().removeClass('ui-disabled');
+
+				});
+
+				return false;
 			});
 			
-			$('.createapp').click(function() {
-				$(document).trigger('osm-new-application-page');
+			$('#create-embedded-cartridge-submit').click(function() {
+				var formdata = $('#new-embedded-cartridge-form').serialize();
+				$('#create-embedded-cartridge-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Adding ' + $('#new-embedded-cartridge-cartridge option:selected').text(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('cartridges.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-embedded-cartridge-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Embedded Cartridge Creation","Embedded Cartridge Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "422") {
+
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = "";
+
+							$.each(json.messages, function(index,value) {
+								if(messages != "") messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Application Creation Failed",messages);
+						}
+						else {
+							show_alert_dialog($("#new-embedded-cartridge-popup-alert-dialog"),"Embedded Cartridge Creation Failed","The Embedded Cartridge Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-embedded-cartridge-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
 			});
+			
+			$('#create-alias-submit').click(function() {
+				var formdata = $('#new-alias-form').serialize();
+
+				$('#create-alias-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Creating ' + $('#new-alias-id').val(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('aliases.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-alias-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation","Alias Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+						$.mobile.loading('hide');			
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "422") {
+
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = '';
+
+							$.each(json.messages, function(index,value) {
+								if(messages != '') messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation Failed",messages);
+						}
+						else {
+
+							show_alert_dialog($("#new-alias-popup-alert-dialog"),"Alias Creation Failed","The Alias Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-alias-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
+			});
+
+			$('.createapp').click(function() {
+				$.mobile.changePage('#new-application-page',{transition:DEFAULT_TRANSITION});
+			});	
 			
 			$('.toDomains').click(function() {
-				$.mobile.changePage('#domain-page', {
-					transition: 'none',
-					reverse: true
-				});
+				$.mobile.changePage('#domains-page',{transition:DEFAULT_TRANSITION});
+			});	
+			
+			$('.toApplications').click(function() {
+				$.mobile.changePage('#applications-page',{transition:DEFAULT_TRANSITION});
+			});
+			
+			$('#app-content-add').click(function() {
+				$(document).trigger("osm-new-" + $(this).data('app-content-trigger'));
 			});
 
-			$('.toApplications').click(function() {
-				$.mobile.changePage('#applications-page', {
-					transition: 'none',
-					reverse: true
-				});
+			$('#cartridge-start').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','start','Starting','Started');
 			});
+
+			$('#cartridge-stop').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','stop','Stopping','Stopped');
+			});
+
+			$('#cartridge-reload').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','reload','Reloading','Reloaded');
+			});
+
+			$('#cartridge-restart').click(function() {
+				process_cartridge_action(app,'#cartridge-popupMenu','#app-cartridge-list','restart','Restarting','Restarted');
+			});
+
+			$('#cartridge-delete').click(function() {
+
+				$('#cartridge-popupMenu').popup('close');
+
+				var cartridge_name = JSON.parse(localStorage[app.support.is_supported('application.cartridges').url]).data[localStorage['sel_cartridge']].name;
+
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#application-content-popup-confirm-dialog'),
+						'Cartridge Action',
+						'Are you sure you want to delete ' + cartridge_name + '?', 
+						function() {
+
+							$('#app-cartridge-list').children().addClass('ui-disabled');
+
+							$.mobile.loading('show', {
+								text : 'Deleting ' + cartridge_name,
+								textVisible : true,
+								theme : 'b'
+							});
+
+							var support = app.support.is_supported('cartridge.get');
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								show_alert_dialog(
+									$('#application-content-popup-alert-dialog'),
+									'Cartridge Operation',
+									cartridge_name + 'Deleted Successfully'
+								);
+
+								$('#app-cartridge-list').children().removeClass('ui-disabled');
+								refresh();
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+
+								if(xhr.status === '422') {
+									var json = jQuery.parseJSON(xhr.responseText);
+									var messages = '';
+
+									$.each(json.messages,function(index,value) {
+										if(messages != '') {
+											messages += "\n";
+										}
+										messages += value.text;
+									});
+
+									show_alert_dialog($('#application-content-alert-dialog'),'Cartridge Operation Failed',messages);
+								} else {
+									show_alert_dialog($('#application-content-alert-dialog'),'Cartridge Operation Failed',cartridge_name + ' Failed to be Deleted');
+								}
+
+								$('#app-cartridge-list').children().removeClass('ui-disabled');
+
+							});
+						}
+					);
+				},200);
+
+			});
+			
+			
+			$(document).bind('osm-new-app-content-aliases',function() {
+				$.mobile.changePage('#new-alias-page',{transition:DEFAULT_TRANSITION});
+			});
+
+			$(document).bind('osm-new-app-content-cartridges',function() {
+				$.mobile.changePage('#new-embedded-cartridge-page',{transition:DEFAULT_TRANSITION});
+			});
+
 
 
 			$(document).delegate('[data-role="navbar"] a', 'click', function() {
@@ -411,19 +764,6 @@
 					app_content_add_button.data("app-content-trigger",$(this).attr("data-tab"));
 				}				
 			});
-
-			//Ready Event Binding
-			$(document).bind('openshiftready',function() {
-				if(app.isAutolog() === 'true') {
-					$('#login-container').children().toggleClass('ui-disabled');
-					app.login();
-				} else {
-					$('#login-username').val(app.getUsername()||'');
-					$.mobile.changePage('#login-page',{transition:'none'});
-				}
-				$('[data-role="navbar"] a:first').click();
-			});
-
         </script>
 
 		<!-- IMPORTANT: Load this last to make sure all event bindings are set before the events fire -->		
