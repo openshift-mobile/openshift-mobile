@@ -210,7 +210,7 @@ function application_list_build(event) {
 /**
  * Gets the class name to apply a specific logo
  *
- * @param The name of the framework to get the logo for
+ * @param name The name of the framework to get the logo for
  * @return The classname for the logo
  *
  * @author Joey Yore

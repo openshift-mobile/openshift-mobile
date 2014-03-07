@@ -31,8 +31,10 @@ DEFAULT_SETTINGS = {
 /**
  * Generate an object that encompases the whole framework
  *
+ * @class OSM_Application
+ *
  * @return An application object
- * @see OSM_Initializer,OSM_SettingsManager,OSM_REST,OSM_Version
+ * @see OSM_Initializer,OSM_Settings_Manager,OSM_REST,OSM_Support
  *
  * @author Joey Yore
  * @version 1.0
@@ -48,6 +50,8 @@ function OSM_Application() {
 		
 		/**
 		 * Sets the api version for the entire framework to use
+		 *
+		 * @name OSM_Application#set_api_version
 		 *
 		 * @param version The version to set
 		 *
@@ -67,6 +71,8 @@ function OSM_Application() {
  * Function to handle initialization events
  *
  * When everything is ready, the <i>osm-ready</i> event will be fired
+ *
+ * @class OSM_Initializer
  *
  * @author Joey Yore
  * @version 1.0
@@ -139,6 +145,8 @@ function OSM_Initializer() {
 /**
  * Generates an object to handle REST operations
  *
+ * @class OSM_REST
+ *
  * @return The object to use 
  *
  * @author Joey Yore
@@ -187,6 +195,7 @@ function OSM_REST() {
 	return {
 		/**
 		 * Encodes the user credentials to be used to access the OpenShift Server
+		 * @name OSM_REST#set_credentials
 		 *
 		 * @param username The username to encode
 		 * @param password The password to encode
@@ -199,6 +208,8 @@ function OSM_REST() {
 
 		/**
 		 * Sets the accept header info to use the appropriate api version
+		 *
+		 * @name OSM_REST#set_api_version
 		 *
 		 * @param version The version to set
 		 *
@@ -216,6 +227,8 @@ function OSM_REST() {
 		/**
 		 * Executes a GET REST call
 		 *
+		 * @name OSM_REST#GET
+		 *
 		 * @param url The URL Context to access
 		 * @param callback Callback function to handle the response on success
 		 * @param errback Callback function to handle the response on error
@@ -232,6 +245,8 @@ function OSM_REST() {
 		/**
 		 * Executes a POST REST call
 		 *
+		 * @name OSM_REST#POST
+		 *
 		 * @param url The URL Context to access
 		 * @param data The data to post
 		 * @param callback Callback function to handle the response on success
@@ -247,6 +262,8 @@ function OSM_REST() {
 		/**
 		 * Executes a PUT REST call
 		 *
+		 * @name OSM_REST#PUT
+		 *
 		 * @param url The URL Context to access
 		 * @param data The data to post
 		 * @param callback Callback function to handle the response on success
@@ -261,6 +278,8 @@ function OSM_REST() {
 
 		/**
 		 * Executes a DELETE REST call
+		 *
+		 * @name OSM_REST#DELETE
 		 *
 		 * @param url The URL Context to access
 		 * @param callback Callback function to handle the response on success
@@ -278,6 +297,8 @@ function OSM_REST() {
 
 /**
  * Object to handle the storing and retrieval of user settings
+ *
+ * @class OSM_Settings_Manager
  *
  * @return The object to use
  *
@@ -300,6 +321,8 @@ function OSM_Settings_Manager() {
 		/**
 		 * Saves settings passed along in a settings object
 		 *
+		 * @name OSM_Settings_Manager#save
+		 *
 		 * @param settings An object with settings to update or add. Only settings that need to be added/updated need to be present.
 		 *
 		 * @author Joey Yore
@@ -312,6 +335,8 @@ function OSM_Settings_Manager() {
 
 		/**
 		 * Retrieves the stored settings
+		 *
+		 * @name OSM_Settings_Manager#load
 		 *
 		 * @return An object with stored settings
 		 *
@@ -340,7 +365,8 @@ function OSM_Settings_Manager() {
 /**
  * Object to handle app support based on api version
  *
- * @param The versiom to use
+ * @class OSM_Support
+ *
  * @return The instance to use
  *
  * @author Joey Yore
@@ -517,6 +543,7 @@ function OSM_Support() {
 		/**
 		 * Determine if some operation is supported
 		 *
+		 * @name OSM_Support#is_supported
 		 * @param operation The operation to check (ex. applications.list)
 		 * @param index The Index to access for lists (ex. domains, applications, cartridges, etc)
 		 * @return false A support object 
