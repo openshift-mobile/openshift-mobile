@@ -3,7 +3,7 @@
 //Adds the necessary plugins
 
 var pluginlist = [
-    "https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git"
+	'org.apache.cordova.inappbrowser@0.2.3'
 ];
 
 // no need to configure below
