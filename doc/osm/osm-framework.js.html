@@ -1,4 +1,31 @@
-//
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: osm-framework.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: osm-framework.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//
 //Globals 
 //
 
@@ -70,7 +97,7 @@ function OSM_Application() {
 /**
  * Function to handle initialization events
  *
- * When everything is ready, the <i>osm-ready</i> event will be fired
+ * When everything is ready, the &lt;i>osm-ready&lt;/i> event will be fired
  *
  * @class OSM_Initializer
  *
@@ -106,7 +133,7 @@ function OSM_Initializer() {
 		var count = pages.length;
 		
 		function prerender() {
-			if(++i < count) {
+			if(++i &lt; count) {
 				var page = $(pages[i]);
 				page.page();
 				setTimeout(prerender,PRERENDER_DELAY);
@@ -217,7 +244,7 @@ function OSM_REST() {
 		 */
 		set_api_version : function(version) {
 
-			if(version === undefined || version < MIN_SUPPORTED_VERSION || version > MAX_SUPPORTED_VERSION) {
+			if(version === undefined || version &lt; MIN_SUPPORTED_VERSION || version > MAX_SUPPORTED_VERSION) {
 				headers['Accept'] = 'application/json';
 			} else {
 				headers['Accept'] = 'application/json; version=' + version;
@@ -379,7 +406,7 @@ function OSM_Support() {
 	var supported = {
 		domains : {
 			name : {
-				supported: (_version < 1.6) ? false : true,
+				supported: (_version &lt; 1.6) ? false : true,
 			},
 			list: {
 				supported: true,
@@ -387,55 +414,55 @@ function OSM_Support() {
 			},
 			delete : {
 				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				url: (_version &lt; 1.6) ? 'domain/&lt;domain-id>' : 'domain/&lt;domain-name>'
 			},
 			update : {
 				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				url: (_version &lt; 1.6) ? 'domain/&lt;domain-id>' : 'domain/&lt;domain-name>'
 			}
 		},
 		applications : {
 			id : {
-				supported: (_version < 1.6) ? false : true
+				supported: (_version &lt; 1.6) ? false : true
 			},
 			uuid : {
-				supported: (_version < 1.6) ? true : false
+				supported: (_version &lt; 1.6) ? true : false
 			},
 			list: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: 'domain/&lt;domain-name>/applications'
 			},
 			add: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: 'domain/&lt;domain-name>/applications'
 			},
 		},
 		application : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>' : 'application/<application-id>'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>' : 'application/&lt;application-id>'
 			}, 
 			events : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/events' : 'application/<application-id>/events'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/events' : 'application/&lt;application-id>/events'
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/cartridges' : 'application/&lt;application-id>/cartridges'
 			},
 			aliases : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/aliases' : 'application/&lt;application-id>/aliases'
 			}
 		},
 		aliases : {
 			add : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/aliases' : 'application/&lt;application-id>/aliases'
 			},
 			delete : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/alias/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/alias/&lt;alias-name>' : 'applications/&lt;application-id>/aliases/&lt;alias-name>'
 			}
 		},
 		cartridges : {
@@ -445,21 +472,21 @@ function OSM_Support() {
 			},
 			add : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/cartridges' : 'application/&lt;application-id>/cartridges'
 			}
 		},
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/cartridge/&lt;cartridge-name>' : 'application/&lt;application-id>/cartridge/&lt;cartridge-name>'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/cartridge/&lt;cartridge-name>?include=status_messages' : 'application/&lt;application-id>/cartridge/&lt;cartridge-name>?include=status_messages'
 			},
 			events : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
+				url : (_version &lt; 1.6) ? 'domain/&lt;domain-name>/application/&lt;application-name>/cartridge/&lt;cartridge-name>/events' : 'application/&lt;application-id>/cartridge/&lt;cartridge-name>/events'
 			},
 		}
 	}
@@ -515,24 +542,24 @@ function OSM_Support() {
 
 
 		function inject_domain_info(url,domain) {
-			return url.replace('<domain-name>',('name' in domain) ? domain.name : '')
-					  .replace('<domain-id>',('id' in domain) ? domain.id : '')
+			return url.replace('&lt;domain-name>',('name' in domain) ? domain.name : '')
+					  .replace('&lt;domain-id>',('id' in domain) ? domain.id : '')
 			;
 		}
 
 		function inject_application_info(url,application) {
-			return url.replace('<application-name>',('name' in application) ? application.name : '')
-					  .replace('<application-id>',('id' in application) ? application.id : '')
+			return url.replace('&lt;application-name>',('name' in application) ? application.name : '')
+					  .replace('&lt;application-id>',('id' in application) ? application.id : '')
 			;
 		}
 
 		function inject_cartridge_info(url,cartridge) {
-			return url.replace('<cartridge-name>',('name' in cartridge) ? cartridge.name : '')
+			return url.replace('&lt;cartridge-name>',('name' in cartridge) ? cartridge.name : '')
 			;
 		}
 		
 		function inject_alias_info(url,alias) {
-			return url.replace('<alias-name>',('id' in alias) ? alias.id : '')
+			return url.replace('&lt;alias-name>',('id' in alias) ? alias.id : '')
 			;
 		}
 
@@ -553,7 +580,7 @@ function OSM_Support() {
 			var indexes = operation.split('.')
 			var current = supported;
 
-			for(var i=0,l=indexes.length;i<l;++i) {
+			for(var i=0,l=indexes.length;i&lt;l;++i) {
 				current = current[indexes[i]];
 			}
 
@@ -566,3 +593,26 @@ function OSM_Support() {
 	}
 
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="OSM_Application.html">OSM_Application</a></li><li><a href="OSM_Initializer.html">OSM_Initializer</a></li><li><a href="OSM_REST.html">OSM_REST</a></li><li><a href="OSM_Settings_Manager.html">OSM_Settings_Manager</a></li><li><a href="OSM_Support.html">OSM_Support</a></li></ul><h3>Global</h3><ul><li><a href="global.html#application_content_build">application_content_build</a></li><li><a href="global.html#application_list_build">application_list_build</a></li><li><a href="global.html#application_type_list_build">application_type_list_build</a></li><li><a href="global.html#DEFAULT_SETTINGS">DEFAULT_SETTINGS</a></li><li><a href="global.html#DEFAULT_TRANSITION">DEFAULT_TRANSITION</a></li><li><a href="global.html#domain_list_build">domain_list_build</a></li><li><a href="global.html#embedded_cartridge_type_list_build">embedded_cartridge_type_list_build</a></li><li><a href="global.html#get_img">get_img</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#MAX_SUPPORTED_VERSION">MAX_SUPPORTED_VERSION</a></li><li><a href="global.html#MIN_SUPPORTED_VERSION">MIN_SUPPORTED_VERSION</a></li><li><a href="global.html#OPENSHIFT_ONLINE_URL">OPENSHIFT_ONLINE_URL</a></li><li><a href="global.html#PRERENDER_DELAY">PRERENDER_DELAY</a></li><li><a href="global.html#process_application_action">process_application_action</a></li><li><a href="global.html#process_cartridge_action">process_cartridge_action</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#show_alert_dialog">show_alert_dialog</a></li><li><a href="global.html#show_confirm_dialog">show_confirm_dialog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Mar 07 2014 00:03:14 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

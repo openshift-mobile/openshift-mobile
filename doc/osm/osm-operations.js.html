@@ -1,4 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: osm-operations.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: osm-operations.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * Performs the login call
  *
@@ -87,7 +114,7 @@ function domain_list_build(event) {
 		build_domain_list(d.data);
 	});
 
-	if(rdata !== null && typeof rdata.data !== 'undefined') {
+	if(rdata !== null &amp;&amp; typeof rdata.data !== 'undefined') {
 		build_domain_list(rdata.data);
 	}
 
@@ -99,7 +126,7 @@ function domain_list_build(event) {
 
 		list.empty();
 
-		for(var i=0,l=data.length;i<l;++i) {
+		for(var i=0,l=data.length;i&lt;l;++i) {
 			inject(list,data,i);
 		}
 		list.listview('refresh');
@@ -108,15 +135,15 @@ function domain_list_build(event) {
 			var domain = domains[index];
 			var namesup = app.support.is_supported('domains.name');
 
-			var div = $('<div></div>')
-						.html(( namesup.supported ? ('<b>Name: </b>' + domain.name + '<br>') : '') +
-							  '<b>ID: </b>' + domain.id + '<br>' +
-							  '<b>Gear Sizes: </b>' + domain['allowed_gear_sizes'] + '<br>' +
-							  '<b>Creation time: </b>' + domain['creation_time']
+			var div = $('&lt;div>&lt;/div>')
+						.html(( namesup.supported ? ('&lt;b>Name: &lt;/b>' + domain.name + '&lt;br>') : '') +
+							  '&lt;b>ID: &lt;/b>' + domain.id + '&lt;br>' +
+							  '&lt;b>Gear Sizes: &lt;/b>' + domain['allowed_gear_sizes'] + '&lt;br>' +
+							  '&lt;b>Creation time: &lt;/b>' + domain['creation_time']
 			);
 
-			var li = $('<li></li>');
-			var a = $('<a id="domain-' + (domain.name||domain.id) + '"></a>');
+			var li = $('&lt;li>&lt;/li>');
+			var a = $('&lt;a id="domain-' + (domain.name||domain.id) + '">&lt;/a>');
 			
 			a.click(function() {
 				localStorage['sel_domain'] = index;
@@ -163,7 +190,7 @@ function application_list_build(event) {
 		build_application_list(d.data);
 	});
 
-	if(rdata !== null && typeof rdata.data !== 'undefined') {
+	if(rdata !== null &amp;&amp; typeof rdata.data !== 'undefined') {
 		build_application_list(rdata.data);
 	}
 
@@ -175,19 +202,19 @@ function application_list_build(event) {
 
 		list.empty();
 
-		for(var i=0,l=data.length;i<l;++i) {
+		for(var i=0,l=data.length;i&lt;l;++i) {
 			inject(list,data,i);
 		}
 		list.listview('refresh');	
 
 		function inject(list,applications,index) {
 			var application = applications[index];
-			var li = $('<li id="aid-' + application.id + '"></li>');
+			var li = $('&lt;li id="aid-' + application.id + '">&lt;/li>');
 
-			var a1 = $('<a></a>').html('<img class="osm-icon-container ' +
+			var a1 = $('&lt;a>&lt;/a>').html('&lt;img class="osm-icon-container ' +
 										get_img(application.framework.split('-')[0]) +
-										'"/><h3 class="appid">' + application.name + '</h3><p>' + application.app_url + '</p>');
-			var a2 = $('<a href="#application-popupMenu" data-rel="popup"></a>');
+										'"/>&lt;h3 class="appid">' + application.name + '&lt;/h3>&lt;p>' + application.app_url + '&lt;/p>');
+			var a2 = $('&lt;a href="#application-popupMenu" data-rel="popup">&lt;/a>');
 
 			a1.click(function() {
 				localStorage['sel_application'] = index;
@@ -267,7 +294,7 @@ function application_content_build(event) {
 		build_page(d.data);
 	});
 
-	if(rdata !== null && typeof rdata.data !== 'undefined') {
+	if(rdata !== null &amp;&amp; typeof rdata.data !== 'undefined') {
 		build_page(rdata.data);
 	}
 
@@ -317,7 +344,7 @@ function application_content_build(event) {
 				build_cartridge_list(d.data);
 			});
 
-			if(rdata !== null && typeof rdata !== 'undefined') {
+			if(rdata !== null &amp;&amp; typeof rdata !== 'undefined') {
 				build_cartridge_list(rdata.data);
 			}
 
@@ -332,7 +359,7 @@ function application_content_build(event) {
 					$(cartridge_empty_list_id).hide();
 				}
 
-				for(var i=0;i<l;++i) {
+				for(var i=0;i&lt;l;++i) {
 					inject(ul,cdata,i);
 				}
 				ul.listview('refresh');
@@ -340,17 +367,17 @@ function application_content_build(event) {
 				function inject(list,cartridges,index) {
 					var c = cartridges[index];
 
-					var li = $('<li></li>');
+					var li = $('&lt;li>&lt;/li>');
 					var status_id = data.name + '-' + c.name.replace('.','-') + '-status';
-						var a1 = $('<a></a>').html(
-						'<img class="osm-icon-container ' + get_img(c.name.split('-')[0]) + 
-						'"/><h3>' + c.display_name + '</h3><p><b>Status:</b> <span id="' + status_id + '">Pending...</span><br><b>Gears:</b> ' +
+						var a1 = $('&lt;a>&lt;/a>').html(
+						'&lt;img class="osm-icon-container ' + get_img(c.name.split('-')[0]) + 
+						'"/>&lt;h3>' + c.display_name + '&lt;/h3>&lt;p>&lt;b>Status:&lt;/b> &lt;span id="' + status_id + '">Pending...&lt;/span>&lt;br>&lt;b>Gears:&lt;/b> ' +
 						c.current_scale + ' (min: ' + c.scales_from + ', max: ' + 
-						c.scales_to + ')</p>'
+						c.scales_to + ')&lt;/p>'
 						
 					);
 
-					var a2 = $('<a href="#cartridge-popupMenu" data-rel="popup"></a>');
+					var a2 = $('&lt;a href="#cartridge-popupMenu" data-rel="popup">&lt;/a>');
 
 					a1.click(function() {
 						localStorage['sel_cartridge'] = index;
@@ -382,7 +409,7 @@ function application_content_build(event) {
 							helper(d);
 						});
 
-						if(rdata !== null && typeof rdata !== 'undefined') {
+						if(rdata !== null &amp;&amp; typeof rdata !== 'undefined') {
 							helper(rdata);
 						}
 
@@ -410,7 +437,7 @@ function application_content_build(event) {
 				build_alias_list(d);
 			});
 
-			if(rdata !== null && typeof rdata !== 'undefined') {
+			if(rdata !== null &amp;&amp; typeof rdata !== 'undefined') {
 				build_alias_list(rdata);
 			}
 
@@ -426,7 +453,7 @@ function application_content_build(event) {
 					$(alias_empty_list_id).hide();
 				}
 
-				for(var i=0;i<l;++i) {
+				for(var i=0;i&lt;l;++i) {
 					inject(ul,data,i);
 				}
 				ul.listview('refresh');
@@ -434,9 +461,9 @@ function application_content_build(event) {
 				function inject(list,aliases,index) {
 					var alias = aliases[index];
 
-					var li = $('<li></li>');
-					var a1 = $('<a></a>').html('<h3>' + alias.id + '</h3');
-					var a2 = $('<a href="#" id="#alias-delete"></a>');
+					var li = $('&lt;li>&lt;/li>');
+					var a1 = $('&lt;a>&lt;/a>').html('&lt;h3>' + alias.id + '&lt;/h3');
+					var a2 = $('&lt;a href="#" id="#alias-delete">&lt;/a>');
 
 					a1.click(function() {
 						localStorage['sel_alias'] = index;
@@ -635,7 +662,7 @@ function application_type_list_build(event, data) {
 	// Check to make sure entry is not from cartridge dialog
 	var prevPage = data.prevPage.attr('id');
 
-	if(prevPage != null && prevPage != 'new-application-cartridge-dialog') {
+	if(prevPage != null &amp;&amp; prevPage != 'new-application-cartridge-dialog') {
 
 	
 		var list_id = event.data.list_id;
@@ -659,7 +686,7 @@ function application_type_list_build(event, data) {
 			build_application_type_list(d.data);
 		});
 	
-		if(rdata !== null && typeof rdata.data !== 'undefined') {
+		if(rdata !== null &amp;&amp; typeof rdata.data !== 'undefined') {
 			build_application_type_list(rdata.data);
 		}
 	}
@@ -676,7 +703,7 @@ function application_type_list_build(event, data) {
 
 		var osm_cartridges = [];
 
-		for(var i=0,l=data.length;i<l;++i) {
+		for(var i=0,l=data.length;i&lt;l;++i) {
 			var cartridge = data[i];
 			if(cartridge.type === "standalone") {
 				osm_cartridges.push([cartridge.name,cartridge.display_name]);
@@ -684,13 +711,13 @@ function application_type_list_build(event, data) {
 		}
 
 		osm_cartridges.sort(function(a,b) {
-			if(a[1] < b[1]) return -1;
+			if(a[1] &lt; b[1]) return -1;
 			if(a[1] > b[1]) return 1;
 			return 0;
 		});
 		
-		for(var i=0,l=osm_cartridges.length;i<l;++i) {
-			list.append('<option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '</option>');
+		for(var i=0,l=osm_cartridges.length;i&lt;l;++i) {
+			list.append('&lt;option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '&lt;/option>');
 		}
 
 		list.trigger('change');
@@ -743,7 +770,7 @@ function embedded_cartridge_type_list_build(event, data) {
 	// Check to make sure entry is not from cartridge dialog
 	var prevPage = data.prevPage.attr('id');
 
-	if(prevPage != null && prevPage != 'new-embedded-cartridge-cartridge-dialog') {
+	if(prevPage != null &amp;&amp; prevPage != 'new-embedded-cartridge-cartridge-dialog') {
 	
 		var list_id = event.data.list_id;
 		var app = event.data.app;
@@ -765,7 +792,7 @@ function embedded_cartridge_type_list_build(event, data) {
 			build_embedded_cartridge_type_list(d.data);
 		});
 	
-		if(rdata !== null && typeof rdata.data !== 'undefined') {
+		if(rdata !== null &amp;&amp; typeof rdata.data !== 'undefined') {
 			build_embedded_cartridge_type_list(rdata.data);
 		}
 	}
@@ -781,7 +808,7 @@ function embedded_cartridge_type_list_build(event, data) {
 
 		var osm_cartridges = [];
 
-		for(var i=0,l=data.length;i<l;++i) {
+		for(var i=0,l=data.length;i&lt;l;++i) {
 			var cartridge = data[i];
 			if(cartridge.type === "embedded") {
 				osm_cartridges.push([cartridge.name,cartridge.display_name]);
@@ -789,13 +816,13 @@ function embedded_cartridge_type_list_build(event, data) {
 		}
 
 		osm_cartridges.sort(function(a,b) {
-			if(a[1] < b[1]) return -1;
+			if(a[1] &lt; b[1]) return -1;
 			if(a[1] > b[1]) return 1;
 			return 0;
 		});
 		
-		for(var i=0,l=osm_cartridges.length;i<l;++i) {
-			list.append('<option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '</option>');
+		for(var i=0,l=osm_cartridges.length;i&lt;l;++i) {
+			list.append('&lt;option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '&lt;/option>');
 		}
 
 		list.trigger('change');
@@ -861,3 +888,26 @@ function show_confirm_dialog(popup_object,header,content,yes_callback, no_callba
 	no_button.unbind();
 	no_button.bind("click", no_button_callback);
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="OSM_Application.html">OSM_Application</a></li><li><a href="OSM_Initializer.html">OSM_Initializer</a></li><li><a href="OSM_REST.html">OSM_REST</a></li><li><a href="OSM_Settings_Manager.html">OSM_Settings_Manager</a></li><li><a href="OSM_Support.html">OSM_Support</a></li></ul><h3>Global</h3><ul><li><a href="global.html#application_content_build">application_content_build</a></li><li><a href="global.html#application_list_build">application_list_build</a></li><li><a href="global.html#application_type_list_build">application_type_list_build</a></li><li><a href="global.html#DEFAULT_SETTINGS">DEFAULT_SETTINGS</a></li><li><a href="global.html#DEFAULT_TRANSITION">DEFAULT_TRANSITION</a></li><li><a href="global.html#domain_list_build">domain_list_build</a></li><li><a href="global.html#embedded_cartridge_type_list_build">embedded_cartridge_type_list_build</a></li><li><a href="global.html#get_img">get_img</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#MAX_SUPPORTED_VERSION">MAX_SUPPORTED_VERSION</a></li><li><a href="global.html#MIN_SUPPORTED_VERSION">MIN_SUPPORTED_VERSION</a></li><li><a href="global.html#OPENSHIFT_ONLINE_URL">OPENSHIFT_ONLINE_URL</a></li><li><a href="global.html#PRERENDER_DELAY">PRERENDER_DELAY</a></li><li><a href="global.html#process_application_action">process_application_action</a></li><li><a href="global.html#process_cartridge_action">process_cartridge_action</a></li><li><a href="global.html#refresh">refresh</a></li><li><a href="global.html#show_alert_dialog">show_alert_dialog</a></li><li><a href="global.html#show_confirm_dialog">show_confirm_dialog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Mar 07 2014 00:03:14 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
