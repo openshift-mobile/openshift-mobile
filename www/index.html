@@ -176,6 +176,15 @@
 							<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
 							</select>
 						</div>
+						<div data-role="ui-field-contain">
+							<fieldset data-role="controlgroup">
+        						<input type="checkbox" id="new-application-git" data-theme="a" />
+        						<label for="new-application-git">Source Code</label>
+        						<div id="new-application-git-container">
+        						<input type="text" name="initial_git_url" id="new-application-git-url" value="" placeholder="Source Code URL"  data-theme="a" />
+        						</div>
+        					</fieldset>		
+						</div>
 						<div data-role="fieldcontain">
 							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
 							<button id="create-application-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
@@ -431,10 +440,22 @@
     				enterprise_url_textbox_div.hide();
 			    }
 			});
+			
+			$("input[id='new-application-git']").change(function(e){
+				var git_container = $('#new-application-git-container');
+				var git_text = $('#new-application-git-url');
+				if($(this).prop('checked')) {
+					git_container.show();
+				}
+				else {
+					git_container.hide();
+					git_text.val('');
+				}
+			});
 
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
 			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
-			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name'},application_type_list_build);
+			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container'},application_type_list_build);
 			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
 			$('#app-content-page').bind('pagebeforeshow',{
 				app:app,

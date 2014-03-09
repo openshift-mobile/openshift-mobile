@@ -641,8 +641,11 @@ function application_type_list_build(event, data) {
 		var list_id = event.data.list_id;
 		var app = event.data.app;
 		var name_id = event.data.name_id;
+		var git = event.data.git;
+		var git_container = event.data.git_container;
+		var git_url = event.data.git_url;
 	
-		if(list_id === undefined || app === undefined || name_id === undefined) {
+		if(list_id === undefined || app === undefined || name_id === undefined || git === undefined || git_container === undefined || git_url === undefined) {
 			return false;
 		}
 	
@@ -671,6 +674,10 @@ function application_type_list_build(event, data) {
 		}
 
 		$(name_id).val('');
+		$(git_url).val('');
+		$(git_container).hide();
+		$(git).prop("checked", false);
+		$(git).checkboxradio("refresh");
 		list.empty();
 		list.trigger('change');
 
