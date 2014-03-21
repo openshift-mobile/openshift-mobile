@@ -107,24 +107,24 @@ function domain_list_build(event) {
 		function inject(list,domains,index) {
 			var domain = domains[index];
 			var namesup = app.support.is_supported('domains.name');
-
-			var div = $('<div></div>')
-						.html(( namesup.supported ? ('<b>Name: </b>' + domain.name + '<br>') : '') +
-							  '<b>ID: </b>' + domain.id + '<br>' +
-							  '<b>Gear Sizes: </b>' + domain['allowed_gear_sizes'] + '<br>' +
-							  '<b>Creation time: </b>' + domain['creation_time']
-			);
-
-			var li = $('<li></li>');
-			var a = $('<a id="domain-' + (domain.name||domain.id) + '"></a>');
+			var name = namesup.supported ? domain.name : domain.id;
 			
-			a.click(function() {
-				localStorage['sel_domain'] = index;
-				$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
+			var li = $('<li id="did-' + domain.id + '"></li>');
+			var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + name + '</h2>' +
+					'<p>Available Gears: ' + domain.available_gears + '</p>');
+			var a2 = $('<a href="#domain-popupMenu" data-rel="popup"></a>');
+			
+			a1.click(function() {
+			localStorage['sel_domain'] = index;
+			$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
 			});
-
-			a.append(div);
-			li.append(a);
+			
+			a2.click(function() {
+			localStorage['sel_domain'] = index;
+			});
+			
+			li.append(a1);
+			li.append(a2);
 			list.append(li);
 		}
 
@@ -610,6 +610,34 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 		list.children().removeClass('ui-disabled');
 	});
 
+}
+
+/**
+ * Initialize the Create Alias Page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function new_alias_init(event) {
+	var alias_name = $(event.data.alias_name_id);
+	alias_name.val("");
+}
+
+/**
+ * Initialize the Create Domain Page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function new_domain_init(event) {
+
+	var domain_name = $(event.data.domain_name_id);
+	
+	domain_name.val("");
 }
 
 

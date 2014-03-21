@@ -386,12 +386,16 @@ function OSM_Support() {
 				url: 'domains'
 			},
 			delete : {
-				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				supported: true,
+				url: 'domain/<domain-name>'
 			},
 			update : {
 				supported: false,
 				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+			}, 
+			add : {
+				supported: true,
+				url : 'domains'
 			}
 		},
 		applications : {
