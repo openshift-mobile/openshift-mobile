@@ -124,19 +124,17 @@ function OSM_Initializer() {
 	}
 	
 	function backButtonControl(event) {
-		
-		var exitApplicationPages = ["login-page","domains-page"];
-		
-		var found = $.inArray($.mobile.activePage.attr('id'), exitApplicationPages);
 
-		if(found >= 0) {
+		var prevPageUrl = $.mobile.urlHistory.getPrev();
+		
+		if($.mobile.activePage.attr("id") == "login-page" || (typeof prevPage != undefined && prevPageUrl.hash == "#login-page")) {
 			event.preventDefault();
             navigator.app.exitApp();
 		}
 		else {
 			history.back();
 		}
-		
+
 	}
 
 }
@@ -150,6 +148,7 @@ function OSM_Initializer() {
  * @return The object to use 
  *
  * @author Joey Yore
+ * @author Andrew Block
  * @version 1.0
  */
 function OSM_REST() {
@@ -157,8 +156,17 @@ function OSM_REST() {
 	var headers = {
 		'Accept': 'application/json'
 	};
-
-
+	
+	function updateQueryStringParameter(uri, key, value) {
+		  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+		  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+		  if (uri.match(re)) {
+		    return uri.replace(re, '$1' + key + "=" + value + '$2');
+		  }
+		  else {
+		    return uri + separator + key + "=" + value;
+		  }
+	}
 
 	function operation_base(operation,url,data,callback,errback,precall) {
 
@@ -239,7 +247,10 @@ function OSM_REST() {
 		 * @author Joey Yore
 		 */
 		GET : function(url,callback,errback,precall) {
-			return operation_base('GET',url,null,callback,errback,precall);
+			
+			var add_nolink_url = updateQueryStringParameter(url,"nolinks","true");
+			
+			return operation_base('GET',add_nolink_url,null,callback,errback,precall);
 		},
 
 		/**
