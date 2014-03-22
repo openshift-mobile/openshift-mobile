@@ -292,7 +292,7 @@
 			
 			<div data-role="header">
 				<a href="#app-content-nav-panel" data-icon="bars" data-iconpos="notext"></a>
-				<h1 id="app-content-title">Application Content</h1>
+				<h1 id="app-content-title"></h1>
 				<a href="#" id="app-content-add" data-icon="plus" data-iconpos="notext"></a>
 				<div data-role="navbar">
 					<ul>
@@ -366,7 +366,7 @@
 						</div>
 					</div>
 					<div id="app-content-aliases">
-						<div id="alias-alias-empty-list" data-role="fieldcontain" class="no-list-content">
+						<div id="app-alias-empty-list" data-role="fieldcontain" class="no-list-content">
 							<h3>No Aliases Exist</h3>
 						</div>						
 						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
@@ -712,7 +712,6 @@
 					},
 					function(jqxhr,errType,exception) {
 						$.mobile.loading('hide');		
-						console.log("INSIDE!");
 
 						// Check to see if messages are returned from OpenShift
 						if(jqxhr.status == "409" || jqxhr.status === "422") {

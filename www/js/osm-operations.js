@@ -118,8 +118,11 @@ function domain_list_build(event) {
 			var namesup = app.support.is_supported('domains.name');
 			var name = namesup.supported ? domain.name : domain.id;
 			
+			var domain_app_count_id = "domain-apps-" + domain.id;
+			
 			var li = $('<li id="did-' + domain.id + '"></li>');
 			var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + name + '</h2>' +
+					'<p>Applications: <span id="'+domain_app_count_id +'"></span></p>' +
 					'<p>Available Gears: ' + domain.available_gears + '</p>');
 			var a2 = $('<a href="#domain-popupMenu" data-rel="popup"></a>');
 			
@@ -135,6 +138,35 @@ function domain_list_build(event) {
 			li.append(a1);
 			li.append(a2);
 			list.append(li);
+
+			update_domain_apps(index);
+			
+			
+			function update_domain_apps(index) {
+				localStorage['sel_domain'] = index;
+
+				var support = app.support.is_supported('applications.list');
+
+				if(!support.supported) {
+					return false;
+				}
+
+				var rdata = app.rest.GET(support.url,function(d) {
+					helper(d);
+				});
+
+				if(rdata !== null && typeof rdata !== 'undefined') {
+					helper(rdata);
+				}
+
+
+				function helper(data) {
+					var msg = data.data.length;
+					var node = $('#' + domain_app_count_id);
+					node.text(msg);
+					
+				}
+			}
 		}
 
 	}
@@ -159,6 +191,9 @@ function application_list_build(event) {
 	if(list_id === undefined || app === undefined) {
 		return false;
 	}
+	
+	// Trigger info tab
+	$('[data-role="navbar"] a:first').click();
 
 	var list = $(list_id);
 	var empty_list = $(empty_list_id);

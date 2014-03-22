@@ -477,7 +477,7 @@ function OSM_Support() {
 
 				object.url = inject_domain_info(object.url,domain);
 
-				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications']||'{}');
+				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications?nolinks=true']||'{}');
 
 				if('data' in application) {
 					application = application.data[localStorage['sel_application']];
