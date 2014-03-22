@@ -72,15 +72,17 @@ function logout(app,page) {
  */
 function domain_list_build(event) {
 	var list_id = event.data.list_id;
+	var empty_list_id = event.data.empty_list_id;
 	var app = event.data.app;
 	var app_page_id = event.data.app_page_id;
 
 
-	if(list_id === undefined || app === undefined) {
+	if(empty_list_id === undefined || list_id === undefined || app === undefined) {
 		return false;
 	}
 
 	var list = $(list_id);
+	var empty_list = $(empty_list_id);
 	var version = app.settings.load().version;
 
 	var rdata = app.rest.GET('domains',function(d) {
@@ -98,6 +100,13 @@ function domain_list_build(event) {
 		}
 
 		list.empty();
+		
+		if(data.length == 0) {
+			empty_list.show();
+		}
+		else {
+			empty_list.hide();
+		}
 
 		for(var i=0,l=data.length;i<l;++i) {
 			inject(list,data,i);
@@ -142,6 +151,7 @@ function domain_list_build(event) {
  */
 function application_list_build(event) {
 	var list_id = event.data.list_id;
+	var empty_list_id = event.data.empty_list_id;
 	var app = event.data.app;
 	var app_page_id = event.data.app_page_id;
 
@@ -151,6 +161,7 @@ function application_list_build(event) {
 	}
 
 	var list = $(list_id);
+	var empty_list = $(empty_list_id);
 	var version = app.settings.load().version;
 
 	var support = app.support.is_supported('applications.list');
@@ -174,6 +185,13 @@ function application_list_build(event) {
 		}
 
 		list.empty();
+		
+		if(data.length == 0) {
+			empty_list.show();
+		}
+		else {
+			empty_list.hide();
+		}
 
 		for(var i=0,l=data.length;i<l;++i) {
 			inject(list,data,i);
@@ -255,7 +273,6 @@ function application_content_build(event) {
 	var cartridge_empty_list_id = event.data.cartridge_empty_list_id;
 	var alias_list_id = event.data.alias_list_id;
 	var alias_empty_list_id = event.data.alias_empty_list_id;
-
 
 	var support = app.support.is_supported('application.get');
 

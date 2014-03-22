@@ -38,9 +38,12 @@
 							<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-online" value="online" checked="checked" />
 						     	<label for="login-openshift-type-radio-group-online">OpenShift Online</label>
 						
-						     	<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
-						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label>
+						     	<!--input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
+						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label-->
 						</fieldset>
+					</div>
+					<div data-role="fieldcontain" id="login-openshift-origin-create-div">
+						<a href="https://www.openshift.com/app/account/new">Create an Account</a>
 					</div>
 					<div data-role="fieldcontain" id="login-enterprise-url-div">
 						<input id="login-enterprise-url" type="text" value="" placeholder="OpenShift Enterprise Rest Url"/>
@@ -106,7 +109,9 @@
 
 
 			<div data-role="content">
-				<div id="domain-emtpy-list" style="display:none;text-align:center">No Domains Exist</div>
+				<div id="domains-empty-list" data-role="fieldcontain" class="no-list-content">
+					<h3>No Domains Exist</h3>
+				</div>
 				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
 			</div>
 
@@ -215,7 +220,9 @@
 					</div>
 				</div>
 				<!-- End Confirmation Dialog -->
-				<div id="application-emtpy-list" style="display:none;text-align:center">No Applications Exist</div>
+				<div id="applications-empty-list" data-role="fieldcontain" class="no-list-content">
+					<h3>No Applications Exist</h3>
+				</div>
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
 		</div>
@@ -359,7 +366,9 @@
 						</div>
 					</div>
 					<div id="app-content-aliases">
-						<div id="app-alias-emtpy-list" style="display:none;text-align:center">No Aliases Exist</div>
+						<div id="alias-alias-empty-list" data-role="fieldcontain" class="no-list-content">
+							<h3>No Aliases Exist</h3>
+						</div>						
 						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
 					</div>
 				</div>
@@ -463,8 +472,10 @@
 			});
 
 			$('#login-submit').click(function() {
-				var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
-
+				// #74 - Removed OpenShift Enterprise Option
+				//var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
+				var ent = false;
+				
 				app.settings.save({
 					username: $('#login-username').val(),
 					password: $('#login-password').val(),
@@ -482,7 +493,9 @@
 				settings.autolog ? $('#login-password').val(settings.password) : $('#login-password').val();
 				$('#login-enterprise-url').val(settings.baseurl);
 				$('#login-auto').prop('checked',settings.autolog).checkboxradio('refresh');
-				$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
+				
+				// #74 - Removed OpenShift Enterprise Option
+				//$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
 				$('#login-openshift-type-radio-group-online').prop('checked',!settings.enterprise).checkboxradio('refresh');
 				$("input[name='login-openshift-type-radio-group']").change();
 			}
@@ -509,11 +522,17 @@
 
 			$("input[name='login-openshift-type-radio-group']").change(function(e){
 				var enterprise_url_textbox_div = $("#login-enterprise-url-div");
-			    if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
+			    
+				enterprise_url_textbox_div.hide();
+				// #74 Removed OpensShift Enterprise option
+				
+				/*
+				if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
     				enterprise_url_textbox_div.show();
 			    } else {
     				enterprise_url_textbox_div.hide();
 			    }
+				*/
 			});
 			
 			$("input[id='new-application-git']").change(function(e){
@@ -528,8 +547,8 @@
 				}
 			});
 
-			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
-			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
+			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',empty_list_id:'#domains-empty-list',app_page_id:"#applications-page"},domain_list_build);
+			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',empty_list_id:'#applications-empty-list',app_page_id:'#app-content-page'},application_list_build);
 			$('#new-alias-page').bind('pagebeforeshow',{app:app,alias_name_id:'#new-alias-id'},new_alias_init);
 			$('#new-domain-page').bind('pagebeforeshow',{app:app,domain_name_id:'#new-domain-id'},new_domain_init);
 			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container'},application_type_list_build);
@@ -540,7 +559,8 @@
 				title_id:'#app-content-title',
 				cartridge_list_id:'#app-cartridge-list',
 				cartridge_empty_list_id:'#app-cartridge-emtpy-list',
-				alias_list_id:'#app-alias-list'
+				alias_list_id:'#app-alias-list',
+				alias_empty_list_id : '#app-alias-empty-list'
 			},application_content_build);
 
 
@@ -691,10 +711,11 @@
 						});
 					},
 					function(jqxhr,errType,exception) {
-						$.mobile.loading('hide');			
-						// Check to see if messages are returned from OpenShift
-						if(jqxhr.status == "409") {
+						$.mobile.loading('hide');		
+						console.log("INSIDE!");
 
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "409" || jqxhr.status === "422") {
 							var json = jQuery.parseJSON(jqxhr.responseText);
 							var messages = '';
 

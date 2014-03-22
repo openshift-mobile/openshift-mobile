@@ -157,16 +157,6 @@ function OSM_REST() {
 		'Accept': 'application/json'
 	};
 	
-	function updateQueryStringParameter(uri, key, value) {
-		  var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-		  var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-		  if (uri.match(re)) {
-		    return uri.replace(re, '$1' + key + "=" + value + '$2');
-		  }
-		  else {
-		    return uri + separator + key + "=" + value;
-		  }
-	}
 
 	function operation_base(operation,url,data,callback,errback,precall) {
 
@@ -247,10 +237,8 @@ function OSM_REST() {
 		 * @author Joey Yore
 		 */
 		GET : function(url,callback,errback,precall) {
-			
-			var add_nolink_url = updateQueryStringParameter(url,"nolinks","true");
-			
-			return operation_base('GET',add_nolink_url,null,callback,errback,precall);
+						
+			return operation_base('GET',url,null,callback,errback,precall);
 		},
 
 		/**
@@ -418,7 +406,7 @@ function OSM_Support() {
 			},
 			list: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: 'domain/<domain-name>/applications?nolinks=true'
 			},
 			add: {
 				supported: true,
@@ -428,7 +416,7 @@ function OSM_Support() {
 		application : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>' : 'application/<application-id>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>?nolinks=true' : 'application/<application-id>?nolinks=true'
 			}, 
 			events : {
 				supported : true,
@@ -436,11 +424,11 @@ function OSM_Support() {
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges?nolinks=true' : 'application/<application-id>/cartridges?nolinks=true'
 			},
 			aliases : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases?nolinks=true' : 'application/<application-id>/aliases?nolinks=true'
 			}
 		},
 		aliases : {
@@ -456,7 +444,7 @@ function OSM_Support() {
 		cartridges : {
 			get : {
 				supported : true,
-				url : 'cartridges'
+				url : 'cartridges?nolinks=true'
 			},
 			add : {
 				supported : true,
@@ -466,11 +454,11 @@ function OSM_Support() {
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?nolinks=true'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages&nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages&nolinks=true'
 			},
 			events : {
 				supported : true,
