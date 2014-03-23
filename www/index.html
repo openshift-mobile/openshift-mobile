@@ -43,7 +43,7 @@
 						</fieldset>
 					</div>
 					<div data-role="fieldcontain" id="login-openshift-origin-create-div">
-						<a href="https://www.openshift.com/app/account/new">Create an Account</a>
+						<a href="#" id="create-account">Create an Account</a>
 					</div>
 					<div data-role="fieldcontain" id="login-enterprise-url-div">
 						<input id="login-enterprise-url" type="text" value="" placeholder="OpenShift Enterprise Rest Url"/>
@@ -627,6 +627,10 @@
 						}
 					);
 				},200);
+			});
+			
+			$('#create-account').click(function() {
+				window.open('https://www.openshift.com/app/account/new','_blank','location=no');
 			});
 
 			
