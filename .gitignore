@@ -8,7 +8,7 @@ www/rest/*
 .settings
 *~
 .*.sw*
-ripple_testing
+node_modules
 
 # Binaries
 *.apk

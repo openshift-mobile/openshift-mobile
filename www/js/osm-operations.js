@@ -72,15 +72,17 @@ function logout(app,page) {
  */
 function domain_list_build(event) {
 	var list_id = event.data.list_id;
+	var empty_list_id = event.data.empty_list_id;
 	var app = event.data.app;
 	var app_page_id = event.data.app_page_id;
 
 
-	if(list_id === undefined || app === undefined) {
+	if(empty_list_id === undefined || list_id === undefined || app === undefined) {
 		return false;
 	}
 
 	var list = $(list_id);
+	var empty_list = $(empty_list_id);
 	var version = app.settings.load().version;
 
 	var rdata = app.rest.GET('domains',function(d) {
@@ -98,6 +100,13 @@ function domain_list_build(event) {
 		}
 
 		list.empty();
+		
+		if(data.length == 0) {
+			empty_list.show();
+		}
+		else {
+			empty_list.hide();
+		}
 
 		for(var i=0,l=data.length;i<l;++i) {
 			inject(list,data,i);
@@ -107,25 +116,57 @@ function domain_list_build(event) {
 		function inject(list,domains,index) {
 			var domain = domains[index];
 			var namesup = app.support.is_supported('domains.name');
-
-			var div = $('<div></div>')
-						.html(( namesup.supported ? ('<b>Name: </b>' + domain.name + '<br>') : '') +
-							  '<b>ID: </b>' + domain.id + '<br>' +
-							  '<b>Gear Sizes: </b>' + domain['allowed_gear_sizes'] + '<br>' +
-							  '<b>Creation time: </b>' + domain['creation_time']
-			);
-
-			var li = $('<li></li>');
-			var a = $('<a id="domain-' + (domain.name||domain.id) + '"></a>');
+			var name = namesup.supported ? domain.name : domain.id;
 			
-			a.click(function() {
-				localStorage['sel_domain'] = index;
-				$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
+			var domain_app_count_id = "domain-apps-" + domain.id;
+			
+			var li = $('<li id="did-' + domain.id + '"></li>');
+			var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + name + '</h2>' +
+					'<p>Applications: <span id="'+domain_app_count_id +'"></span></p>' +
+					'<p>Available Gears: ' + domain.available_gears + '</p>');
+			var a2 = $('<a href="#domain-popupMenu" data-rel="popup"></a>');
+			
+			a1.click(function() {
+			localStorage['sel_domain'] = index;
+			$.mobile.changePage(app_page_id,{transition:DEFAULT_TRANSITION});
 			});
-
-			a.append(div);
-			li.append(a);
+			
+			a2.click(function() {
+			localStorage['sel_domain'] = index;
+			});
+			
+			li.append(a1);
+			li.append(a2);
 			list.append(li);
+
+			update_domain_apps(index);
+			
+			
+			function update_domain_apps(index) {
+				localStorage['sel_domain'] = index;
+
+				var support = app.support.is_supported('applications.list');
+
+				if(!support.supported) {
+					return false;
+				}
+
+				var rdata = app.rest.GET(support.url,function(d) {
+					helper(d);
+				});
+
+				if(rdata !== null && typeof rdata !== 'undefined') {
+					helper(rdata);
+				}
+
+
+				function helper(data) {
+					var msg = data.data.length;
+					var node = $('#' + domain_app_count_id);
+					node.text(msg);
+					
+				}
+			}
 		}
 
 	}
@@ -142,6 +183,7 @@ function domain_list_build(event) {
  */
 function application_list_build(event) {
 	var list_id = event.data.list_id;
+	var empty_list_id = event.data.empty_list_id;
 	var app = event.data.app;
 	var app_page_id = event.data.app_page_id;
 
@@ -149,8 +191,12 @@ function application_list_build(event) {
 	if(list_id === undefined || app === undefined) {
 		return false;
 	}
+	
+	// Trigger info tab
+	$('[data-role="navbar"] a:first').click();
 
 	var list = $(list_id);
+	var empty_list = $(empty_list_id);
 	var version = app.settings.load().version;
 
 	var support = app.support.is_supported('applications.list');
@@ -174,6 +220,13 @@ function application_list_build(event) {
 		}
 
 		list.empty();
+		
+		if(data.length == 0) {
+			empty_list.show();
+		}
+		else {
+			empty_list.hide();
+		}
 
 		for(var i=0,l=data.length;i<l;++i) {
 			inject(list,data,i);
@@ -255,7 +308,6 @@ function application_content_build(event) {
 	var cartridge_empty_list_id = event.data.cartridge_empty_list_id;
 	var alias_list_id = event.data.alias_list_id;
 	var alias_empty_list_id = event.data.alias_empty_list_id;
-
 
 	var support = app.support.is_supported('application.get');
 
@@ -610,6 +662,34 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 		list.children().removeClass('ui-disabled');
 	});
 
+}
+
+/**
+ * Initialize the Create Alias Page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function new_alias_init(event) {
+	var alias_name = $(event.data.alias_name_id);
+	alias_name.val("");
+}
+
+/**
+ * Initialize the Create Domain Page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @version 1.0
+ */
+function new_domain_init(event) {
+
+	var domain_name = $(event.data.domain_name_id);
+	
+	domain_name.val("");
 }
 
 

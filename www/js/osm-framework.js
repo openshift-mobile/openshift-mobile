@@ -124,19 +124,17 @@ function OSM_Initializer() {
 	}
 	
 	function backButtonControl(event) {
-		
-		var exitApplicationPages = ["login-page","domains-page"];
-		
-		var found = $.inArray($.mobile.activePage.attr('id'), exitApplicationPages);
 
-		if(found >= 0) {
+		var prevPageUrl = $.mobile.urlHistory.getPrev();
+		
+		if($.mobile.activePage.attr("id") == "login-page" || (typeof prevPage != undefined && prevPageUrl.hash == "#login-page")) {
 			event.preventDefault();
             navigator.app.exitApp();
 		}
 		else {
 			history.back();
 		}
-		
+
 	}
 
 }
@@ -150,6 +148,7 @@ function OSM_Initializer() {
  * @return The object to use 
  *
  * @author Joey Yore
+ * @author Andrew Block
  * @version 1.0
  */
 function OSM_REST() {
@@ -157,8 +156,7 @@ function OSM_REST() {
 	var headers = {
 		'Accept': 'application/json'
 	};
-
-
+	
 
 	function operation_base(operation,url,data,callback,errback,precall) {
 
@@ -239,6 +237,7 @@ function OSM_REST() {
 		 * @author Joey Yore
 		 */
 		GET : function(url,callback,errback,precall) {
+						
 			return operation_base('GET',url,null,callback,errback,precall);
 		},
 
@@ -386,12 +385,16 @@ function OSM_Support() {
 				url: 'domains'
 			},
 			delete : {
-				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				supported: true,
+				url: 'domain/<domain-name>'
 			},
 			update : {
 				supported: false,
 				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+			}, 
+			add : {
+				supported: true,
+				url : 'domains'
 			}
 		},
 		applications : {
@@ -403,7 +406,7 @@ function OSM_Support() {
 			},
 			list: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: 'domain/<domain-name>/applications?nolinks=true'
 			},
 			add: {
 				supported: true,
@@ -413,7 +416,7 @@ function OSM_Support() {
 		application : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>' : 'application/<application-id>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>?nolinks=true' : 'application/<application-id>?nolinks=true'
 			}, 
 			events : {
 				supported : true,
@@ -421,11 +424,11 @@ function OSM_Support() {
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges?nolinks=true' : 'application/<application-id>/cartridges?nolinks=true'
 			},
 			aliases : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases?nolinks=true' : 'application/<application-id>/aliases?nolinks=true'
 			}
 		},
 		aliases : {
@@ -441,7 +444,7 @@ function OSM_Support() {
 		cartridges : {
 			get : {
 				supported : true,
-				url : 'cartridges'
+				url : 'cartridges?nolinks=true'
 			},
 			add : {
 				supported : true,
@@ -451,11 +454,11 @@ function OSM_Support() {
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?nolinks=true'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages&nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages&nolinks=true'
 			},
 			events : {
 				supported : true,
@@ -474,7 +477,7 @@ function OSM_Support() {
 
 				object.url = inject_domain_info(object.url,domain);
 
-				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications']||'{}');
+				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications?nolinks=true']||'{}');
 
 				if('data' in application) {
 					application = application.data[localStorage['sel_application']];

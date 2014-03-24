@@ -38,9 +38,12 @@
 							<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-online" value="online" checked="checked" />
 						     	<label for="login-openshift-type-radio-group-online">OpenShift Online</label>
 						
-						     	<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
-						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label>
+						     	<!--input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
+						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label-->
 						</fieldset>
+					</div>
+					<div data-role="fieldcontain" id="login-openshift-origin-create-div">
+						<a href="#" id="create-account">Create an Account</a>
 					</div>
 					<div data-role="fieldcontain" id="login-enterprise-url-div">
 						<input id="login-enterprise-url" type="text" value="" placeholder="OpenShift Enterprise Rest Url"/>
@@ -72,14 +75,91 @@
 			<div data-role="header">
 				<a href="#domain-nav-panel" data-icon="bars" data-iconpos="notext"></a>
 				<h1>Domains</h1>
+				<a href="" class="createdomain" data-icon="plus" data-iconpos="notext"></a>
 			</div>
+			
+			<!-- Begin Popup Dialog -->
+			<div data-role="popup" id="domains-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+				<div data-role="header" data-theme="a" class="ui-corner-top">
+					<div>
+						<h3 id="domains-popup-alert-dialog-header" style="text-align:center"></h3>
+					</div>
+				</div>
+				<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+					<h3 id="domains-popup-alert-dialog-content" class="ui-title"></h3>
+					<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+				</div>
+			</div>
+			<!-- End Popup Dialog -->			
+
+			<!-- Begin Confirmation Dialog -->
+			<div data-role="popup" id="domains-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+				<div data-role="header" data-theme="a" class="ui-corner-top">
+					<div>
+						<h3 id="domains-popup-confirm-dialog-header" style="text-align:center"></h3>
+					</div>
+				</div>
+				<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+					<h3 id="domainss-popup-confirm-dialog-content" class="ui-title"></h3>
+					<a href="#" data-role="button" data-inline="true" id="domains-popup-confirm-dialog-no-button">No</a>
+					<a href="#" data-role="button" data-inline="true" id="domains-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+				</div>
+			</div>
+			<!-- End Confirmation Dialog -->
+
 
 			<div data-role="content">
-				<div id="domain-emtpy-list" style="display:none;text-align:center">No Domains Exist</div>
+				<div id="domains-empty-list" data-role="fieldcontain" class="no-list-content">
+					<h3>No Domains Exist</h3>
+				</div>
 				<ul id="domain-list" data-role="listview" data-theme="a"></ul>
+			</div>
+
+			<div data-role="popup" data-theme="b" id="domain-popupMenu">
+				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
+					<li data-role="divider" data-theme="b">Actions</li>
+					<li><a id="domain-view">View Domain</a></li>
+					<li data-theme="c" data-icon="delete"><a id="domain-delete">Delete Domain</a></li>
+				</ul>
 			</div>
 		</div>
 		<!-- END PAGE -->
+
+		<!-- Create Domain Page -->
+		<div id="new-domain-page" data-role="page" class="prerender">
+			<div data-role="header">
+				<h1>Create New Domain</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-domain-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-domain-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-domain-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-domain-container" data-theme="a">
+					<form id="new-domain-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="id" id="new-domain-id" value="" placeholder="Domain Name"  data-theme="a"  />
+						</div>				
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-domain-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Domain Page -->	
+
 
 		<!-- APPLICATIONS PAGE -->
 		<div id="applications-page" data-role="page" class="prerender">
@@ -140,7 +220,9 @@
 					</div>
 				</div>
 				<!-- End Confirmation Dialog -->
-				<div id="application-emtpy-list" style="display:none;text-align:center">No Applications Exist</div>
+				<div id="applications-empty-list" data-role="fieldcontain" class="no-list-content">
+					<h3>No Applications Exist</h3>
+				</div>
 				<ul id="application-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
 			</div>
 		</div>
@@ -210,7 +292,7 @@
 			
 			<div data-role="header">
 				<a href="#app-content-nav-panel" data-icon="bars" data-iconpos="notext"></a>
-				<h1 id="app-content-title">Application Content</h1>
+				<h1 id="app-content-title"></h1>
 				<a href="#" id="app-content-add" data-icon="plus" data-iconpos="notext"></a>
 				<div data-role="navbar">
 					<ul>
@@ -284,7 +366,9 @@
 						</div>
 					</div>
 					<div id="app-content-aliases">
-						<div id="app-alias-emtpy-list" style="display:none;text-align:center">No Aliases Exist</div>
+						<div id="app-alias-empty-list" data-role="fieldcontain" class="no-list-content">
+							<h3>No Aliases Exist</h3>
+						</div>						
 						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
 					</div>
 				</div>
@@ -388,8 +472,10 @@
 			});
 
 			$('#login-submit').click(function() {
-				var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
-
+				// #74 - Removed OpenShift Enterprise Option
+				//var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
+				var ent = false;
+				
 				app.settings.save({
 					username: $('#login-username').val(),
 					password: $('#login-password').val(),
@@ -407,7 +493,9 @@
 				settings.autolog ? $('#login-password').val(settings.password) : $('#login-password').val();
 				$('#login-enterprise-url').val(settings.baseurl);
 				$('#login-auto').prop('checked',settings.autolog).checkboxradio('refresh');
-				$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
+				
+				// #74 - Removed OpenShift Enterprise Option
+				//$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
 				$('#login-openshift-type-radio-group-online').prop('checked',!settings.enterprise).checkboxradio('refresh');
 				$("input[name='login-openshift-type-radio-group']").change();
 			}
@@ -434,11 +522,17 @@
 
 			$("input[name='login-openshift-type-radio-group']").change(function(e){
 				var enterprise_url_textbox_div = $("#login-enterprise-url-div");
-			    if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
+			    
+				enterprise_url_textbox_div.hide();
+				// #74 Removed OpensShift Enterprise option
+				
+				/*
+				if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
     				enterprise_url_textbox_div.show();
 			    } else {
     				enterprise_url_textbox_div.hide();
 			    }
+				*/
 			});
 			
 			$("input[id='new-application-git']").change(function(e){
@@ -453,8 +547,10 @@
 				}
 			});
 
-			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',app_page_id:"#applications-page"},domain_list_build);
-			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',app_page_id:'#app-content-page'},application_list_build);
+			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',empty_list_id:'#domains-empty-list',app_page_id:"#applications-page"},domain_list_build);
+			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',empty_list_id:'#applications-empty-list',app_page_id:'#app-content-page'},application_list_build);
+			$('#new-alias-page').bind('pagebeforeshow',{app:app,alias_name_id:'#new-alias-id'},new_alias_init);
+			$('#new-domain-page').bind('pagebeforeshow',{app:app,domain_name_id:'#new-domain-id'},new_domain_init);
 			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container'},application_type_list_build);
 			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
 			$('#app-content-page').bind('pagebeforeshow',{
@@ -463,10 +559,81 @@
 				title_id:'#app-content-title',
 				cartridge_list_id:'#app-cartridge-list',
 				cartridge_empty_list_id:'#app-cartridge-emtpy-list',
-				alias_list_id:'#app-alias-list'
+				alias_list_id:'#app-alias-list',
+				alias_empty_list_id : '#app-alias-empty-list'
 			},application_content_build);
 
 
+			$('#domain-view').click(function() {
+				$('#domain-popupMenu').popup('close');
+				setTimeout(function() {
+					$.mobile.changePage('#applications-page',{transition:DEFAULT_TRANSITION});
+				},100)
+			});
+			
+			$('#domain-delete').click(function() {
+				$('#domain-popupMenu').popup('close');
+				
+				var domain_name = JSON.parse(localStorage[app.support.is_supported('domains.list',localStorage['sel_domain']).url]).data[localStorage['sel_domain']].name;
+				
+				
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#domains-popup-confirm-dialog'), 
+						'Domain Action',
+						'Are you sure you want to delete ' + domain_name + '?',
+						function() {
+							$("#domain-popupMenu" ).popup( "close" );	
+							$('#domain-list').children().addClass('ui-disabled');
+			
+							$.mobile.loading('show', {
+								text : 'Deleting ' + domain_name,
+								textVisible : true,
+								theme : 'b',
+							});	
+
+							var support = app.support.is_supported('domains.delete');
+
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#domains-popup-alert-dialog"),"Domain Operation", domain_name + " Deleted Successfully");
+								$('#domain-list').children().removeClass('ui-disabled');
+								refresh();
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+								
+								// Check to see if messages are returned from OpenShift
+								if(xhr.status == "422") {
+
+									var json = jQuery.parseJSON(xhr.responseText);
+									var messages = "";
+
+									$.each(json.messages, function(index,value) {
+										if(messages != "") messages += "\n";
+										messages += value.text;
+									});
+									
+									show_alert_dialog($("#domains-popup-alert-dialog"),"Domain Operation Failed",messages);
+								}
+								else {
+									show_alert_dialog($("#domains-popup-alert-dialog"),"Domain Operation Failed", domain_name + " Failed to be Deleted");
+								}
+								
+								$('#domain-list').children().removeClass('ui-disabled');				
+							});
+						}
+					);
+				},200);
+			});
+			
+			$('#create-account').click(function() {
+				window.open('https://www.openshift.com/app/account/new','_blank','location=no');
+			});
+
+			
 			$('#application-start').click(function() {
 				process_application_action(app,'#application-popupMenu','#application-list','start','Starting','Started');
 			});
@@ -522,6 +689,57 @@
 						}
 					);
 				},200);
+			});
+			
+			$('#create-domain-submit').click(function() {
+				var formdata = $('#new-domain-form').serialize();
+
+				$('#create-domain-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Creating ' + $('#new-domain-id').val(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('domains.add');
+				
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-domain-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-domain-popup-alert-dialog"),"Domain Creation","Domain Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+						$.mobile.loading('hide');		
+
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "409" || jqxhr.status === "422") {
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = '';
+
+							$.each(json.messages, function(index,value) {
+								if(messages != '') messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-domain-popup-alert-dialog"),"Domain Creation Failed",messages);
+						}
+						else {
+
+							show_alert_dialog($("#new-domain-popup-alert-dialog"),"Domain Creation Failed","The Domain Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-domain-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
 			});
 
 			$('#create-application-submit').click(function() {
@@ -663,6 +881,10 @@
 				);
 
 				return false;
+			});
+			
+			$('.createdomain').click(function() {
+				$.mobile.changePage('#new-domain-page',{transition:DEFAULT_TRANSITION});
 			});
 
 			$('.createapp').click(function() {
