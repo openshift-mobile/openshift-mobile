@@ -100,7 +100,7 @@
 					</div>
 				</div>
 				<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
-					<h3 id="domainss-popup-confirm-dialog-content" class="ui-title"></h3>
+					<h3 id="domains-popup-confirm-dialog-content" class="ui-title"></h3>
 					<a href="#" data-role="button" data-inline="true" id="domains-popup-confirm-dialog-no-button">No</a>
 					<a href="#" data-role="button" data-inline="true" id="domains-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
 				</div>
@@ -254,7 +254,7 @@
 							 <input type="text" name="name" id="new-application-name" value="" placeholder="Application Name"  data-theme="a"  />
 						</div>				
 						<div data-role="fieldcontain">
-							<select name="cartridge" id="new-application-cartridge" data-native-menu="false" data-theme="a">
+							<select name="cartridges[]" id="new-application-cartridge" data-native-menu="false" data-theme="a">
 							<option value="application-cartridge-type" data-placeholder="true" data-theme="a">Cartridge Type</option>
 							</select>
 						</div>
@@ -262,11 +262,17 @@
 							<fieldset data-role="controlgroup">
         						<input type="checkbox" id="new-application-git" data-theme="a" />
         						<label for="new-application-git">Source Code</label>
-        						<div id="new-application-git-container">
-        						<input type="text" name="initial_git_url" id="new-application-git-url" value="" placeholder="Source Code URL"  data-theme="a" />
+        						<div id="new-application-git-container" style="display:none">
+        							<input type="text" name="initial_git_url" id="new-application-git-url" value="" placeholder="Source Code URL"  data-theme="a" />
         						</div>
         					</fieldset>		
 						</div>
+						<div data-role="ui-field-contain" id="new-application-embedded-cartridge-container">
+							<input type="checkbox" id="new-application-embedded-cartridge" data-theme="a" />
+        					<label for="new-application-embedded-cartridge">Embedded Cartridge</label>
+							<fieldset id="new-application-embedded-cartridge-list" data-role="controlgroup" style="display:none"></fieldset>		
+						</div>
+						
 						<div data-role="fieldcontain">
 							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
 							<button id="create-application-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
@@ -546,12 +552,26 @@
 					git_text.val('');
 				}
 			});
+			
+			$("input[id='new-application-embedded-cartridge']").change(function(e){
+				var embedded_cartridge_list = $('#new-application-embedded-cartridge-list');
+				if($(this).prop('checked')) {
+					embedded_cartridge_list.show();
+				}
+				else {
+					embedded_cartridge_list.hide();
+					$('#new-application-embedded-cartridge-list :checkbox').prop("checked",false);
+					$('#new-application-embedded-cartridge-list :checkbox').checkboxradio("refresh");
+				}
+			});
+			
+			
 
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',empty_list_id:'#domains-empty-list',app_page_id:"#applications-page"},domain_list_build);
 			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',empty_list_id:'#applications-empty-list',app_page_id:'#app-content-page'},application_list_build);
 			$('#new-alias-page').bind('pagebeforeshow',{app:app,alias_name_id:'#new-alias-id'},new_alias_init);
 			$('#new-domain-page').bind('pagebeforeshow',{app:app,domain_name_id:'#new-domain-id'},new_domain_init);
-			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container'},application_type_list_build);
+			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container',embedded_cartridge: "#new-application-embedded-cartridge", embedded_cartridge_container: '#new-application-embedded-cartridge-container', embedded_cartridge_list : '#new-application-embedded-cartridge-list'},application_type_list_build);
 			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
 			$('#app-content-page').bind('pagebeforeshow',{
 				app:app,
@@ -774,7 +794,10 @@
 						});
 
 						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed",messages);
-					} else {
+					} else if (xhr.status == '0') {
+						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Unknown","Could Not Verify Application Creation Status");
+					}
+					else {
 						show_alert_dialog($("#new-application-popup-alert-dialog"),"Application Creation Failed","The Application Failed to be Created");
 					}
 					$.mobile.loading('hide');
