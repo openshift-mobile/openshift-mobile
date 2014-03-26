@@ -293,7 +293,7 @@ function get_img(name) {
 }
 
 /**
- * Build the list of applications on the applications page
+ * Get application info for application content page
  *
  * @param event Event data passed thru event bind
  *
@@ -563,6 +563,103 @@ function application_content_build(event) {
 	}
 }
 
+/**
+ * Get settings information for settings page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Ron Murhammer
+ * @version 1.0
+ */
+function settings_build(event) {
+	var app = event.data.app;
+	var settings_info_id = event.data.settings_info_id;
+	var subscriptions_list_id = event.data.subscriptions_list_id;
+	var subscriptions_empty_list_id = event.data.subscriptions_empty_list_id;
+	var ssh_keys_list_id = event.data.ssh_keys_list_id;
+	var ssh_keys_empty_list_id = event.data.ssh_keys_empty_list_id;
+
+	var support = app.support.is_supported('settings.user');
+
+	if(support.supported === false) {
+		return false;
+	}
+
+	var rdata = app.rest.GET(support.url,function(d) {
+		build_page(d.data);
+	});
+
+	if(rdata !== null && typeof rdata.data !== 'undefined') {
+		build_page(rdata.data);
+	}
+
+	function build_page(data) {
+
+		build_info_tab();
+		build_subscriptions_tab();
+		build_ssh_keys_tab();
+		
+		function build_info_tab() {
+
+			var param = $(settings_info_id).find('td');
+
+			$(param[0]).text(data.login);
+			$(param[1]).text(data.plan_id);
+			$(param[2]).text(data.consumed_gears);
+			$(param[3]).text(data.max_gears);
+			$(param[4]).text(data.capabilities.gear_sizes);
+			$(param[5]).text(data.capabilities.subaccounts);
+		}
+
+		function build_subscriptions_tab() {
+
+			var support = app.support.is_supported('settings.subscriptions');
+			if(!support.supported) return false;
+
+			var rdata = app.rest.GET(support.url,function(d) {
+				build_subscriptions_list(d.data);
+			});
+
+			if(rdata !== null && typeof rdata !== 'undefined') {
+				build_subscriptions_list(rdata.data);
+			}
+
+			function build_subscriptions_list(cdata) {
+				var ul = $(subscriptions_list_id);
+				ul.empty();
+
+				var l = cdata.length;
+				if(l == 0) {
+					$(subscriptions_empty_list_id).show();
+				} else {
+					$(subscriptions_empty_list_id).hide();
+				}
+
+				for(var i=0;i<l;++i) {
+					inject(ul,cdata,i);
+				}
+				ul.listview('refresh');
+
+				function inject(list,subscriptions,index) {
+					
+					var s = subscriptions[index];					
+					var li = $('<li id="subscription-' + s.id + '"></li>');
+					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
+							'<p>Subaccounts: ' + s.capabilities.subaccounts + '</p>' +
+							'<p>Max Gears: ' + s.capabilities.max_gears + '</p>' +
+							'<p>Gear Sizes: ' + s.capabilities.gear_sizes + '</p>');
+
+					li.append(a1);
+					list.append(li);
+				}
+			}
+		}
+
+		function build_ssh_keys_tab() {
+
+		}
+	}
+}
 
 /**
  * Processes application events (view,start,stop,etc)
