@@ -12,12 +12,6 @@
     </head>
     <body>
 
-		<!-- SPLASH PAGE -->
-		<div id="splash-page" data-role="page">
-			<img src="img/openshift.png" style="display:block;margin-left:auto;margin-right:auto;"/>
-		</div>
-		<!-- END PAGE -->
-
 		<!-- LOGIN PAGE -->
 		<div id="login-page" data-role="page" class="prerender">
 			<div data-role="header">
@@ -543,7 +537,6 @@
 			$(document).bind('osm-ready',function() {
 				var settings = app.settings.load();
 
-				$.mobile.changePage('#login-page',{transition:DEFAULT_TRANSITION});
 				populateLoginForm(settings);
 
 				if(settings.autolog) {
