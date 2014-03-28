@@ -464,6 +464,20 @@ function OSM_Support() {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
 			},
+		},
+		settings : {
+			user : {
+				supported : true,
+				url : 'user?nolinks=true'
+			},
+			subscriptions : {
+				supported : (_version < 1.6) ? false : true,
+				url : 'plans?nolinks=true'
+			},
+			ssh_keys : {
+				supported : true,
+				url : 'user/keys?nolinks=true'
+			}
 		}
 	}
 

@@ -68,7 +68,7 @@
 			<div id="domain-nav-panel" data-role="panel" data-theme="b" class="navpanel" data-display="overlay">
 				<ul data-role="listview" data-theme="b">
 					<li data-role="list-divider" role="heading">Account</li>
-					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="gear"><a class="toSettings">Settings</a></li>
 					<li data-icon="back"><a class="toLogout">Logout</a></li>
 				</ul>
 			</div>
@@ -160,7 +160,6 @@
 		</div>		
 		<!-- END Create Domain Page -->	
 
-
 		<!-- APPLICATIONS PAGE -->
 		<div id="applications-page" data-role="page" class="prerender">
 			<div id="applications-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
@@ -169,7 +168,7 @@
 					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
 					<li data-icon="plus"><a class="createapp">Create Application</a></li>
 					<li data-role="list-divider" role="heading">Account</li>
-					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="gear"><a class="toSettings">Settings</a></li>
 					<li data-icon="back"><a class="toLogout">Logout</a></li>
 				</ul>
 			</div>
@@ -285,7 +284,7 @@
 					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
 					<li data-icon="arrow-l"><a class="toApplications">Applications</a></li>
 					<li data-role="list-divider" role="heading">Account</li>
-					<li data-icon="gear"><a>Settings</a></li>
+					<li data-icon="gear"><a class="toSettings">Settings</a></li>
 					<li data-icon="back"><a class="toLogout">Logout</a></li>
 				</ul>
 			</div>
@@ -448,6 +447,90 @@
 		</div>		
 		<!-- END Create Embedded Cartridge Page -->
 
+		<!-- Settings Page -->
+		<div id="settings-page" data-role="page" class="prerender">
+			<div id="settings-nav-panel" data-role="panel" data-theme="b" class="navpanel"  data-display="overlay">
+				<ul data-role="listview" data-theme="b">
+					<li data-role="list-divider" role="heading">Navigation</li>
+					<li data-icon="arrow-l"><a class="toDomains">Domains</a></li>
+					<li data-role="list-divider" role="heading">Account</li>
+					<li data-icon="gear"><a class="toSettings">Settings</a></li>
+					<li data-icon="back"><a class="toLogout">Logout</a></li>
+				</ul>
+			</div>
+			
+			<div data-role="header">
+				<a href="#settings-nav-panel" data-icon="bars" data-iconpos="notext"></a>
+				<h1 id="settings-title">Settings</h1>
+				<div data-role="navbar">
+					<ul>
+						<li><a data-theme="e" href="#" data-tab="settings-info">Info</a></li>
+						<li><a data-theme="e" href="#" data-tab="settings-subscriptions" data-display-add="true">Subscriptions</a></li>
+						<li><a data-theme="e" href="#" data-tab="settings-ssh-keys" data-display-add="true">SSH Keys</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div data-role="content" data-theme="a">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="settings-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="settings-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="settings-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->
+				
+				<!-- Begin Confirmation Dialog -->
+				<div data-role="popup" id="settings-popup-confirm-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="settings-popup-confirm-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="settings-popup-confirm-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" id="settings-popup-confirm-dialog-no-button">No</a>
+						<a href="#" data-role="button" data-inline="true" id="settings-popup-confirm-dialog-yes-button" data-theme="c">Yes</a>    
+					</div>
+				</div>
+				<!-- End Confirmation Dialog -->
+						
+				<div class="tabs-content">
+					<div id="settings-info">
+						<table style="text-align:left">
+							<tbody>
+								<tr><th>Login Name:</th><td></td></tr>
+								<tr><th>Subscription:</th><td></td></tr>
+								<tr><th>Used Gears:</th><td></td></tr>
+								<tr><th>Max Gears:</th><td></td></tr>
+								<tr><th>Gear Sizes:</th><td></td></tr>
+								<tr><th>Subaccounts:</th><td></td></tr>								
+							</tbody>
+						</table>
+					</div>
+					<div id="settings-subscriptions">
+						<div id="settings-subscriptions-emtpy-list" data-role="fieldcontain" class="no-list-content">
+							<h3>No Subscriptions Exist</h3>
+						</div>
+						<ul id="settings-subscriptions-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+					</div>
+					<div id="settings-ssh-keys">
+						<div id="settings-ssh-keys-empty-list" data-role="fieldcontain" class="no-list-content">
+							<h3>No SSH Keys Exist</h3>
+						</div>						
+						<ul id="settings-ssh-keys-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END Settings Page -->
+
 
 
         <script type="text/javascript" src="phonegap.js"></script>
@@ -562,7 +645,14 @@
 				alias_list_id:'#app-alias-list',
 				alias_empty_list_id : '#app-alias-empty-list'
 			},application_content_build);
-
+			$('#settings-page').bind('pagebeforeshow',{
+				app:app,
+				settings_info_id:'#settings-info',
+				subscriptions_list_id:'#settings-subscriptions-list',
+				subscriptions_empty_list_id:'#settings-subscriptions-emtpy-list',
+				ssh_keys_list_id:'#settings-ssh-keys-list',
+				ssh_keys_empty_list_id:'#settings-ssh-keys-empty-list'
+			},settings_build);
 
 			$('#domain-view').click(function() {
 				$('#domain-popupMenu').popup('close');
@@ -897,6 +987,10 @@
 			
 			$('.toApplications').click(function() {
 				$.mobile.changePage('#applications-page',{transition:DEFAULT_TRANSITION});
+			});
+
+			$('.toSettings').click(function() {
+				$.mobile.changePage('#settings-page',{transition:DEFAULT_TRANSITION});
 			});
 			
 			$('#app-content-add').click(function() {
