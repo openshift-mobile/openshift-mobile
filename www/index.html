@@ -361,7 +361,6 @@
 			$(document).bind('osm-ready',function() {
 				var settings = app.settings.load();
 
-				$.mobile.changePage('#login-page',{transition:DEFAULT_TRANSITION});
 				populateLoginForm(settings);
 
 				if(settings.autolog) {
