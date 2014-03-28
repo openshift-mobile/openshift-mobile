@@ -585,6 +585,9 @@ function settings_build(event) {
 		return false;
 	}
 
+	// Trigger settings info tab
+	$('[data-tab="settings-info"]').click();
+	
 	var rdata = app.rest.GET(support.url,function(d) {
 		build_page(d.data);
 	});
@@ -656,7 +659,45 @@ function settings_build(event) {
 		}
 
 		function build_ssh_keys_tab() {
+			var support = app.support.is_supported('settings.ssh_keys');
+			if(!support.supported) return false;
 
+			var rdata = app.rest.GET(support.url,function(d) {
+				build_ssh_keys_list(d.data);
+			});
+
+			if(rdata !== null && typeof rdata !== 'undefined') {
+				build_ssh_keys_list(rdata.data);
+			}
+
+			function build_ssh_keys_list(cdata) {
+				var ul = $(ssh_keys_list_id);
+				ul.empty();
+
+				var l = cdata.length;
+				if(l == 0) {
+					$(ssh_keys_empty_list_id).show();
+				} else {
+					$(ssh_keys_empty_list_id).hide();
+				}
+
+				for(var i=0;i<l;++i) {
+					inject(ul,cdata,i);
+				}
+				ul.listview('refresh');
+
+				function inject(list,ssh_keys,index) {
+					
+					var s = ssh_keys[index];					
+					var li = $('<li id="ssh-key-' + s.name + '"></li>');
+					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
+							'<p>Type: ' + s.type + '</p>' +
+							'<p>Key: ' + s.content + '</p>');
+
+					li.append(a1);
+					list.append(li);
+				}
+			}
 		}
 	}
 }

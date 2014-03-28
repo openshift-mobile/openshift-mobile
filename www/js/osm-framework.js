@@ -468,11 +468,15 @@ function OSM_Support() {
 		settings : {
 			user : {
 				supported : true,
-				url : (_version < 1.6) ? 'user?nolinks=true' : 'user?nolinks=true'
+				url : 'user?nolinks=true'
 			},
 			subscriptions : {
+				supported : (_version < 1.6) ? false : true,
+				url : 'plans?nolinks=true'
+			},
+			ssh_keys : {
 				supported : true,
-				url : (_version < 1.6) ? 'plans?nolinks=true' : 'plans?nolinks=true'
+				url : 'user/keys?nolinks=true'
 			}
 		}
 	}
