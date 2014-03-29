@@ -61,7 +61,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
   font-weight: 700;
-  color:#222222;
+  color:#f00;
   font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
   letter-spacing: -1px;
 }
@@ -103,7 +103,7 @@ footer p {
 
 a {
   text-decoration: none;
-  color: #007edf;
+  color: #e00;
   text-shadow: none;
 
   transition: color 0.5s ease;
@@ -121,8 +121,10 @@ a {
 a:hover, a:focus {text-decoration: underline;}
 
 footer a {
+/*
   color: #F2F2F2;
   text-decoration: underline;
+*/
 }
 
 em {
@@ -277,7 +279,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  background: url('../images/blacktocat.png') #ee0000 no-repeat 95% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -299,7 +301,7 @@ Full-Width Styles
 
 #project_title {
   margin: 0;
-  color: #fff;
+  color: #e00;
   font-size: 42px;
   font-weight: 700;
   text-shadow: #111 0px 0px 10px;
