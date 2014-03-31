@@ -21,6 +21,7 @@ function login(app,callback,errback,precall) {
 	//Update everything based on stored settings
 	var settings = app.settings.load();
 	app.rest.set_credentials(settings.username,settings.password);
+	console.log(settings.api);
 	app.rest.set_api_version(settings.api);
 	app.rest.GET('domains',callback,errback,precall);
 }
@@ -790,7 +791,7 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 
 	app.rest.POST(support.url,event,function(data,text,xhr) {
 		$.mobile.loading('hide');
-		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + after_message + 'successfully');
+		show_alert_dialog($('#application-content-popup-alert-dialog'),'Cartridge Operation', cartridge_name + ' ' + after_message + ' successfully');
 		list.children().removeClass('ui-disabled');
 		refresh();
 	},
@@ -862,6 +863,9 @@ function application_type_list_build(event, data) {
 		var git = event.data.git;
 		var git_container = event.data.git_container;
 		var git_url = event.data.git_url;
+		var embedded_cartridge_container_id = event.data.embedded_cartridge_container;
+		var embedded_cartridge = event.data.embedded_cartridge;
+		var embedded_cartridge_list_id = event.data.embedded_cartridge_list;
 	
 		if(list_id === undefined || app === undefined || name_id === undefined || git === undefined || git_container === undefined || git_url === undefined) {
 			return false;
@@ -890,6 +894,27 @@ function application_type_list_build(event, data) {
 		if(!$.isArray(data)) {
 			return false;
 		}
+		
+		var embedded_cartridge_list = $(embedded_cartridge_list_id);
+		var embedded_cartridge_container = $(embedded_cartridge_container_id);
+
+		/* TODO: Restrict access to embedded cartridges to API > 1.6 and rename
+		 *       embedded_cartridge to "cartridge"
+		  
+		 
+		if(version < 1.6) {
+			embedded_cartridge_container.hide();
+		}
+		else {
+			embedded_cartridge_container.show();
+		}
+		*/
+		
+		embedded_cartridge_list.hide();
+		embedded_cartridge_list.empty();
+		$(embedded_cartridge).prop("checked",false);
+		$(embedded_cartridge).checkboxradio("refresh");
+
 
 		$(name_id).val('');
 		$(git_url).val('');
@@ -899,24 +924,40 @@ function application_type_list_build(event, data) {
 		list.empty();
 		list.trigger('change');
 
-		var osm_cartridges = [];
+		var osm_standalone_cartridges = [];
+		var osm_embedded_cartridges = [];
 
 		for(var i=0,l=data.length;i<l;++i) {
 			var cartridge = data[i];
 			if(cartridge.type === "standalone") {
-				osm_cartridges.push([cartridge.name,cartridge.display_name]);
+				osm_standalone_cartridges.push([cartridge.name,cartridge.display_name]);
+			}
+			else if (cartridge.type == "embedded") {
+				osm_embedded_cartridges.push([cartridge.name,cartridge.display_name]);
 			}
 		}
 
-		osm_cartridges.sort(function(a,b) {
+		osm_standalone_cartridges.sort(function(a,b) {
 			if(a[1] < b[1]) return -1;
 			if(a[1] > b[1]) return 1;
 			return 0;
 		});
 		
-		for(var i=0,l=osm_cartridges.length;i<l;++i) {
-			list.append('<option value="' + osm_cartridges[i][0] + '">' + osm_cartridges[i][1] + '</option>');
+		osm_embedded_cartridges.sort(function(a,b) {
+			if(a[1] < b[1]) return -1;
+			if(a[1] > b[1]) return 1;
+			return 0;
+		});
+		
+		for(var i=0,l=osm_standalone_cartridges.length;i<l;++i) {
+			list.append('<option value="' + osm_standalone_cartridges[i][0] + '">' + osm_standalone_cartridges[i][1] + '</option>');
 		}
+		
+		for(var i=0,l=osm_embedded_cartridges.length;i<l;++i) {
+			embedded_cartridge_list.append('<input type="checkbox" id="embedded_cartridge_container'+i+'" name="cartridges[]" value="' +osm_embedded_cartridges[i][0] +'" data-theme="a" data-mini="true" />');
+			embedded_cartridge_list.append('<label for="embedded_cartridge_container'+i+'">'+osm_embedded_cartridges[i][1]+'</label>');	
+		}
+		embedded_cartridge_list.trigger('create');
 
 		list.trigger('change');
 	}
