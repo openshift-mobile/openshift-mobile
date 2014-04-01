@@ -692,7 +692,7 @@ function settings_build(event) {
 					var s = ssh_keys[index];
 					var maskedKey = new String(s.content);
 					if (maskedKey.length >= 16) {
-						maskedKey = maskedKey.substring(1, 9) + '...' + maskedKey.substring(maskedKey.length - 8, maskedKey.length);
+						maskedKey = maskedKey.substring(0, 8) + '...' + maskedKey.substring(maskedKey.length - 8, maskedKey.length);
 					}
 					var li = $('<li id="ssh-key-' + s.name + '"></li>');
 					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
