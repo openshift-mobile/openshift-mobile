@@ -689,11 +689,15 @@ function settings_build(event) {
 
 				function inject(list,ssh_keys,index) {
 					
-					var s = ssh_keys[index];					
+					var s = ssh_keys[index];
+					var maskedKey = new String(s.content);
+					if (maskedKey.length >= 16) {
+						maskedKey = maskedKey.substring(1, 9) + '...' + maskedKey.substring(maskedKey.length - 8, maskedKey.length);
+					}
 					var li = $('<li id="ssh-key-' + s.name + '"></li>');
 					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
 							'<p>Type: ' + s.type + '</p>' +
-							'<p>Key: ' + s.content + '</p>');
+							'<p>Key: ' + maskedKey + '</p>');
 
 					li.append(a1);
 					list.append(li);
