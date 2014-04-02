@@ -525,15 +525,23 @@
 							<h3>No Subscriptions Exist</h3>
 						</div>
 						<ul id="settings-subscriptions-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+						<div style="margin-top:30px">To upgrade your subscription please visit <a href="#" id="subscription-upgrade">OpenShift Online</a></div>
 					</div>
 					<div id="settings-ssh-keys">
 						<div id="settings-ssh-keys-empty-list" data-role="fieldcontain" class="no-list-content">
 							<h3>No SSH Keys Exist</h3>
 						</div>						
 						<ul id="settings-ssh-keys-list" data-role="listview" data-theme="a" data-split-icon="arrow-d"></ul>
+						<div data-role="popup" data-theme="b" id="ssh-key-popupMenu">
+							<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
+								<li data-role="divider" data-theme="b">Actions</li>
+								<li data-theme="c" data-icon="delete"><a id="ssh-key-delete">Delete SSH Key</a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
+		
 		</div>
 		<!-- END Settings Page -->
 
@@ -795,6 +803,50 @@
 								$.mobile.loading('hide');
 								show_alert_dialog($("#applications-popup-alert-dialog"),"Application Operation Failure", app_name + " Failed to be Deleted");
 								$('#application-list').children().removeClass('ui-disabled');				
+							});
+						}
+					);
+				},200);
+			});
+
+			$('#subscription-upgrade').click(function() {
+				window.open('https://openshift.redhat.com/app/account/plan','_blank','location=no');
+			});
+			
+			$('#ssh-key-delete').click(function() {
+				$('#ssh-key-popupMenu').popup('close');
+
+				var ssh_key_name = JSON.parse(localStorage[app.support.is_supported('settings.ssh_keys',localStorage['sel_ssh_key']).url]).data[localStorage['sel_ssh_key']].name;
+
+				setTimeout(function() {
+					show_confirm_dialog(
+						$('#settings-popup-confirm-dialog'), 
+						'Settings Action',
+						'Are you sure you want to delete ' + ssh_key_name + '?',
+						function() {
+							$("#ssh-key-popupMenu" ).popup( "close" );	
+							$('#settings-ssh-keys-list').children().addClass('ui-disabled');
+			
+							$.mobile.loading('show', {
+								text : 'Deleting ' + ssh_key_name,
+								textVisible : true,
+								theme : 'b',
+							});	
+
+							var support = app.support.is_supported('settings.get_ssh_key');
+
+							if(!support.supported) return false;
+
+							app.rest.DELETE(support.url,function(data,text,xhr) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#settings-popup-alert-dialog"),"Settings Operation", ssh_key_name + " Deleted Successfully");
+								$('#settings-ssh-keys-list').children().removeClass('ui-disabled');
+								refresh();
+							},
+							function(xhr,err,exception) {
+								$.mobile.loading('hide');
+								show_alert_dialog($("#settings-popup-alert-dialog"),"Settings Operation Failure", ssh_key_name + " Failed to be Deleted");
+								$('#settings-ssh-keys-list').children().removeClass('ui-disabled');				
 							});
 						}
 					);

@@ -586,8 +586,10 @@ function settings_build(event) {
 		return false;
 	}
 
-	// Trigger settings info tab
-	$('[data-tab="settings-info"]').click();
+	// Trigger settings info tab, if no tabs are active
+	if ($('#settings-page').find('a.ui-btn-active').length < 1) {
+		$('[data-tab="settings-info"]').click();
+	}
 	
 	var rdata = app.rest.GET(support.url,function(d) {
 		build_page(d.data);
@@ -646,8 +648,12 @@ function settings_build(event) {
 
 				function inject(list,subscriptions,index) {
 					
-					var s = subscriptions[index];					
-					var li = $('<li id="subscription-' + s.id + '"></li>');
+					var s = subscriptions[index];
+					var icon = "false";
+					if (data.plan_id == s.id) {
+						icon = "check";
+					}
+					var li = $('<li data-icon="' + icon + '" id="subscription-' + s.id + '"></li>');
 					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
 							'<p>Subaccounts: ' + s.capabilities.subaccounts + '</p>' +
 							'<p>Max Gears: ' + s.capabilities.max_gears + '</p>' +
@@ -689,13 +695,23 @@ function settings_build(event) {
 
 				function inject(list,ssh_keys,index) {
 					
-					var s = ssh_keys[index];					
+					var s = ssh_keys[index];
+					var maskedKey = new String(s.content);
+					if (maskedKey.length >= 16) {
+						maskedKey = maskedKey.substring(1, 9) + '...' + maskedKey.substring(maskedKey.length - 8, maskedKey.length);
+					}
 					var li = $('<li id="ssh-key-' + s.name + '"></li>');
 					var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + s.name + '</h2>' +
 							'<p>Type: ' + s.type + '</p>' +
-							'<p>Key: ' + s.content + '</p>');
-
+							'<p>Key: ' + maskedKey + '</p>');
+					var a2 = $('<a href="#ssh-key-popupMenu" data-rel="popup"></a>');
+					
+					a2.click(function() {
+						localStorage['sel_ssh_key'] = index;
+					});
+					
 					li.append(a1);
+					li.append(a2);
 					list.append(li);
 				}
 			}

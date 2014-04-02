@@ -477,6 +477,10 @@ function OSM_Support() {
 			ssh_keys : {
 				supported : true,
 				url : 'user/keys?nolinks=true'
+			},
+			get_ssh_key : {
+				supported : true,
+				url : 'user/keys/<ssh-key-name>?nolinks=true'
 			}
 		}
 	}
@@ -526,6 +530,17 @@ function OSM_Support() {
 					
 					
 				}
+			}		
+			
+			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys.url]||'{}');
+			if('data' in ssh_key) {
+				ssh_key = ssh_key.data[localStorage['sel_ssh_key']];
+			} else {
+				ssh_key = undefined;
+			}
+			
+			if(ssh_key !== undefined) {
+				object.url = inject_ssh_key_info(object.url,ssh_key);
 			}
 		}
 		return object;
@@ -550,6 +565,11 @@ function OSM_Support() {
 		
 		function inject_alias_info(url,alias) {
 			return url.replace('<alias-name>',('id' in alias) ? alias.id : '')
+			;
+		}
+		
+		function inject_ssh_key_info(url,ssh_key) {
+			return url.replace('<ssh-key-name>',('name' in ssh_key) ? ssh_key.name : '')
 			;
 		}
 
