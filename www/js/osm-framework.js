@@ -125,16 +125,23 @@ function OSM_Initializer() {
 	
 	function backButtonControl(event) {
 
-		var prevPageUrl = $.mobile.urlHistory.getPrev();
+		var navpanel = $.mobile.activePage.jqmData( "panel" );
 		
-		if($.mobile.activePage.attr("id") == "login-page" || (typeof prevPage != undefined && prevPageUrl.hash == "#login-page")) {
-			event.preventDefault();
-            navigator.app.exitApp();
+		// If Panel is Open, close, otherwise proceed with back button Logic
+		if(navpanel != undefined && navpanel == "open") {
+			$.mobile.activePage.find('div[data-role="panel"]').panel("close"); 
 		}
 		else {
-			history.back();
+			var prevPageUrl = $.mobile.urlHistory.getPrev();
+			
+			if($.mobile.activePage.attr("id") == "login-page" || (typeof prevPage != undefined && prevPageUrl.hash == "#login-page")) {
+				event.preventDefault();
+	            navigator.app.exitApp();
+			}
+			else {
+				history.back();
+			}
 		}
-
 	}
 
 }
