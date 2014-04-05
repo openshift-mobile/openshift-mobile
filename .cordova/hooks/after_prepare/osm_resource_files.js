@@ -4,7 +4,7 @@
 // Copies required files into the appropriate platform specific location
 //
 
-var filestocopy = [{
+var filestocopy = [
 
 //ios icon
 {"www/res/icon/ios/icon-40@2x.png": "platforms/ios/OpenShift Mobile/Resources/icons/icon-40@2x.png"},
@@ -30,11 +30,11 @@ var filestocopy = [{
 {"www/res/screen/ios/Default-Landscape@2x~ipad.png":"platforms/ios/OpenShift Mobile/Resources/splash/Default-Landscape@2x~ipad.png"},
 {"www/res/screen/ios/Default-Landscape~ipad.png":"platforms/ios/OpenShift Mobile/Resources/splash/Default-Landscape~ipad.png"},
 //andriod icon
-{"www/res/icon/andriod/icon-36-ldpi.png": "platforms/android/res/drawable-ldpi/icon.png"},
-{"www/res/icon/andriod/icon-48-mdpi.png": "platforms/android/res/drawable-mdpi/icon.png"},
-{"www/res/icon/andriod/icon-72-hdpi.png": "platforms/android/res/drawable-hdpi/icon.png"},
-{"www/res/icon/andriod/icon-96-xhdpi.png": "platforms/android/res/drawable-xhdpi/icon.png"},
-{"www/res/icon/andriod/icon-144-xxhdpi.png": "platforms/android/res/drawable-xxhdpi/icon.png"},
+{"www/res/icon/android/icon-36-ldpi.png": "platforms/android/res/drawable-ldpi/icon.png"},
+{"www/res/icon/android/icon-48-mdpi.png": "platforms/android/res/drawable-mdpi/icon.png"},
+{"www/res/icon/android/icon-72-hdpi.png": "platforms/android/res/drawable-hdpi/icon.png"},
+{"www/res/icon/android/icon-96-xhdpi.png": "platforms/android/res/drawable-xhdpi/icon.png"},
+{"www/res/icon/android/icon-144-xxhdpi.png": "platforms/android/res/drawable-xxhdpi/icon.png"},
 
 ];
 
