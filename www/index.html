@@ -748,7 +748,7 @@
 			});
 			
 			$('#create-account').click(function() {
-				window.open('https://www.openshift.com/app/account/new','_blank','location=no');
+				window.open('https://www.openshift.com/app/account/new','_blank','location=yes');
 			});
 
 			
@@ -766,7 +766,7 @@
 
 			$('#application-view').click(function() {
 				$('#application-popupMenu').popup('close');
-				window.open(JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].app_url,'_blank','location=no');
+				window.open(JSON.parse(localStorage[app.support.is_supported('applications.list',localStorage['sel_domain']).url]).data[localStorage['sel_application']].app_url,'_blank','location=yes');
 			});
 	
 			$('#application-delete').click(function() {
@@ -810,7 +810,7 @@
 			});
 
 			$('#subscription-upgrade').click(function() {
-				window.open('https://openshift.redhat.com/app/account/plan','_blank','location=no');
+				window.open('https://openshift.redhat.com/app/account/plan','_blank','location=yes');
 			});
 			
 			$('#ssh-key-delete').click(function() {
