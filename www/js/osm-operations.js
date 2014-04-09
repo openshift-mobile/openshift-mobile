@@ -339,25 +339,43 @@ function application_content_build(event) {
 
 			var param = $(app_info_id).find('td');
 
+			var copy_button_content = '<a href="#" data-role="button" data-theme="d" data-icon="copy-clipboard" data-inline="true" data-iconpos="notext"></a>'	
 			
-			var p1 = $(param[1]);
-			if(app.support.is_supported('applications.id').supported) {
-				p1.prev().show();
-				p1.show().text(data.id);
-			} else {
-				p1.prev().hide();
-				p1.hide();
-			}
+			var app_url = $(copy_button_content);
+			var app_url_content = $('<span>'+data.app_url+'</span>').append(app_url);
+			
+			var git_url = $(copy_button_content);
+			var ssh_url = $(copy_button_content);
 
-			$(param[0]).text(data.name);
-			$(param[2]).text(data.app_url);
-			$(param[3]).text(data.framework);
-			$(param[4]).text(data.gear_count);
-			$(param[5]).text(data.gear_profile);
-			$(param[6]).text(data.scalable);
+			app_url.click(function() {
+				copy_clipboard(data.app_url,"Application URL Copied to Clipboard");
+			});
+			
+			git_url.click(function() {
+				copy_clipboard(data.git_url,"Git URL Copied to Clipboard");
+			});
+			
+			ssh_url.click(function() {
+				copy_clipboard(data.ssh_url,"SSH URL Copied to Clipboard");
+			});
+			
+			git_url.button();
+			ssh_url.button();
+			app_url.button();
+			
+			
+			$(param[0]).html(app_url_content);
+			$(param[1]).text(data.framework);
+			$(param[2]).text(data.gear_count);
+			$(param[3]).text(data.gear_profile);
+			$(param[4]).text(data.scalable);
+			$(param[5]).html(ssh_url);
+			$(param[6]).html(git_url);
 			$(param[7]).text(data.auto_deploy);
 			$(param[8]).text(data.deployment_type);
 			$(param[9]).text(data.deployment_branch);
+			
+
 
 		}
 
@@ -1143,3 +1161,24 @@ function show_confirm_dialog(popup_object,header,content,yes_callback, no_callba
 	no_button.unbind();
 	no_button.bind("click", no_button_callback);
 }
+
+
+/**
+ * Copies text to the native clipboard
+ *
+ * @param text The text to copy to the clipboard
+ * @param toast_msg Toast message to display to the user
+ *  
+ * @author Andrew Block
+ * @version 1.0
+ */
+function copy_clipboard(text, toast_msg) {
+	if(typeof cordova !== 'undefined') {
+		cordova.plugins.clipboard.copy(text);	
+		
+		if(toast_msg) {
+			window.plugins.toast.showShortBottom(toast_msg);
+		}
+	}
+}
+

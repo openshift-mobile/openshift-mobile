@@ -3,7 +3,9 @@
 //Adds the necessary plugins
 
 var pluginlist = [
-	'org.apache.cordova.inappbrowser@0.2.3'
+	'org.apache.cordova.inappbrowser@0.2.3',
+	'com.verso.cordova.clipboard',
+	'https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git'
 ];
 
 // no need to configure below

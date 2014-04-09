@@ -24,6 +24,8 @@
 	<preference name="android-installLocation" value="auto" />
 
 	<gap:plugin name="org.apache.cordova.inappbrowser" version="0.2.3" />
+	<gap:plugin name="nl.x-services.plugins.toast" version="1.0" />
+	<gap:plugin name="com.verso.cordova.clipboard" version="0.1.0" />
 
 	<icon src="icon.png" />
 	<icon gap:density="ldpi" gap:platform="android" src="res/icon/android/icon-36-ldpi.png" />
