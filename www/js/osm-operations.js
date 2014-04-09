@@ -1173,7 +1173,6 @@ function show_confirm_dialog(popup_object,header,content,yes_callback, no_callba
  * @version 1.0
  */
 function copy_clipboard(text, toast_msg) {
-	try{
 	if(typeof cordova !== 'undefined') {
 		cordova.plugins.clipboard.copy(text);	
 		
@@ -1181,10 +1180,5 @@ function copy_clipboard(text, toast_msg) {
 			window.plugins.toast.showShortBottom(toast_msg);
 		}
 	}
-	}
-	catch(e) {
-		alert(e.message);
-	}
-	
 }
 
