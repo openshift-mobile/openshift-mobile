@@ -356,7 +356,7 @@ function application_content_build(event) {
 			});
 			
 			ssh_url.click(function() {
-				copy_clipboard(data.app_url,"SSH URL Copied to Clipboard");
+				copy_clipboard(data.ssh_url,"SSH URL Copied to Clipboard");
 			});
 			
 			git_url.button();
