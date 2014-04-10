@@ -32,11 +32,11 @@
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
         </button> 
-        <a class="navbar-brand" href="#">OpenShift Mobile</a></div>
+        <a class="navbar-brand" href="http://www.openshiftmobile.com/">OpenShift Mobile</a></div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active">
-              <a href="#">Home</a>
+              <a href="index.html">Home</a>
             </li>
             <li>
               <a href="#about">About</a>
@@ -45,7 +45,7 @@
               <a href="#contact">Contact</a>
             </li>
           </ul>
-        </div><!--.nav-collapse -->
+        </div><!-- /.nav-collapse -->
       </div>
     </div>
     <div class="container theme-showcase" role="main">
@@ -67,7 +67,7 @@
           <img src="images/google_play_store.png" alt="Google Play Store" />
         </a>
       </p>
-      <p> </p>
+      <p>&nbsp;</p>
     </div>
 	<!-- container -->
     <div class="container">
@@ -75,40 +75,120 @@
       <div class="row">
         <div class="col-md-4">
           <h2 style="color:#CA3C38;">Mobile PaaS</h2>
-          <p>OpenShift is a Platform as a Service (PaaS). Description of openshift or mobile app. Fusce dapibus, tellus ac cursus
-          commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+          <p>OpenShift is Red Hat's Platform-as-a-Service (PaaS) that allows developers to quickly develop, host, and scale applications in a cloud environment. With OpenShift Mobile developers and operations teams have the ability to create, control and manage the applications hosted on the OpenShift platform.</p>
           <p>
-            <a class="btn btn-danger" href="#" role="button">View details »</a>
+            <a class="btn btn-danger" href="http://www.openshift.com/" role="button" target="_blank">View details &raquo;</a>
           </p>
         </div>
         <div class="col-md-4">
           <h2 style="color:#CA3C38;">Take the Tour</h2>
-          <p>View the screen shots. Description of views. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
-          ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
-          <p>
-            <a class="btn btn-danger" href="#" role="button">View details »</a>
-          </p>
+          <p>See how easy it is to manage your OpenShift account using OpenShift Mobile. Get a first hand look at the well designed views of the login, application, and settings pages. Discover how easy it is to see the details and start, stop, restart, or delete your application all from OpenShift Mobile.</p>
+          <!-- p>
+            <a class="btn btn-danger" href="#" role="button">View details &raquo;</a>
+          </p -->
+		  <!-- Button trigger modal -->
+		  <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">View details &raquo;</button>	
         </div>
         <div class="col-md-4">
           <h2 style="color:#CA3C38;">Want More</h2>
-          <p>Intro to GitHub project. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis
-          euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit
-          amet risus.</p>
+          <p>OpenShift Mobile is open source so you can download or browse the code and build or extend the application from source yourself. Check out the <a href="https://github.com/OpenShiftMobile/openshift-mobile/wiki" target="_blank">wiki</a> to learn how to get started. There is even a <a href="https://github.com/OpenShiftMobile/openshift-mobile/wiki/Live-Demo">demo</a> (currently requires Chrome browser and Ripple plug-in) you can test drive. Fork us on GitHub!</p>
           <p>
-            <a class="btn btn-danger" href="#" role="button">View details »</a>
+            <a class="btn btn-danger" href="https://github.com/OpenShiftMobile/openshift-mobile" role="button" target="_blank">View details &raquo;</a>
           </p>
         </div>
       </div>
       <hr />
       <footer>
-        <p>© OpenShiftMobile 2014</p>
+        <p>&copy; OpenShiftMobile 2014</p>
       </footer>
-    </div><!-- container -->
+    </div><!-- /.container -->
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">OpenShift Mobile Screen Views Gallery</h4>
+		  </div>
+		  <div class="modal-body">
+			<!-- Carousel for images -->
+			<div id="carousel-image-viewer" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+				<li data-target="#carousel-image-viewer" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="1"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="2"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="3"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="4"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="5"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="6"></li>
+			  </ol>
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner">
+				<div class="item active">
+				  <img src="images/osm/osm-login.png" alt="login screen shot">
+				  <div class="carousel-caption">
+					login page
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-application-list.png" alt="application list screen shot">
+				  <div class="carousel-caption">
+					application list
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-application-operation.png" alt="application operations screen shot">
+				  <div class="carousel-caption">
+					application operations
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-new-application.png" alt="create new application screen shot">
+				  <div class="carousel-caption">
+					create new application
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-application-info.png" alt="application information screen shot">
+				  <div class="carousel-caption">
+					application information
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-cartridge-list.png" alt="cartridge list screen shot">
+				  <div class="carousel-caption">
+					cartridge list
+				  </div>
+				</div>
+				<div class="item">
+				  <img src="images/osm/osm-settings.png" alt="settings screen shot">
+				  <div class="carousel-caption">
+					settings
+				  </div>
+				</div>
+			  </div><!-- /.carousel-inner -->
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-image-viewer" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-image-viewer" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			  </a>
+			</div><!-- /.carousel-image-viewer -->
+		  </div><!-- /.modal-body -->
+		  <div class="modal-footer">
+			<!-- button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button -->
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> 
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/docs.min.js"></script></div>
   </body>
