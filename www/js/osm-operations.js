@@ -1173,12 +1173,18 @@ function show_confirm_dialog(popup_object,header,content,yes_callback, no_callba
  * @version 1.0
  */
 function copy_clipboard(text, toast_msg) {
-	if(typeof cordova !== 'undefined') {
-		cordova.plugins.clipboard.copy(text);	
-		
-		if(toast_msg) {
-			window.plugins.toast.showShortBottom(toast_msg);
-		}
+	if(typeof window.plugins !== 'undefined' && typeof window.plugins.clipboard !== 'undefined') {
+		window.plugins.clipboard.copy(text);		
+	}
+	else if (typeof cordova !== 'undefined' && typeof cordova.plugins !== 'undefined') {
+		cordova.plugins.clipboard.copy(text);
+	}
+	else {
+		return;
+	}
+	
+	if(toast_msg) {
+		window.plugins.toast.showShortBottom(toast_msg);
 	}
 }
 
