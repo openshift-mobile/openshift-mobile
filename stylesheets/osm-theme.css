@@ -3,6 +3,14 @@ body {
   padding-bottom: 30px;
 }
 
+h2 {
+  color: #CA3C38;
+}
+
+a, a:hover {
+  color: #CA3C38;
+}
+
 .theme-dropdown .dropdown-menu {
   position: static;
   display: block;
