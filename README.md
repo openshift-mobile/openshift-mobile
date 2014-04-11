@@ -1,7 +1,9 @@
-openshift-mobile
-================
-github-pages
+OpenShift Mobile
+=======================
+Powered by GitHub Pages
 
+This branch was created using GitHub Pages, including theme, initially.
+The GitHub Pages now host the website for the OpenShift Mobile application.
 
-The GitHub Pages website hosting for the OpenShift Mobile application.
-This branch contains these files for the website.
+See it for yourself live at:
+http://www.openshiftmobile.com/

@@ -1,54 +1,186 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="openshift-mobile : Mobile OpenShift Account Management" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>openshift-mobile</title>
+    <meta name="generator"
+	content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="OpenShift Mobile Account Management" />
+    <meta name="author" content="OpenShift Mobile" />
+    <link rel="shortcut icon" href="images/ico/favicon.ico" />
+    <title>OpenShift Mobile</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+    <!-- OSM Custom styles for this template -->
+    <link rel="stylesheet" href="stylesheets/osm-theme.css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/OpenShiftMobile/openshift-mobile">View on GitHub</a>
-
-          <h1 id="project_title">openshift-mobile</h1>
-          <h2 id="project_tagline">Mobile OpenShift Account Management</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/OpenShiftMobile/openshift-mobile/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/OpenShiftMobile/openshift-mobile/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+  <body role="document">
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+        </button> 
+        <a class="navbar-brand" href="http://www.openshiftmobile.com/">OpenShift Mobile</a></div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+              <a href="https://github.com/OpenShiftMobile">About</a>
+            </li>
+            <li>
+              <a href="mailto:developer@openshift.com">Contact</a>
+            </li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div>
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="openshift-mobile" class="anchor" href="#openshift-mobile"><span class="octicon octicon-link"></span></a>OpenShift Mobile</h1>
-
-<hr><p>OpenShift Mobile is a multi-platform mobile application designed to allow users to manage and control their OpenShift account. Not only limited to basic account management, OpenShift Mobile gives both developers and infrastructure operations teams the ability to create, control and manage the applications hosted on the OpenShift platform.</p>
-
-<p>Want to spin up an application while waiting in line or check the status of an application while on the go? OpenShift Mobile makes this possible with only a few taps. Already have an OpenShift account? Check out the online <a href="http://demo.openshiftmobile.com/">demo</a>.</p>
-      </section>
+    <div class="container theme-showcase" role="main">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <img src="images/Gears-in-cloud-only.png" alt="OpenShift Mobile Logo"
+      style="float:left;width:300px;height:300px;margin:-40px 20px 0px -20px;" />
+      <h1 style="color:#CA3C38;">OpenShift Mobile</h1>
+      <p>A multi-platform mobile application designed to allow
+      <br />users to manage and control their OpenShift account.</p>
+      <!-- p><a href="#" class="btn btn-danger btn-lg" role="button">Learn more &raquo;</a></p -->
+      <!-- Apple App Store 
+	  <p style="float:right;margin-left:5px;">
+        <a href="http://build.openshiftmobile.com" target="_blank">
+          <img src="images/ios-app-store.gif" alt="Apple iOS App Store" />
+        </a>
+      </p -->
+	  <!-- Google Play Store 
+      <p style="float:right;margin-right:5px;">
+        <a href="http://build.openshiftmobile.com" target="_blank">
+          <img src="images/logo_google_play_store_badge.png" alt="Google Play Store" />
+        </a>
+      </p -->
+	  <!-- PhoneGap Build beta -->
+	  <p style="float:right;">
+        <a href="http://build.openshiftmobile.com" target="_blank">
+          <img src="images/works_with_phonegap_beta.png" alt="OpenShift Mobile beta PhoneGap build" />
+        </a>
+      </p>
+	  <br />
+      <br />
+	  <br />
     </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">openshift-mobile maintained by <a href="https://github.com/OpenShiftMobile">OpenShiftMobile</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+	<!-- container -->
+    <div class="container">
+      <!-- Begin row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Mobile PaaS</h2>
+          <p>OpenShift is Red Hat's Platform-as-a-Service (PaaS) that allows developers to quickly develop, host, and scale applications in a cloud environment. With OpenShift Mobile developers, operations, and DevOps teams have the ability to create, control and manage applications hosted on the OpenShift platform.</p>
+          <p>
+            <a class="btn btn-danger" href="http://www.openshift.com/" role="button" target="_blank">View details &raquo;</a>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h2>Take the Tour</h2>
+          <p>See how easy it is to manage your OpenShift account using OpenShift Mobile. Get a first hand look at the well designed views of the login, application, and settings pages. Discover how easy it is to see the details and start, stop, restart, or delete your application all from OpenShift Mobile.</p>
+		  <!-- Button trigger modal -->
+		  <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">View details &raquo;</button>	
+        </div>
+        <div class="col-md-4">
+          <h2>Want More</h2>
+          <p>OpenShift Mobile is open source so you can download or browse the code and build or extend the application from source yourself. Check out the <a href="https://github.com/OpenShiftMobile/openshift-mobile/wiki" target="_blank">wiki</a> to learn how to get started. There is even a <a href="https://github.com/OpenShiftMobile/openshift-mobile/wiki/Live-Demo">demo</a> you can test drive (currently requires Chrome browser and Ripple plug-in). Fork on GitHub!</p>
+          <p>
+            <a class="btn btn-danger" href="https://github.com/OpenShiftMobile/openshift-mobile" role="button" target="_blank">View details &raquo;</a>
+          </p>
+        </div>
+      </div>
+      <hr />
+      <footer>
+        <p>&copy; OpenShiftMobile 2014</p>
       </footer>
-    </div>
-
-    
-
+    </div><!-- /.container -->
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title">OpenShift Mobile Screen Views Gallery</h4>
+		  </div>
+		  <div class="modal-body">
+			<!-- Carousel for images -->
+			<div id="carousel-image-viewer" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+				<li data-target="#carousel-image-viewer" data-slide-to="0" class="active"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="1"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="2"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="3"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="4"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="5"></li>
+				<li data-target="#carousel-image-viewer" data-slide-to="6"></li>
+			  </ol>
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner">
+				<div class="item active">
+				  <img src="images/screenshots/osm-login.png" alt="login screen shot">
+				  <div class="carousel-caption">login page</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-application-list.png" alt="application list screen shot">
+				  <div class="carousel-caption">application list</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-application-operation.png" alt="application operations screen shot">
+				  <div class="carousel-caption">application operations</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-new-application.png" alt="create new application screen shot">
+				  <div class="carousel-caption">create new application</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-application-info.png" alt="application information screen shot">
+				  <div class="carousel-caption">application information</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-cartridge-list.png" alt="cartridge list screen shot">
+				  <div class="carousel-caption">cartridge list</div>
+				</div>
+				<div class="item">
+				  <img src="images/screenshots/osm-settings.png" alt="settings screen shot">
+				  <div class="carousel-caption">settings</div>
+				</div>
+			  </div><!-- /.carousel-inner -->
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-image-viewer" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-image-viewer" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			  </a>
+			</div><!-- /.carousel-image-viewer -->
+		  </div><!-- /.modal-body -->
+		  <div class="modal-footer">
+			<!-- button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary">Save changes</button -->
+		  </div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> 
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script> 
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/docs.min.js"></script></div>
   </body>
 </html>
