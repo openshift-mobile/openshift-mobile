@@ -14,14 +14,14 @@ More information can be found on the OpenShift Mobile Website at [openshiftmobil
 
 ## Get the App
 
-The latest stable build of OpenShift Mobile is freely available on PhoneGap Build
+OpenShift Mobile is freely available on the Google Play Store and on other platforms from PhoneGap Build
 
-[![OpenShift Mobile on PhoneGap Build](http://openshiftmobile.com/images/works_with_phonegap_beta.png)](http://build.openshiftmobile.com)
+[![OpenShift Mobile on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.openshift)
+[![OpenShift Mobile on PhoneGap Build](http://openshiftmobile.com/images/works_with_phonegap_beta_small.png)](http://build.openshiftmobile.com)
 
 <!--
 The latest stable build of OpenShift Mobile is freely available on the Google Play store and iOS App Store
 
-[![OpenShift Mobile on Google Play](http://openshiftmobile.com/images/logo_google_play_store_badge.png)](https://play.google.com/store)
 [![OpenShift Mobile on iOS App Store](http://openshiftmobile.com/images/ios-app-store.gif)](https://itunes.apple.com/us/genre/ios/id36?mt=8)
 -->
 
