@@ -20,3 +20,8 @@ a, a:hover {
 .theme-showcase > p > .btn {
   margin: 5px 0;
 }
+
+.badges {
+  float: right;
+  margin-left: 10px;
+}
