@@ -21,7 +21,6 @@ function login(app,callback,errback,precall) {
 	//Update everything based on stored settings
 	var settings = app.settings.load();
 	app.rest.set_credentials(settings.username,settings.password);
-	console.log(settings.api);
 	app.rest.set_api_version(settings.api);
 	app.rest.GET('domains',callback,errback,precall);
 }
@@ -309,6 +308,8 @@ function application_content_build(event) {
 	var cartridge_empty_list_id = event.data.cartridge_empty_list_id;
 	var alias_list_id = event.data.alias_list_id;
 	var alias_empty_list_id = event.data.alias_empty_list_id;
+	var variables_list_id = event.data.variables_list_id;
+	var variables_empty_list_id = event.data.variables_empty_list_id;
 
 	var support = app.support.is_supported('application.get');
 
@@ -333,6 +334,7 @@ function application_content_build(event) {
 		build_info_tab();
 		build_cartridge_tab();
 		build_aliases_tab();
+		build_variables_tab();
 	
 	
 		function build_info_tab() {
@@ -578,6 +580,112 @@ function application_content_build(event) {
 
 				}
 			}
+		}
+		
+		function build_variables_tab() {
+			var support = app.support.is_supported('application.variables');
+			
+			if(!support.supported) return false;
+
+			var rdata = app.rest.GET(support.url,function(d) {
+				build_variables_list(d);
+			});
+
+			if(rdata !== null && typeof rdata !== 'undefined') {
+				build_variables_list(rdata);
+			}
+
+			function build_variables_list(adata) {
+				var data = adata.data;
+				var ul = $(variables_list_id);
+				ul.empty();
+
+				var l = data.length;
+				if(l == 0) {
+					$(variables_empty_list_id).show();
+				} else {
+					$(variables_empty_list_id).hide();
+				}
+
+				for(var i=0;i<l;++i) {
+					inject(ul,data,i);
+				}
+				ul.listview('refresh');
+
+				function inject(list,variables,index) {
+					var variable = variables[index];
+
+					var li = $('<li></li>');
+					var a1 = $('<a></a>').html('Name: ' + variable.name + '<br/> Value: '+ variable.value);
+					var a2 = $('<a href="#" id="#app-variable-delete"></a>');
+
+					a1.click(function() {
+						localStorage['sel_app_variable'] = index;
+					});
+
+					a2.click(function() {
+						localStorage['sel_app_variable'] = index;
+						app_env_delete();
+					});
+
+					li.append(a1);
+					li.append(a2);
+					list.append(li);
+					
+					function app_env_delete() {
+						
+						var app_env_name = JSON.parse(localStorage[app.support.is_supported('application.variables').url]).data[localStorage['sel_app_variable']].name;
+						
+						var support = app.support.is_supported('app_variables.delete');
+						
+						show_confirm_dialog($( '#application-content-popup-confirm-dialog' ), "Variable Action", "Are you sure you want to delete " + app_env_name + "?", function(){
+
+							$('#app-content-variables').children().addClass('ui-disabled');
+
+							$.mobile.loading('show', {
+								text : 'Deleting ' + app_env_name,
+								textVisible : true,
+								theme : 'b',
+							});
+							
+							app.rest.DELETE(support.url,
+									function(data,text,xhr) {
+										$.mobile.loading('hide');
+										show_alert_dialog($("#application-content-popup-alert-dialog"),"Variable Operation", app_env_name + " Deleted Successfully");
+										$('#app-content-variables').children().removeClass('ui-disabled');
+										refresh();
+									},
+									function(jqxhr,errType,exception) {
+
+										$.mobile.loading('hide');
+										// Check to see if messages are returned from OpenShift
+										if(jqxhr.status == "422") {
+											var json = jQuery.parseJSON(jqxhr.responseText);
+											var messages = "";
+
+											$.each(json.messages, function(index,value) {
+												if(messages != "") messages += "\n";
+												messages += value.text;
+											});
+
+											show_alert_dialog($("#application-content-popup-alert-dialog"),"Variable Operation Failed",messages);
+										}
+										else {
+											show_alert_dialog($("#application-content-popup-alert-dialog"),"Variable Operation Failure", app_env_name + " Failed to be Deleted");
+										}
+
+										$('#app-content-variables').children().removeClass('ui-disabled');				
+									}
+								);
+
+						});
+
+					
+					}
+
+				}
+			}
+
 		}
 	}
 }
@@ -848,6 +956,21 @@ function process_cartridge_action(app,menu_id,list_id,action,before_message,afte
 function new_alias_init(event) {
 	var alias_name = $(event.data.alias_name_id);
 	alias_name.val("");
+}
+
+/**
+ * Initialize the Create Application Variable Page
+ *
+ * @param event Event data passed thru event bind
+ *
+ * @author Andrew Block
+ * @version 1.1
+ */
+function new_app_variable_init(event) {
+	var app_variable_name = $(event.data.app_variable_name);
+	var app_variable_value = $(event.data.app_variable_value);
+	app_variable_name.val("");
+	app_variable_value.val("");
 }
 
 /**

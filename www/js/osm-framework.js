@@ -436,6 +436,10 @@ function OSM_Support() {
 			aliases : {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases?nolinks=true' : 'application/<application-id>/aliases?nolinks=true'
+			},
+			variables : {
+				supported: true,
+				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables?nolinks=true' : 'application/<application-id>/environment-variables?nolinks=true'
 			}
 		},
 		aliases : {
@@ -447,6 +451,17 @@ function OSM_Support() {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/alias/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
 			}
+		},
+		app_variables : {
+			add : {
+				supported: true,
+				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables' : 'application/<application-id>/environment-variables'
+			},
+			delete : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/environment-variables/<app-variable>' : 'application/<application-id>/environment-variable/<app-variable>'
+			}
+
 		},
 		cartridges : {
 			get : {
@@ -535,6 +550,18 @@ function OSM_Support() {
 						object.url = inject_alias_info(object.url,alias);
 					}
 					
+					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables.url,domain),application)]||'{}');
+					
+					if('data' in variable) {
+						variable = variable.data[localStorage['sel_app_variable']]
+					} else {
+						variable = undefined;
+					}
+					
+					if(variable !== undefined) {
+						object.url = inject_app_variable_info(object.url,variable);
+					}
+
 					
 				}
 			}		
@@ -572,6 +599,11 @@ function OSM_Support() {
 		
 		function inject_alias_info(url,alias) {
 			return url.replace('<alias-name>',('id' in alias) ? alias.id : '')
+			;
+		}
+		
+		function inject_app_variable_info(url,app_variable) {
+			return url.replace('<app-variable>',('name' in app_variable) ? app_variable.name : '')
 			;
 		}
 		
