@@ -385,7 +385,7 @@ function OSM_Support() {
 	var supported = {
 		domains : {
 			name : {
-				supported: (_version < 1.6) ? false : true,
+				supported: (_version < 1.4) ? false : true,
 			},
 			list: {
 				supported: true,

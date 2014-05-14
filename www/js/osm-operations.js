@@ -21,7 +21,6 @@ function login(app,callback,errback,precall) {
 	//Update everything based on stored settings
 	var settings = app.settings.load();
 	app.rest.set_credentials(settings.username,settings.password);
-	console.log(settings.api);
 	app.rest.set_api_version(settings.api);
 	app.rest.GET('domains',callback,errback,precall);
 }
@@ -37,23 +36,29 @@ function login(app,callback,errback,precall) {
  * @version 1.0
  */
 function logout(app,page) {
-
-	localStorage.clear();
 	
-	$('#login-username').val(app.settings.username ||'');
+	var settings = app.settings.load();
+
+	$('#login-username').val(settings.username ||'');
 	$('#login-password').val('');
-	$("#login-enterprise-url-div").hide();
-	$("#login-enterprise-url").val('');
 	$('#login-auto').checkboxradio();
 	$('#login-auto').prop("checked",false).checkboxradio("refresh");
-	$("input[name='login-openshift-type-radio-group'][value=online]").prop('checked', true);	
+		
+	if(settings.enterprise === true) {
+		//TODO: Format URL
+	}
+	else {
+		$("#login-enterprise-url-div").hide();
+		$("#login-enterprise-url").val('');
+	}
 	$('#login-password').attr('checked','false');
 	$('#login-instruct').text('Login to OpenShift').css('color','');
 	$('#login-container').children().removeClass('ui-disabled');
+	
+	localStorage.clear();
 
 	app.settings.save({
 		'password' : '',
-		'username' : '',
 		'autolog' : false
 	});
 	
@@ -121,10 +126,17 @@ function domain_list_build(event) {
 			
 			var domain_app_count_id = "domain-apps-" + domain.id;
 			
+			// Available Gears not available in OSE
+			var available_gears = "";
+			
+			if(domain.available_gears !== null && typeof domain.available_gears !== 'undefined') {
+				available_gears = '<p>Available Gears: ' + domain.available_gears + '</p>';
+			}
+			
 			var li = $('<li id="did-' + domain.id + '"></li>');
 			var a1 = $('<a></a>').html('<h2 class="ui-li-heading">' + name + '</h2>' +
 					'<p>Applications: <span id="'+domain_app_count_id +'"></span></p>' +
-					'<p>Available Gears: ' + domain.available_gears + '</p>');
+					available_gears);
 			var a2 = $('<a href="#domain-popupMenu" data-rel="popup"></a>');
 			
 			a1.click(function() {
@@ -237,9 +249,10 @@ function application_list_build(event) {
 		function inject(list,applications,index) {
 			var application = applications[index];
 			var li = $('<li id="aid-' + application.id + '"></li>');
+		    var app_img_name = application.framework !== null && application.framework !== undefined ? application.framework.split('-')[0] : "default";
 
 			var a1 = $('<a></a>').html('<img class="osm-icon-container ' +
-										get_img(application.framework.split('-')[0]) +
+										get_img(app_img_name) +
 										'"/><h3 class="appid">' + application.name + '</h3><p>' + application.app_url + '</p>');
 			var a2 = $('<a href="#application-popupMenu" data-rel="popup"></a>');
 
@@ -365,17 +378,15 @@ function application_content_build(event) {
 			
 			
 			$(param[0]).html(app_url_content);
-			$(param[1]).text(data.framework);
-			$(param[2]).text(data.gear_count);
-			$(param[3]).text(data.gear_profile);
-			$(param[4]).text(data.scalable);
+			process_row_component(param[1],data.framework);
+			process_row_component(param[2],data.gear_count);
+			process_row_component(param[3],data.gear_profile);
+			process_row_component(param[4],data.scalable);
 			$(param[5]).html(ssh_url);
 			$(param[6]).html(git_url);
-			$(param[7]).text(data.auto_deploy);
-			$(param[8]).text(data.deployment_type);
-			$(param[9]).text(data.deployment_branch);
-			
-
+			process_row_component(param[7],data.auto_deploy);
+			process_row_component(param[8],data.deployment_type);
+			process_row_component(param[9],data.deployment_branch);
 
 		}
 
@@ -627,12 +638,13 @@ function settings_build(event) {
 
 			var param = $(settings_info_id).find('td');
 
-			$(param[0]).text(data.login);
-			$(param[1]).text(data.plan_id);
-			$(param[2]).text(data.consumed_gears);
-			$(param[3]).text(data.max_gears);
-			$(param[4]).text(data.capabilities.gear_sizes);
-			$(param[5]).text(data.capabilities.subaccounts);
+			process_row_component(param[0],data.login);
+			process_row_component(param[1],data.plan_id);
+			process_row_component(param[2],data.consumed_gears);
+			process_row_component(param[3],data.max_gears);
+			process_row_component(param[4],data.capabilities.gear_sizes);
+			process_row_component(param[5],data.capabilities.subaccounts);
+
 		}
 
 		function build_subscriptions_tab() {
@@ -1187,4 +1199,24 @@ function copy_clipboard(text, toast_msg) {
 		window.plugins.toast.showShortBottom(toast_msg);
 	}
 }
+
+/**
+ * Displays or hides a row components based on a non-nullable data element
+ *
+ * @param element The td element
+ * @param data The data element
+ *  
+ * @author Andrew Block
+ * @version 1.1
+ */
+function process_row_component(element, data) {
+	if(data !== null && typeof data !== 'undefined') {
+		$(element).closest('tr').show();
+		$(element).text(data);
+	}
+	else {
+		$(element).closest('tr').hide();
+	}
+}
+
 

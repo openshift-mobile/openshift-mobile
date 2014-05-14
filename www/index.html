@@ -52,14 +52,15 @@
 							<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-online" value="online" checked="checked" />
 						     	<label for="login-openshift-type-radio-group-online">OpenShift Online</label>
 						
-						     	<!--input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
-						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label-->
+						     	<input type="radio" name="login-openshift-type-radio-group" id="login-openshift-type-radio-group-enterprise" value="enterprise"  />
+						     	<label for="login-openshift-type-radio-group-enterprise">OpenShift Enterprise</label>
 						</fieldset>
 					</div>
 					<div data-role="fieldcontain" id="login-openshift-origin-create-div">
 						<a href="#" id="create-account">Create an Account</a>
 					</div>
-					<div data-role="fieldcontain" id="login-enterprise-url-div">
+					<div id="login-enterprise-url-div">
+						<label for="login-enterprise-url">OpenShift Enterprise URL</label>
 						<input id="login-enterprise-url" type="text" value="" placeholder="OpenShift Enterprise Rest Url"/>
 					</div>
 					
@@ -573,6 +574,14 @@
 
 				$.mobile.changePage('#login-page',{transition:DEFAULT_TRANSITION});
 				populateLoginForm(settings);
+				
+				
+				// IOS Navbar Fix
+				var updateStatusBar = navigator.userAgent.match(/iphone|ipad|ipod/i) &&
+        			parseInt(navigator.appVersion.match(/OS (\d)/)[1], 10) >= 7;
+    			if (updateStatusBar) {
+        			document.body.style.webkitTransform = 'translate3d(0, 20px, 0)';
+    			}
 
 				if(settings.autolog) {
 					loginToggleDisableFields();
@@ -583,9 +592,7 @@
 			});
 
 			$('#login-submit').click(function() {
-				// #74 - Removed OpenShift Enterprise Option
-				//var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
-				var ent = false;
+				var ent = $('#login-openshift-type-radio-group-enterprise').prop('checked');
 				
 				app.settings.save({
 					username: $('#login-username').val(),
@@ -602,11 +609,14 @@
 			function populateLoginForm(settings) {
 				$('#login-username').val(settings.username);
 				settings.autolog ? $('#login-password').val(settings.password) : $('#login-password').val();
-				$('#login-enterprise-url').val(settings.baseurl);
 				$('#login-auto').prop('checked',settings.autolog).checkboxradio('refresh');
 				
-				// #74 - Removed OpenShift Enterprise Option
-				//$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
+				if(settings.enterprise) {
+					$('#login-enterprise-url').val(settings.baseurl);
+				}
+
+				
+				$('#login-openshift-type-radio-group-enterprise').prop('checked',settings.enterprise).checkboxradio('refresh');
 				$('#login-openshift-type-radio-group-online').prop('checked',!settings.enterprise).checkboxradio('refresh');
 				$("input[name='login-openshift-type-radio-group']").change();
 			}
@@ -633,17 +643,16 @@
 
 			$("input[name='login-openshift-type-radio-group']").change(function(e){
 				var enterprise_url_textbox_div = $("#login-enterprise-url-div");
+			    var online_create_account_div = $("#login-openshift-origin-create-div");	
 			    
-				enterprise_url_textbox_div.hide();
-				// #74 Removed OpensShift Enterprise option
-				
-				/*
 				if($('#login-openshift-type-radio-group-enterprise').prop('checked')) {
-    				enterprise_url_textbox_div.show();
+					enterprise_url_textbox_div.show();
+    				online_create_account_div.hide();
 			    } else {
     				enterprise_url_textbox_div.hide();
+    				online_create_account_div.show();
 			    }
-				*/
+				
 			});
 			
 			$("input[id='new-application-git']").change(function(e){
