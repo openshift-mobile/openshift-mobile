@@ -318,6 +318,7 @@
 						<li><a data-theme="e" href="#" data-tab="app-content-info">Info</a></li>
 						<li><a data-theme="e" href="#" data-tab="app-content-cartridges" data-display-add="true">Cartridges</a></li>
 						<li><a data-theme="e" href="#" data-tab="app-content-aliases" data-display-add="true">Aliases</a></li>
+						<li><a data-theme="e" href="#" data-tab="app-content-variables" data-display-add="true">Variables</a></li>
 					</ul>
 				</div>
 			</div>
@@ -390,6 +391,13 @@
 						</div>						
 						<ul id="app-alias-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
 					</div>
+					<div id="app-content-variables">
+						<div id="app-variables-empty-list" data-role="fieldcontain" class="no-list-content">
+							<h3>No Variables Exist</h3>
+						</div>						
+						<ul id="app-variables-list" data-role="listview" data-theme="a" data-split-icon="delete"></ul>
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -429,6 +437,45 @@
 			</div>
 		</div>		
 		<!-- END Create Aliases Page -->	
+		
+		<!-- Create Application Environment Variable Page -->
+		<div id="new-app-variable-page" data-role="page" class="prerender">
+			<div data-role="header">
+				<h1>Create New Application Variable</h1>
+			</div>
+
+			<div data-role="content">
+				<!-- Begin Popup Dialog -->
+				<div data-role="popup" id="new-app-variable-popup-alert-dialog" data-overlay-theme="a" data-theme="a" style="max-width:500px" class="ui-corner-all">
+					<div data-role="header" data-theme="a" class="ui-corner-top">
+						<div>
+							<h3 id="new-app-variable-popup-alert-dialog-header" style="text-align:center"></h3>
+						</div>
+					</div>
+					<div data-role="content" data-theme="a" class="ui-corner-bottom ui-content">
+						<h3 id="new-app-variable-popup-alert-dialog-content" class="ui-title"></h3>
+						<a href="#" data-role="button" data-inline="true" data-rel="back">OK</a>    
+					</div>
+				</div>
+				<!-- End Popup Dialog -->			
+				<div id="create-app-variable-container" data-theme="a">
+					<form id="new-app-variable-form" data-ajax="false">
+						<div data-role="fieldcontain">
+							 <input type="text" name="name" id="new-app-variable-name" value="" placeholder="Name"  data-theme="a"  />
+						</div>		
+						<div data-role="fieldcontain">
+							 <input type="text" name="value" id="new-app-variable-value" value="" placeholder="Value"  data-theme="a"  />
+						</div>		
+						<div data-role="fieldcontain">
+							<a data-role="button" data-rel="back" data-inline="true"  data-theme="a">Cancel</a>
+							<button id="create-app-variable-submit" data-role="button" data-inline="true" data-theme="a">Create</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>		
+		<!-- END Create Application Environment Variables Page -->	
+		
 		
 		<!-- Create Embedded Cartridge Page -->
 		<div id="new-embedded-cartridge-page" data-role="page" class="prerender">
@@ -675,6 +722,7 @@
 			$('#domains-page').bind('pagebeforeshow',{app:app,list_id:'#domain-list',empty_list_id:'#domains-empty-list',app_page_id:"#applications-page"},domain_list_build);
 			$('#applications-page').bind('pagebeforeshow',{app:app,list_id:'#application-list',empty_list_id:'#applications-empty-list',app_page_id:'#app-content-page'},application_list_build);
 			$('#new-alias-page').bind('pagebeforeshow',{app:app,alias_name_id:'#new-alias-id'},new_alias_init);
+			$('#new-app-variable-page').bind('pagebeforeshow',{app:app,app_variable_name:'#new-app-variable-name',app_variable_value:'#new-app-variable-value'},new_app_variable_init);
 			$('#new-domain-page').bind('pagebeforeshow',{app:app,domain_name_id:'#new-domain-id'},new_domain_init);
 			$('#new-application-page').bind('pagebeforeshow',{app:app,list_id:'#new-application-cartridge',name_id:'#new-application-name',git:'#new-application-git',git_url:'#new-application-git-url',git_container:'#new-application-git-container',embedded_cartridge: "#new-application-embedded-cartridge", embedded_cartridge_container: '#new-application-embedded-cartridge-container', embedded_cartridge_list : '#new-application-embedded-cartridge-list'},application_type_list_build);
 			$('#new-embedded-cartridge-page').bind('pagebeforeshow',{app:app,list_id:'#new-embedded-cartridge-cartridge'},embedded_cartridge_type_list_build);
@@ -685,7 +733,9 @@
 				cartridge_list_id:'#app-cartridge-list',
 				cartridge_empty_list_id:'#app-cartridge-emtpy-list',
 				alias_list_id:'#app-alias-list',
-				alias_empty_list_id : '#app-alias-empty-list'
+				alias_empty_list_id : '#app-alias-empty-list',
+				variables_list_id:'#app-variables-list',
+				variables_empty_list_id:'#app-variables-empty-list'
 			},application_content_build);
 			$('#settings-page').bind('pagebeforeshow',{
 				app:app,
@@ -1062,6 +1112,57 @@
 				return false;
 			});
 			
+			$('#create-app-variable-submit').click(function() {
+				var formdata = $('#new-app-variable-form').serialize();
+
+				$('#create-app-variable-container').children().addClass('ui-disabled');
+
+				$.mobile.loading('show', {
+					text : 'Creating ' + $('#new-app-variable-name').val(),
+					textVisible : true,
+					theme : 'b',
+				});
+
+				var support = app.support.is_supported('app_variables.add');
+				if(!support.supported) return false;
+
+				app.rest.POST(support.url, formdata,
+					function(d) {
+						$.mobile.loading('hide');
+						$('#create-app-variable-container').children().removeClass('ui-disabled');
+						show_alert_dialog($("#new-app-variable-popup-alert-dialog"),"Variable Creation","Variable Created Successfully", function(event,ui){
+							history.back();
+						});
+					},
+					function(jqxhr,errType,exception) {
+						$.mobile.loading('hide');			
+						// Check to see if messages are returned from OpenShift
+						if(jqxhr.status == "422") {
+
+							var json = jQuery.parseJSON(jqxhr.responseText);
+							var messages = '';
+
+							$.each(json.messages, function(index,value) {
+								if(messages != '') messages += "\n";
+								messages += value.text;
+							});
+
+							show_alert_dialog($("#new-app-variable-popup-alert-dialog"),"Variable Creation Failed",messages);
+						}
+						else {
+
+							show_alert_dialog($("#new-app-variable-popup-alert-dialog"),"Variable Creation Failed","The Variable Failed to be Created");
+						}
+
+						$.mobile.loading('hide');
+						$('#create-app-variable-container').children().removeClass('ui-disabled');
+					}
+				);
+
+				return false;
+			});
+
+			
 			$('.createdomain').click(function() {
 				$.mobile.changePage('#new-domain-page',{transition:DEFAULT_TRANSITION});
 			});
@@ -1174,6 +1275,9 @@
 				$.mobile.changePage('#new-embedded-cartridge-page',{transition:DEFAULT_TRANSITION});
 			});
 
+			$(document).bind('osm-new-app-content-variables',function() {
+				$.mobile.changePage('#new-app-variable-page',{transition:DEFAULT_TRANSITION});
+			});
 
 
 			$(document).delegate('[data-role="navbar"] a', 'click', function() {
