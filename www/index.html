@@ -197,9 +197,11 @@
 				<ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="a">
 					<li data-role="divider" data-theme="b">Actions</li>
 					<li><a id="application-view">View Application</a></li>
-					<li data-icon="arrow-u"><a id="application-start">Start Application</a></li>
-					<li data-icon="arrow-d"><a id="application-stop">Stop Application</a></li>
-					<li data-icon="refresh"><a id="application-restart">Restart Application</a></li>
+					<li data-icon="forward"><a id="application-start">Start Application</a></li>
+					<li data-icon="back"><a id="application-stop">Stop Application</a></li>
+					<li data-icon="refresh"><a id="application-restart">Restart Application</a></li>				
+					<li data-icon="arrow-u"><a id="application-scale-up">Scale Up Application</a></li>
+					<li data-icon="arrow-d"><a id="application-scale-down">Scale Down Application</a></li>
 					<li data-theme="c" data-icon="delete"><a id="application-delete">Delete Application</a></li>
 				</ul>
 			</div>
@@ -826,6 +828,14 @@
 
 			$('#application-restart').click(function() {
 				process_application_action(app,'#application-popupMenu','#application-list','restart','Restarting','Restarted');
+			});
+
+			$('#application-scale-up').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','scale-up','Scaling Up','Scaled Up');
+			});
+
+			$('#application-scale-down').click(function() {
+				process_application_action(app,'#application-popupMenu','#application-list','scale-down','Scaling Down','Scaled Down');
 			});
 
 			$('#application-view').click(function() {
