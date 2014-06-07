@@ -22,10 +22,10 @@ function login(app,callback,errback,precall) {
 		var max_available_version = d.supported_api_versions.sort(function(a,b) {
 			return b-a;
 		})[0];
-		var version_to_set = Math.min(max_available_version,MAX_SUPPORTED_VERSION);
+		app.set_api_version(Math.min(max_available_version,MAX_SUPPORTED_VERSION));
+
 		var settings = app.settings.load();
 		app.rest.set_credentials(settings.username,settings.password);
-		app.set_api_version(version_to_set);
 		app.rest.GET('domains',callback,errback);
 	},errback,precall);
 }
