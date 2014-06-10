@@ -19,9 +19,7 @@ function login(app,callback,errback,precall) {
 	});
 
 	app.rest.GET('api',function(d) {
-		var max_available_version = d.supported_api_versions.sort(function(a,b) {
-			return b-a;
-		})[0];
+		var max_available_version = d.supported_api_versions[d.supported_api_versions.length-1];
 		app.set_api_version(Math.min(max_available_version,MAX_SUPPORTED_VERSION));
 
 		var settings = app.settings.load();
