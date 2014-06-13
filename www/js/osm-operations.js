@@ -59,10 +59,8 @@ function logout(app,page) {
 
 	app.settings.save({
 		'password' : '',
-		'autolog' : false,
+		'autolog' : false
 	});
-	
-	app.set_api_version(undefined);
 	
 	$.mobile.changePage(page || '#login-page',{
 		transition:DEFAULT_TRANSITION
