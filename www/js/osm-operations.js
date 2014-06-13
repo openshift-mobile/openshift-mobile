@@ -58,6 +58,7 @@ function logout(app,page) {
 		'username' : '',
 		'autolog' : false
 	});
+	app.set_api_version(undefined);
 	
 	$.mobile.changePage(page || '#login-page',{
 		transition:DEFAULT_TRANSITION
