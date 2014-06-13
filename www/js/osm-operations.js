@@ -18,11 +18,14 @@ function login(app,callback,errback,precall) {
 		theme : 'b',
 	});
 
-	//Update everything based on stored settings
-	var settings = app.settings.load();
-	app.rest.set_credentials(settings.username,settings.password);
-	app.rest.set_api_version(settings.api);
-	app.rest.GET('domains',callback,errback,precall);
+	app.rest.GET('api',function(d) {
+		var max_available_version = d.supported_api_versions[d.supported_api_versions.length-1];
+		app.set_api_version(Math.min(max_available_version,MAX_SUPPORTED_VERSION));
+
+		var settings = app.settings.load();
+		app.rest.set_credentials(settings.username,settings.password);
+		app.rest.GET('domains',callback,errback);
+	},errback,precall);
 }
 
 /**
@@ -55,6 +58,7 @@ function logout(app,page) {
 		'username' : '',
 		'autolog' : false
 	});
+	app.set_api_version(undefined);
 	
 	$.mobile.changePage(page || '#login-page',{
 		transition:DEFAULT_TRANSITION
