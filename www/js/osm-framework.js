@@ -94,7 +94,6 @@ function OSM_Initializer() {
 		if (updateStatusBar) {
 			document.body.style.webkitTransform = 'translate3d(0, 20px, 0)';
 		}
-		
 		deviceReadyDeferred.resolve();
 	}
 
@@ -131,19 +130,24 @@ function OSM_Initializer() {
 	}
 	
 	function backButtonControl(event) {
-		
-		var exitApplicationPages = ["login-page","domains-page"];
-		
-		var found = $.inArray($.mobile.activePage.attr('id'), exitApplicationPages);
 
-		if(found >= 0) {
-			event.preventDefault();
-			navigator.app.exitApp();
+		var navpanel = $.mobile.activePage.jqmData( "panel" );
+		
+		// If Panel is Open, close, otherwise proceed with back button Logic
+		if(navpanel != undefined && navpanel == "open") {
+			$.mobile.activePage.find('div[data-role="panel"]').panel("close"); 
 		}
 		else {
-			history.back();
+			var prevPageUrl = $.mobile.urlHistory.getPrev();
+			
+			if($.mobile.activePage.attr("id") == "login-page" || (typeof prevPage != undefined && prevPageUrl.hash == "#login-page")) {
+				event.preventDefault();
+	            navigator.app.exitApp();
+			}
+			else {
+				history.back();
+			}
 		}
-		
 	}
 
 }
@@ -157,6 +161,7 @@ function OSM_Initializer() {
  * @return The object to use 
  *
  * @author Joey Yore
+ * @author Andrew Block
  * @version 1.0
  */
 function OSM_REST() {
@@ -164,8 +169,7 @@ function OSM_REST() {
 	var headers = {
 		'Accept': 'application/json'
 	};
-
-
+	
 
 	function operation_base(operation,url,data,callback,errback,precall) {
 
@@ -246,6 +250,7 @@ function OSM_REST() {
 		 * @author Joey Yore
 		 */
 		GET : function(url,callback,errback,precall) {
+						
 			return operation_base('GET',url,null,callback,errback,precall);
 		},
 
@@ -393,12 +398,16 @@ function OSM_Support() {
 				url: 'domains'
 			},
 			delete : {
-				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+				supported: true,
+				url: 'domain/<domain-name>'
 			},
 			update : {
 				supported: false,
 				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
+			}, 
+			add : {
+				supported: true,
+				url : 'domains'
 			}
 		},
 		applications : {
@@ -410,7 +419,7 @@ function OSM_Support() {
 			},
 			list: {
 				supported: true,
-				url: 'domain/<domain-name>/applications'
+				url: 'domain/<domain-name>/applications?nolinks=true'
 			},
 			add: {
 				supported: true,
@@ -420,7 +429,7 @@ function OSM_Support() {
 		application : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>' : 'application/<application-id>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>?nolinks=true' : 'application/<application-id>?nolinks=true'
 			}, 
 			events : {
 				supported : true,
@@ -428,11 +437,15 @@ function OSM_Support() {
 			},
 			cartridges : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges?nolinks=true' : 'application/<application-id>/cartridges?nolinks=true'
 			},
 			aliases : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases?nolinks=true' : 'application/<application-id>/aliases?nolinks=true'
+			},
+			variables : {
+				supported: true,
+				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables?nolinks=true' : 'application/<application-id>/environment-variables?nolinks=true'
 			}
 		},
 		aliases : {
@@ -445,10 +458,21 @@ function OSM_Support() {
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/alias/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
 			}
 		},
+		app_variables : {
+			add : {
+				supported: true,
+				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables' : 'application/<application-id>/environment-variables'
+			},
+			delete : {
+				supported : true,
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/environment-variables/<app-variable>' : 'application/<application-id>/environment-variable/<app-variable>'
+			}
+
+		},
 		cartridges : {
 			get : {
 				supported : true,
-				url : 'cartridges'
+				url : 'cartridges?nolinks=true'
 			},
 			add : {
 				supported : true,
@@ -458,16 +482,34 @@ function OSM_Support() {
 		cartridge : {
 			get : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>' : 'application/<application-id>/cartridge/<cartridge-name>'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?nolinks=true'
 			},
 			status : {
 				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages'
+				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages&nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages&nolinks=true'
 			},
 			events : {
 				supported : true,
 				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
 			},
+		},
+		settings : {
+			user : {
+				supported : true,
+				url : 'user?nolinks=true'
+			},
+			subscriptions : {
+				supported : (_version < 1.6) ? false : true,
+				url : 'plans?nolinks=true'
+			},
+			ssh_keys : {
+				supported : true,
+				url : 'user/keys?nolinks=true'
+			},
+			get_ssh_key : {
+				supported : true,
+				url : 'user/keys/<ssh-key-name>?nolinks=true'
+			}
 		}
 	}
 
@@ -481,7 +523,7 @@ function OSM_Support() {
 
 				object.url = inject_domain_info(object.url,domain);
 
-				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications']||'{}');
+				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications?nolinks=true']||'{}');
 
 				if('data' in application) {
 					application = application.data[localStorage['sel_application']];
@@ -514,8 +556,31 @@ function OSM_Support() {
 						object.url = inject_alias_info(object.url,alias);
 					}
 					
+					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables.url,domain),application)]||'{}');
+					
+					if('data' in variable) {
+						variable = variable.data[localStorage['sel_app_variable']]
+					} else {
+						variable = undefined;
+					}
+					
+					if(variable !== undefined) {
+						object.url = inject_app_variable_info(object.url,variable);
+					}
+
 					
 				}
+			}		
+			
+			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys.url]||'{}');
+			if('data' in ssh_key) {
+				ssh_key = ssh_key.data[localStorage['sel_ssh_key']];
+			} else {
+				ssh_key = undefined;
+			}
+			
+			if(ssh_key !== undefined) {
+				object.url = inject_ssh_key_info(object.url,ssh_key);
 			}
 		}
 		return object;
@@ -540,6 +605,16 @@ function OSM_Support() {
 		
 		function inject_alias_info(url,alias) {
 			return url.replace('<alias-name>',('id' in alias) ? alias.id : '')
+			;
+		}
+		
+		function inject_app_variable_info(url,app_variable) {
+			return url.replace('<app-variable>',('name' in app_variable) ? app_variable.name : '')
+			;
+		}
+		
+		function inject_ssh_key_info(url,ssh_key) {
+			return url.replace('<ssh-key-name>',('name' in ssh_key) ? ssh_key.name : '')
 			;
 		}
 
