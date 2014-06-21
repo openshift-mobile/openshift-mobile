@@ -240,9 +240,10 @@ function application_list_build(event) {
 		function inject(list,applications,index) {
 			var application = applications[index];
 			var li = $('<li id="aid-' + application.id + '"></li>');
+			var app_img_name = (application.framework !== null && application.framework !== undefined) ? application.framework.split('-')[0] : "default";
 
 			var a1 = $('<a></a>').html('<img class="osm-icon-container ' +
-										get_img(application.framework.split('-')[0]) +
+										get_img(app_img_name) +
 										'"/><h3 class="appid">' + application.name + '</h3><p>' + application.app_url + '</p>');
 			var a2 = $('<a href="#application-popupMenu" data-rel="popup"></a>');
 
