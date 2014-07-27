@@ -20,5 +20,5 @@ function puts(error, stdout, stderr) {
 }
 
 pluginlist.forEach(function(plug) {
-    exec("phonegap local plugin add " + plug, puts);
+    exec("cordova plugin add " + plug, puts);
 });
