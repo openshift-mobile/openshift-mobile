@@ -1,0 +1,43 @@
+{
+    "domains" : {
+        "name" : true,
+        "list": "domains",
+        "delete" : "domain/<domain-name>",
+        "update" : "domain/<domain-id>",
+        "add" : "domains"
+    },
+    "applications" : {
+        "uuid" : true,
+        "list" : "domain/<domain-name>/applications?nolinks=true",
+        "add" : "domain/<domain-name>/applications"
+    },
+    "application" : {
+        "get" : "domain/<domain-name>/application/<application-name>?nolinks=true",
+        "events" : "domain/<domain-name>/application/<application-name>/events",
+        "cartridges" : "domain/<domain-name>/application/<application-name>/cartridges?nolinks=true",
+        "aliases" : "domain/<domain-name>/application/<application-name>/aliases?nolinks=true",
+        "variables" : "application/<application-name>/environment-variables?nolinks=true"
+    },
+    "aliases" : {
+        "add" : "domain/<domain-name>/application/<application-name>/aliases",
+        "delete" : "domain/<domain-name>/application/<application-name>/alias/<alias-name>"
+    },
+    "app_variables" : {
+        "add" : "application/<application-name>/environment-variables",
+        "delete" : "domain/<domain-name>/application/<application-name>/environment-variables/<app-variable>"
+    },
+    "cartridges" : {
+        "get" : "cartridges?nolinks=true",
+        "add" : "domain/<domain-name>/application/<application-name>/cartridges"
+    },
+    "catridge" : {
+        "get" : "domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?nolinks=true",
+        "status" : "domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages&nolinks=true",
+        "events" : "domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events"
+    },
+    "settings" : {
+        "user" : "user?nolinks=true",
+        "ssh_keys" : "user/keys?nolinks=true",
+        "get_ssh_key" : "user/keys/<ssh-key-name>?nolinks=true"
+    }
+}
