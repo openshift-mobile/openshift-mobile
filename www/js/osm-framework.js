@@ -59,6 +59,7 @@ function OSM_Application() {
 		 */
 		set_api_version : function(version) {
 			this.rest.set_api_version(version);
+			this.support.set_api_version(version);
 			this.settings.save({'version':version});
 		}
 
@@ -388,129 +389,24 @@ function OSM_Support() {
 
 	var _version = JSON.parse(localStorage['settings'] || '{}').version || MAX_SUPPORTED_VERSION;
 	
-	var supported = {
-		domains : {
-			name : {
-				supported: (_version < 1.6) ? false : true,
-			},
-			list: {
-				supported: true,
-				url: 'domains'
-			},
-			delete : {
-				supported: true,
-				url: 'domain/<domain-name>'
-			},
-			update : {
-				supported: false,
-				url: (_version < 1.6) ? 'domain/<domain-id>' : 'domain/<domain-name>'
-			}, 
-			add : {
-				supported: true,
-				url : 'domains'
-			}
-		},
-		applications : {
-			id : {
-				supported: (_version < 1.6) ? false : true
-			},
-			uuid : {
-				supported: (_version < 1.6) ? true : false
-			},
-			list: {
-				supported: true,
-				url: 'domain/<domain-name>/applications?nolinks=true'
-			},
-			add: {
-				supported: true,
-				url: 'domain/<domain-name>/applications'
-			},
-		},
-		application : {
-			get : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>?nolinks=true' : 'application/<application-id>?nolinks=true'
-			}, 
-			events : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/events' : 'application/<application-id>/events'
-			},
-			cartridges : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges?nolinks=true' : 'application/<application-id>/cartridges?nolinks=true'
-			},
-			aliases : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases?nolinks=true' : 'application/<application-id>/aliases?nolinks=true'
-			},
-			variables : {
-				supported: true,
-				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables?nolinks=true' : 'application/<application-id>/environment-variables?nolinks=true'
-			}
-		},
-		aliases : {
-			add : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/aliases' : 'application/<application-id>/aliases'
-			},
-			delete : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/alias/<alias-name>' : 'applications/<application-id>/aliases/<alias-name>'
-			}
-		},
-		app_variables : {
-			add : {
-				supported: true,
-				url :  (_version < 1.6) ? 'application/<application-name>/environment-variables' : 'application/<application-id>/environment-variables'
-			},
-			delete : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/environment-variables/<app-variable>' : 'application/<application-id>/environment-variable/<app-variable>'
-			}
+	var supported = set_version(_version);
 
-		},
-		cartridges : {
-			get : {
-				supported : true,
-				url : 'cartridges?nolinks=true'
-			},
-			add : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridges' : 'application/<application-id>/cartridges'
+	function set_version(version) {
+		var ext = JSON.parse(localStorage['settings'] || '{}').enterprise ? 'enterprise' : 'version';
+		var was_success = false;
+
+		$.ajax({
+			async: false,
+			url: './json/api/' + ext + '/v' + version + '.json',
+			dataType: 'json',
+			success: function(d) {
+				console.log(d);
+				supported = d;
+				was_success = true;
 			}
-		},
-		cartridge : {
-			get : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?nolinks=true'
-			},
-			status : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>?include=status_messages&nolinks=true' : 'application/<application-id>/cartridge/<cartridge-name>?include=status_messages&nolinks=true'
-			},
-			events : {
-				supported : true,
-				url : (_version < 1.6) ? 'domain/<domain-name>/application/<application-name>/cartridge/<cartridge-name>/events' : 'application/<application-id>/cartridge/<cartridge-name>/events'
-			},
-		},
-		settings : {
-			user : {
-				supported : true,
-				url : 'user?nolinks=true'
-			},
-			subscriptions : {
-				supported : (_version < 1.6) ? false : true,
-				url : 'plans?nolinks=true'
-			},
-			ssh_keys : {
-				supported : true,
-				url : 'user/keys?nolinks=true'
-			},
-			get_ssh_key : {
-				supported : true,
-				url : 'user/keys/<ssh-key-name>?nolinks=true'
-			}
-		}
+		});
+
+		return was_success;
 	}
 
 	function format_response(object,index) {
@@ -521,7 +417,7 @@ function OSM_Support() {
 
 			if(domain !== undefined) {
 
-				object.url = inject_domain_info(object.url,domain);
+				object = inject_domain_info(object,domain);
 
 				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications?nolinks=true']||'{}');
 
@@ -532,19 +428,19 @@ function OSM_Support() {
 				}
 
 				if(application !== undefined) {
-					object.url = inject_application_info(object.url,application);
+					object = inject_application_info(object,application);
 
-					var cartridge = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.cartridges.url,domain),application)]||'{}');
+					var cartridge = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.cartridges,domain),application)]||'{}');
 					if('data' in cartridge) {
 						cartridge = cartridge.data[localStorage['sel_cartridge']]
 					} else {
 						cartridge = undefined;
 					}
 					if(cartridge !== undefined) {
-						object.url = inject_cartridge_info(object.url,cartridge);
+						object = inject_cartridge_info(object,cartridge);
 					}
 
-					var alias = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.aliases.url,domain),application)]||'{}');
+					var alias = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.aliases,domain),application)]||'{}');
 					
 					if('data' in alias) {
 						alias = alias.data[localStorage['sel_alias']]
@@ -553,10 +449,10 @@ function OSM_Support() {
 					}
 					
 					if(alias !== undefined) {
-						object.url = inject_alias_info(object.url,alias);
+						object = inject_alias_info(object,alias);
 					}
 					
-					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables.url,domain),application)]||'{}');
+					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables,domain),application)]||'{}');
 					
 					if('data' in variable) {
 						variable = variable.data[localStorage['sel_app_variable']]
@@ -565,14 +461,12 @@ function OSM_Support() {
 					}
 					
 					if(variable !== undefined) {
-						object.url = inject_app_variable_info(object.url,variable);
+						object = inject_app_variable_info(object,variable);
 					}
-
-					
 				}
 			}		
 			
-			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys.url]||'{}');
+			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys]||'{}');
 			if('data' in ssh_key) {
 				ssh_key = ssh_key.data[localStorage['sel_ssh_key']];
 			} else {
@@ -580,7 +474,7 @@ function OSM_Support() {
 			}
 			
 			if(ssh_key !== undefined) {
-				object.url = inject_ssh_key_info(object.url,ssh_key);
+				object = inject_ssh_key_info(object,ssh_key);
 			}
 		}
 		return object;
@@ -632,18 +526,39 @@ function OSM_Support() {
 		 *
 		 */
 		is_supported : function(operation,index) {
-			var indexes = operation.split('.')
+			var indexes = operation.split('.');
 			var current = supported;
+			var supported;
+			var url;
 
-			for(var i=0,l=indexes.length;i<l;++i) {
-				current = current[indexes[i]];
+			try {
+				for(var i=0,l=indexes.length;i<l;++i) {
+					current = current[indexes[i]];
+				}
+
+				url = format_response($.extend({},current),index);
+				supported = true;
+			} catch(err) {
+				supported = false;
+				url = "";
 			}
 
-			if(current === undefined) {
-				return {supported:false};
-			}
 
-			return format_response($.extend({},current),index);
+			return {
+				supported : supported,
+				url : url
+			}
+		},
+		/**
+		 * Set the api version to use
+		 *
+		 * @name OSM_Support#set_api_version
+		 * @param version The version to set
+		 * @return true if successfully loaded
+		 *
+		 */
+		set_api_version: function(version) {
+			return set_version(version);
 		}
 	}
 
