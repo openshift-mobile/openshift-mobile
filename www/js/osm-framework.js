@@ -389,7 +389,11 @@ function OSM_Support() {
 
 	var _version = JSON.parse(localStorage['settings'] || '{}').version || MAX_SUPPORTED_VERSION;
 	
-	var supported = set_version(_version);
+	var supported = {};
+	if(!set_version(_version)) {
+		$.error('Error loading api version');		
+	}
+	
 
 	function set_version(version) {
 		var ext = JSON.parse(localStorage['settings'] || '{}').enterprise ? 'enterprise' : 'version';
@@ -400,7 +404,6 @@ function OSM_Support() {
 			url: './json/api/' + ext + '/v' + version + '.json',
 			dataType: 'json',
 			success: function(d) {
-				console.log(d);
 				supported = d;
 				was_success = true;
 			}
@@ -409,15 +412,23 @@ function OSM_Support() {
 		return was_success;
 	}
 
+	function get_supported() {
+		return supported;
+	}
+
 	function format_response(object,index) {
 
 		if('url' in object) {
-		
-			var domain = JSON.parse(localStorage['domains']).data[localStorage['sel_domain']];
+
+			try {
+				var domain = JSON.parse(localStorage['domains']).data[localStorage['sel_domain']];
+			} catch(err) {
+				var domain = undefined;
+			}
 
 			if(domain !== undefined) {
 
-				object = inject_domain_info(object,domain);
+				object.url = inject_domain_info(object.url,domain);
 
 				var application = JSON.parse(localStorage['domain/' + (domain.name||domain.id) + '/applications?nolinks=true']||'{}');
 
@@ -428,19 +439,19 @@ function OSM_Support() {
 				}
 
 				if(application !== undefined) {
-					object = inject_application_info(object,application);
+					object.url = inject_application_info(object.url,application);
 
-					var cartridge = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.cartridges,domain),application)]||'{}');
+					var cartridge = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.cartridges.url,domain),application)]||'{}');
 					if('data' in cartridge) {
 						cartridge = cartridge.data[localStorage['sel_cartridge']]
 					} else {
 						cartridge = undefined;
 					}
 					if(cartridge !== undefined) {
-						object = inject_cartridge_info(object,cartridge);
+						object.url = inject_cartridge_info(object.url,cartridge);
 					}
 
-					var alias = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.aliases,domain),application)]||'{}');
+					var alias = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.aliases.url,domain),application)]||'{}');
 					
 					if('data' in alias) {
 						alias = alias.data[localStorage['sel_alias']]
@@ -449,10 +460,10 @@ function OSM_Support() {
 					}
 					
 					if(alias !== undefined) {
-						object = inject_alias_info(object,alias);
+						object.url = inject_alias_info(object.url,alias);
 					}
 					
-					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables,domain),application)]||'{}');
+					var variable = JSON.parse(localStorage[inject_application_info(inject_domain_info(supported.application.variables.url,domain),application)]||'{}');
 					
 					if('data' in variable) {
 						variable = variable.data[localStorage['sel_app_variable']]
@@ -461,12 +472,14 @@ function OSM_Support() {
 					}
 					
 					if(variable !== undefined) {
-						object = inject_app_variable_info(object,variable);
+						object.url = inject_app_variable_info(object.url,variable);
 					}
+
+					
 				}
 			}		
 			
-			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys]||'{}');
+			var ssh_key = JSON.parse(localStorage[supported.settings.ssh_keys.url]||'{}');
 			if('data' in ssh_key) {
 				ssh_key = ssh_key.data[localStorage['sel_ssh_key']];
 			} else {
@@ -474,7 +487,7 @@ function OSM_Support() {
 			}
 			
 			if(ssh_key !== undefined) {
-				object = inject_ssh_key_info(object,ssh_key);
+				object.url = inject_ssh_key_info(object.url,ssh_key);
 			}
 		}
 		return object;
@@ -527,27 +540,26 @@ function OSM_Support() {
 		 */
 		is_supported : function(operation,index) {
 			var indexes = operation.split('.');
-			var current = supported;
-			var supported;
-			var url;
+			var current = get_supported();
+			var object = {};
+
 
 			try {
 				for(var i=0,l=indexes.length;i<l;++i) {
 					current = current[indexes[i]];
 				}
 
-				url = format_response($.extend({},current),index);
-				supported = true;
+				object = format_response($.extend({},{url:current}),index);
+				object.supported = true;
 			} catch(err) {
-				supported = false;
-				url = "";
+				console.log(err);
+				object = {
+					supported : false,
+					url : '' 
+				}
 			}
 
-
-			return {
-				supported : supported,
-				url : url
-			}
+			return object
 		},
 		/**
 		 * Set the api version to use
